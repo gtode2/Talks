@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:background="@color/background"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="27dp"
+        android:layout_weight="1"
+        android:src="@drawable/hometempicon"
+        android:scaleType="fitCenter"
+        android:tint="@color/lime"
+        android:id="@+id/homebtn"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight="1"
+        android:src="@drawable/searchtemp"
+        android:scaleType="fitCenter"
+        android:tint="@color/desel"
+        android:id="@+id/searchbtn"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_weight="1"
+        android:src="@drawable/addtemp"
+        android:scaleType="fitCenter"
+        android:tint="@color/desel"
+        android:id="@+id/cpstbtn"/>
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_weight="1"
+        android:src="@drawable/usertemp"
+        android:scaleType="fitCenter"
+        android:tint="@color/desel"
+        android:id="@+id/accbtn"/>
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="25dp"
+        android:layout_weight="1"
+        android:src="@drawable/notiftemp"
+        android:scaleType="fitCenter"
+        android:tint="@color/desel"
+        android:id="@+id/ntfybtn"/>
+
+</LinearLayout>
