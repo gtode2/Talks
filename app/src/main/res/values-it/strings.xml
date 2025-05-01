@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Talks</string>
+    <string name="all">Tutti</string>
+    <string name="followed">Seguiti</string>
+
+
+
+    <string name="wrongcred">Email o Password errata</string>
+    <string name="missingmail">Indirizzo email mancante</string>
+    <string name="missingpassword">Password mancante</string>
+
+
+    <string name="yourposts">I tuoi Post</string>
+    <string name="saved">Salvati</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Impostazioni</string>
+
+</resources>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "270288878286",
+    "project_id": "talks-9e8c0",
+    "storage_bucket": "talks-9e8c0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:270288878286:android:fa1eb37f36f643ca0a2e9f",
+        "android_client_info": {
+          "package_name": "com.example.talks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQOzkbCQPMsSP0Z7mP0KimpSrcQgzJrUE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

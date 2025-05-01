@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Talks</string>
+    <string name="all">All</string>
+    <string name="followed">Followed</string>
+
+    <string name="wrongcred">Invalid Email or Password</string>
+    <string name="missingmail">Please enter your email address</string>
+    <string name="missingpassword">Please enter your password</string>
+
+    <string name="yourposts">Your Posts</string>
+    <string name="saved">Saved</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+
 </resources>
