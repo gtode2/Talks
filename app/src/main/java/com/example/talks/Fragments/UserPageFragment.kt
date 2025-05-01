@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.talks.MainActivity
 import com.example.talks.R
 
@@ -18,6 +19,11 @@ class UserPageFragment:Fragment(R.layout.userpage) {
 
         logout.setOnClickListener{
             (requireActivity() as MainActivity).logout()
+        }
+        settings.setOnClickListener{
+           val ft = requireActivity().supportFragmentManager.beginTransaction()
+           ft.replace(R.id.frame, SettingsFragment())
+               .commit()
         }
     }
 }

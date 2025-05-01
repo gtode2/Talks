@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
-        android:text="Non hai eseguito l'accesso"
+        android:text="@string/notsignedin"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,7 @@
     <Button
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:text="Accedi"
+        android:text="@string/login"
         android:id="@+id/loginBtn"
         android:textAlignment="center"
         android:textAllCaps="false"
@@ -29,11 +29,20 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="400dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/noaccount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="400dp"
+        android:textSize="15dp"/>
     <Button
         android:id="@+id/registerBtn"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:text="Crea Account"
+        android:text="@string/register"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="17dp"
@@ -45,7 +54,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hai problemi ad accedere?"
+        android:text="@string/trouble"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +63,7 @@
     <Button
         android:layout_width="150dp"
         android:layout_height="40dp"
-        android:text="Recupera password"
+        android:text="@string/pwrecov"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textSize="14dp"

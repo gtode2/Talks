@@ -6,23 +6,25 @@
     android:layout_height="match_parent">
 
     <Button
+        android:id="@+id/signupBtn"
         android:layout_width="200dp"
         android:layout_height="55dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="500dp"
-        android:hint="Accedi"
+        android:layout_marginTop="520dp"
+        android:hint="@string/register"
         />
 
     <Button
+        android:id="@+id/backbtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="600dp"
-        android:hint="Indietro"
+        android:hint="@string/back"
 
         />
 
@@ -35,7 +37,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/nameET"
         android:inputType="textEmailAddress"
-        android:hint="Nome"/>
+        android:hint="@string/name"/>
     <EditText
         android:layout_width="250dp"
         android:layout_height="50dp"
@@ -44,7 +46,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:id="@+id/surnameET"
-        android:hint="Cognome"/>
+        android:hint="@string/surname"/>
     <EditText
         android:layout_width="250dp"
         android:layout_height="50dp"
@@ -52,9 +54,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/dateET"
-        android:inputType="date"
-        android:hint="Data di nascita"/>
+        android:id="@+id/usernameET"
+        android:hint="@string/username"/>
     <EditText
         android:layout_width="250dp"
         android:layout_height="50dp"
@@ -62,8 +63,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/usernameET"
-        android:hint="Username"/>
+        android:id="@+id/dateET"
+        android:inputType="date"
+        android:hint="@string/dob"/>
     <EditText
         android:layout_width="250dp"
         android:layout_height="50dp"
@@ -73,5 +75,15 @@
         app:layout_constraintTop_toTopOf="parent"
         android:inputType="textEmailAddress"
         android:id="@+id/emailET"
-        android:hint="Email"/>
+        android:hint="@string/email"/>
+    <EditText
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="450dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="textEmailAddress"
+        android:id="@+id/pwET"
+        android:hint="@string/password"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
