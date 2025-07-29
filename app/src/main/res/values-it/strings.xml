@@ -3,14 +3,20 @@
     <string name="all">Tutti</string>
     <string name="followed">Seguiti</string>
 
+    <!-- Login -->
+
     <string name="wrongcred">Email o Password errata</string>
     <string name="missingmail">Indirizzo email mancante</string>
     <string name="missingpassword">Password mancante</string>
+
+    <!-- UserPage Logged -->
 
     <string name="yourposts">I tuoi Post</string>
     <string name="saved">Salvati</string>
     <string name="logout">Logout</string>
     <string name="settings">Impostazioni</string>
+
+    <!-- UserPage Unlogged -->
 
     <string name="notsignedin">Non hai eseguito l\'accesso</string>
     <string name="login">Accedi</string>
@@ -19,6 +25,8 @@
     <string name="trouble">hai problemi ad accedere?</string>
     <string name="pwrecov">Recupera password</string>
 
+    <!-- Register -->
+
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="username">Username</string>
@@ -26,5 +34,29 @@
     <string name="email">Indirizzo Email</string>
     <string name="password">Password</string>
     <string name="back">Indietro</string>
+    <string name="errMissingName">Nome mancante</string>
+    <string name="errMissingSurname">Cognome mancante</string>
+    <string name="errMissingUsername">Username mancante</string>
+    <string name="errMissingDOB">Data di nascita mancante</string>
+    <string name="errMissingMail">Indirizzo Email mancante</string>
+    <string name="errMissingPw">Password mancante</string>
+    <string name="errPWLC">Password deve contenere almeno una lettera maiuscola</string>
+    <string name="errPWUC">Password deve contenere almeno una lettera minuscola</string>
+    <string name="errPWSYM">Password deve contenere almeno un simbolo speciale</string>
+    <string name="errPWNUM">Password deve contenere almeno un carattere numerico</string>
+    <string name="errMailNV">Indirizzo Email non valido</string>
+    <string name="errNameNL">Nome può contenere solo lettere</string>
+    <string name="errSurnameNL">Cognome può contenere solo lettere</string>
+    <string name="succReg">Registrazione completata</string>
+    <string name="errDBReg">Indirizzo Email già in uso</string>
+    <string name="errInvalidMail">Registrazione fallita</string>
 
+    <!-- Post Creation -->
+
+    <string name="title">Titolo</string>
+    <string name="postText">Post</string>
+    <string name="source">Fonte (opzionale)</string>
+    <string name="loadImage">Carica immagine</string>
+    <string name="uploadPost">Pubblica</string>
+    <string name="errMissingTitleOrText">Titolo o testo del post non possono essere vuoti</string>
 </resources>

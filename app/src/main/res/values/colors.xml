@@ -5,4 +5,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lime">#ccff00</color>
     <color name="desel">@color/black</color>
+    <color name="error">#e1002d</color>
 </resources>

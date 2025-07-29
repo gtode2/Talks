@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/titleet"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:hint="@string/title"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/postet"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="124dp"
+        android:hint="@string/postText"
+        android:inputType="textMultiLine"
+        android:gravity="top|start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:maxLength="500"
+        />
+
+    <TextView
+        android:id="@+id/remchcount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="104dp"
+        android:text="0/500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/srcPC"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="460dp"
+        android:hint="@string/source"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imgbtn"
+        android:layout_width="212dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="556dp"
+        android:text="@string/loadImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.185"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imgprev"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="550dp"
+        android:layout_marginLeft="200dp"/>
+
+    <Button
+        android:id="@+id/pcBackbtn"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="624dp"
+        android:text="Annulla"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="30dp"/>
+
+    <Button
+        android:id="@+id/pcContinue"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:text="@string/uploadPost"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="624dp"
+        android:layout_marginLeft="30dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

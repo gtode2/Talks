@@ -3,15 +3,20 @@
     <string name="all">All</string>
     <string name="followed">Followed</string>
 
+    <!-- Login -->
+
     <string name="wrongcred">Invalid Email or Password</string>
     <string name="missingmail">Please enter your email address</string>
     <string name="missingpassword">Please enter your password</string>
+
+    <!-- UserPage Logged -->
 
     <string name="yourposts">Your Posts</string>
     <string name="saved">Saved</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
 
+    <!-- UserPage Unlogged -->
 
     <string name="notsignedin">You\'re not signed in</string>
     <string name="login">Login</string>
@@ -20,6 +25,8 @@
     <string name="trouble">Having trouble signing in?</string>
     <string name="pwrecov">Reset password</string>
 
+    <!-- Register -->
+
     <string name="name">Name</string>
     <string name="surname">Surname</string>
     <string name="username">Username</string>
@@ -27,5 +34,29 @@
     <string name="email">Email address</string>
     <string name="password">Password</string>
     <string name="back">Back</string>
+    <string name="errMissingName">A</string>
+    <string name="errMissingSurname">A</string>
+    <string name="errMissingUsername">A</string>
+    <string name="errMissingDOB">A</string>
+    <string name="errMissingMail">A</string>
+    <string name="errMissingPw">A</string>
+    <string name="errPWLC">A</string>
+    <string name="errPWUC">A</string>
+    <string name="errPWSYM">A</string>
+    <string name="errPWNUM">A</string>
+    <string name="errMailNV">A</string>
+    <string name="errNameNL">A</string>
+    <string name="errSurnameNL">A</string>
+    <string name="succReg">A</string>
+    <string name="errDBReg">A</string>
+    <string name="errInvalidMail">A</string>
 
+    <!-- Post Creation -->
+
+    <string name="title">Title</string>
+    <string name="postText">Post</string>
+    <string name="source">Source (optional)</string>
+    <string name="loadImage">Load image</string>
+    <string name="uploadPost">Post</string>
+    <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
 </resources>

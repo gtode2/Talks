@@ -1,12 +1,9 @@
 package com.example.talks
 
+import android.content.Intent
 import android.content.res.ColorStateList
-import android.media.Image
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.talks.Fragments.HomePageFragment
@@ -14,15 +11,11 @@ import com.example.talks.Fragments.NotificationPageFragment
 import com.example.talks.Fragments.SearchPageFragment
 import com.example.talks.Fragments.UserPageFragment
 import com.example.talks.Fragments.UserUnloggedFragment
-import com.google.firebase.Firebase
-import com.google.firebase.initialize
-import kotlin.math.log
 
 
 var act = "home"
 var lgd = false
 class MainActivity : AppCompatActivity() {
-    lateinit var uid: String
     lateinit var homebtn:ImageView
     lateinit var searchbtn:ImageView
     lateinit var cpstbtn:ImageView
@@ -84,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         val intent = intent
         val from = intent.getStringExtra("From")?:0
         if (from=="Login"){
-            uid = intent.getStringExtra("uid")?:""
             lgd=true
             act="home"
         }
@@ -117,11 +109,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
         cpstbtn.setOnClickListener{
-            if (act!="cpst"){
-                btnreset()
-                cpstbtn.imageTintList = ColorStateList.valueOf(col_act!!)
-                act="cpst"
-                //crea nuova activity
+            if (lgd){
+                val intent = Intent(this, PostCreationActivity::class.java)
+                startActivity(intent)
             }
         }
         accbtn.setOnClickListener{

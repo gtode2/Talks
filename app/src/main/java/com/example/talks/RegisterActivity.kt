@@ -6,7 +6,6 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.findViewTreeFullyDrawnReporterOwner
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -25,6 +24,7 @@ class RegisterActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
+        val settings = this.applicationContext as AppSettings
         name = findViewById(R.id.nameET)
         surname = findViewById(R.id.surnameET)
         username = findViewById(R.id.usernameET)
@@ -37,61 +37,61 @@ class RegisterActivity: AppCompatActivity() {
         register.setOnClickListener{
             var valid=true
             if (name.text.isEmpty()){
-                name.error="nome mancante"
+                name.error= R.string.errMissingName.toString()
                 valid=false
             }
             if (surname.text.isEmpty()){
-                surname.error="cognome mancante"
+                surname.error= R.string.errMissingSurname.toString()
                 valid=false
             }
             if (username.text.isEmpty()){
-                username.error="username mancante"
+                username.error=R.string.errMissingUsername.toString()
                 valid=false
             }
             if (dob.text.isEmpty()){
-                dob.error="data di nascita mancante"
+                dob.error=R.string.errMissingDOB.toString()
                 valid=false
             }
             if (mail.text.isEmpty()){
-                mail.error="indirizzo email mancante"
+                mail.error=R.string.errMissingMail.toString()
                 valid=false
             }
             if (password.text.isEmpty()){
-                password.error="nome mancante"
+                password.error=R.string.errMissingPw.toString()
                 valid=false
             }
 
             //controlli password
             if (!password.text.toString().contains(Regex("[A-Z]"))){
-                password.error="password deve contenere almeno una lettera maiuscola"
+                password.error=R.string.errPWLC.toString()
                 valid=false
             }
             if (!password.text.toString().contains(Regex("[a-z]"))){
-                password.error="password deve contenere almeno una lettera minuscola"
+                password.error=R.string.errPWUC.toString()
                 valid=false
             }
             if (!password.text.toString().contains(Regex("[^A-Za-z0-9]"))){
-                password.error="password deve contenere almeno un simbolo speciale"
+                password.error=R.string.errPWSYM.toString()
                 valid=false
             }
             if (!password.text.toString().contains(Regex("[0-9]"))){
-                password.error="password deve contenere almeno un carattere numerico"
+                password.error=R.string.errPWNUM.toString()
                 valid=false
             }
 
             //controllo email
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(mail.text.toString()).matches()){
-                mail.error="indirizzo email non valido: ${mail.text}"
+                mail.error=R.string.errMailNV.toString()
                 valid=false
             }
 
             //controllo nome e cognome
             if (!name.text.toString().contains(Regex("^[a-zA-Z]+$"))){
-                name.error="nome può contenere solo lettere"
+                name.error=R.string.errNameNL.toString()
                 valid=false
             }
             if (!surname.text.toString().contains(Regex("^[a-zA-Z]+$"))){
-                surname.error="cognome può contenere solo lettere"
+                surname.error=R.string.errSurnameNL.toString()
                 valid=false
             }
 
@@ -102,32 +102,35 @@ class RegisterActivity: AppCompatActivity() {
                     .addOnCompleteListener{task->
                         if (task.isSuccessful){
                             val UID = FirebaseAuth.getInstance().currentUser!!.uid
-                            Toast.makeText(this, "Registrazione completata",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, R.string.succReg.toString(),Toast.LENGTH_SHORT).show()
 
                             val user = hashMapOf(
                                 "authid" to UID,
                                 "name" to name.text.toString(),
                                 "surname" to surname.text.toString(),
-                                "username" to username.text.toString(),
                                 "bday" to dob.text.toString()
                             )
-                            db.collection("Utenti")
-                                .document(UID)
+
+                            //verificare username duplicati
+
+                            db.collection("Users")
+                                .document(username.text.toString())
                                 .set(user)
                                 .addOnFailureListener{documentReference->
                                     Toast.makeText(this, "errore inserimento in db",Toast.LENGTH_SHORT).show()//DA RIMUOVERE
-                                    Log.d("aaa", documentReference.toString())
+                                    //in questo caso eliminare utente
+                                    //print messaggio errore
                                 }
 
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("From","Login")
-                            intent.putExtra("uid", UID)
+                            settings.setUID(username.text.toString())
                             startActivity(intent)
                             finish()
                         }else if (task.exception is FirebaseAuthUserCollisionException){
-                            Toast.makeText(this, "Indirizzo Email già in uso",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, R.string.errInvalidMail.toString(),Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(this, "Registrazione fallita",Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, R.string.errDBReg.toString(),Toast.LENGTH_SHORT).show()
                         }
                     }
             }

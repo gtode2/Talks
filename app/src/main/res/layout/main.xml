@@ -10,15 +10,15 @@
     <FrameLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
+        android:layout_above="@+id/bottombar"
         android:layout_weight="1"
         android:id="@+id/frame"
         >
-
-
     </FrameLayout>
 
 
     <include
+        android:id="@+id/bottombar"
         layout="@layout/bottombar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
