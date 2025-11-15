@@ -1,9 +1,9 @@
-package com.example.talks.Fragments
+package com.example.talks.fragments
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.talks.Interfaces.PostCard
-import com.example.talks.Interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCard
+import com.example.talks.interfaces.PostCardHomepage
 
 class DA_ELIMINAREPostCardHomepageFragment:Fragment(), PostCard, PostCardHomepage{
 

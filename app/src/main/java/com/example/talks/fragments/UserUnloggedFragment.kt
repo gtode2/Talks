@@ -1,4 +1,4 @@
-package com.example.talks.Fragments
+package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle

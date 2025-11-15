@@ -6,11 +6,11 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.talks.Fragments.HomePageFragment
-import com.example.talks.Fragments.NotificationPageFragment
-import com.example.talks.Fragments.SearchPageFragment
-import com.example.talks.Fragments.UserPageFragment
-import com.example.talks.Fragments.UserUnloggedFragment
+import com.example.talks.fragments.HomePageFragment
+import com.example.talks.fragments.NotificationPageFragment
+import com.example.talks.fragments.SearchPageFragment
+import com.example.talks.fragments.UserPageFragment
+import com.example.talks.fragments.UserUnloggedFragment
 
 
 var act = "home"

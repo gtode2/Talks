@@ -1,29 +1,27 @@
-package com.example.talks.Fragments
+package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.Adapters.PostCardAdapter
-import com.example.talks.Interfaces.PostCard
-import com.example.talks.Interfaces.PostCardHomepage
+import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.interfaces.PostCard
+import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.PostActivity
 import com.example.talks.R
-import com.example.talks.RegisterActivity
 import com.example.talks.database.PostDatabase
 
-class HomePageFragment:Fragment(R.layout.homepage), PostCard, PostCardHomepage {
+class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
-            recyclerViewHomepage.adapter = PostCardAdapter(postList, this, this)
+            recyclerViewHomepage.adapter = PostCardAdapter(postList, this )
             for (post in postList){
                 Log.e("TEST", post.title)
             }

@@ -1,4 +1,4 @@
-package com.example.talks.Interfaces
+package com.example.talks.interfaces
 
 interface PostCard{
     fun openPost(postId:String)
@@ -10,12 +10,13 @@ interface PostCard{
     fun  openImage(imgId:String){}
     //OPZIONALE
     fun openComments(postId:String)
+
 }
-interface PostCardHomepage{
+interface PostCardHomepage:PostCard{
     fun addLike(postId: String)
     fun savePost(postId: String)
 }
-interface PostCardYourPosts{
+interface PostCardYourPosts:PostCard{
     fun editPost(postId: String)
     fun deletePost(postId: String)
 }

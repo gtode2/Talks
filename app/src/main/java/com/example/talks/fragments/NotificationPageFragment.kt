@@ -1,4 +1,4 @@
-package com.example.talks.Fragments
+package com.example.talks.fragments
 
 import androidx.fragment.app.Fragment
 import com.example.talks.R

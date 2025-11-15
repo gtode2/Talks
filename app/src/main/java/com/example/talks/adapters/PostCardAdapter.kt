@@ -1,4 +1,4 @@
-package com.example.talks.Adapters
+package com.example.talks.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -6,17 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
-import com.example.talks.Interfaces.PostCard
-import com.example.talks.Interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCard
+import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
+import com.example.talks.interfaces.Comment
 
 class PostCardAdapter(
     private val posts:List<PostData>,
-    private val pcl:PostCard,
-    private val pchl:PostCardHomepage
+    private val pch:PostCardHomepage,
 ):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(){
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
@@ -34,7 +33,6 @@ class PostCardAdapter(
             postLikes.text = el.likes.toString()
 
 
-            Log.e("NVNC", "immagine = "+el.image)
             //verifica immagini
             if (el.image.isNullOrBlank()){
                 postImg.visibility = View.GONE
@@ -44,19 +42,19 @@ class PostCardAdapter(
             //verifica tag
 
             usertag.setOnClickListener{
-                pcl.openUser(el.uid)
+                pch.openUser(el.uid)
             }
             itemView.setOnClickListener{
-                pcl.openPost(el.id)
+                pch.openPost(el.id)
             }
             likebtn.setOnClickListener{
-                pchl.addLike(el.id)
+                pch.addLike(el.id)
             }
             commbtn.setOnClickListener{
-                pcl.openComments(el.id)
+                pch.openComments(el.id)
             }
             savebtn.setOnClickListener{
-                pchl.savePost(el.id)
+                pch.savePost(el.id)
             }
         }
     }

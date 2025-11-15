@@ -9,7 +9,7 @@ import com.google.firebase.firestore.toObject
 
 class PostDatabase {
     companion object{
-        fun getPosts(type:String="all",  onResult: (List<PostData>) -> Unit){
+        fun getPosts(type:String="all", search: String="-1",  onResult: (List<PostData>) -> Unit){
             val pl = mutableListOf<PostData>()
             //all
             //followed accounts
@@ -31,5 +31,21 @@ class PostDatabase {
                     }
             }
         }
+        fun getPost(search: String,  onResult: (List<PostData>) -> Unit){
+            val pl = mutableListOf<PostData>()
+            FirebaseFirestore.getInstance()
+                .collection("Posts")
+                .document(search)
+                .get()
+                .addOnSuccessListener { document ->
+                    var post = document.toObject(PostData::class.java)
+                    if (post!=null) {
+                        post.id = document.id
+                        pl.add(post)
+                    }
+                    onResult(pl)
+                }
+        }
+
     }
 }
