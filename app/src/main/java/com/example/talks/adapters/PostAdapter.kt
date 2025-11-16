@@ -17,15 +17,14 @@ import org.w3c.dom.Text
 
 class PostAdapter(
     private val post:PostData,
-    private val cm: List<CommentData>,
+    private val cm: MutableList<CommentData>,
     private val comdata: Comment,
     private val pch:PostCardHomepage
 
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     companion object {
         private const val VIEW_TYPE_POST=0
-        private const val VIEW_TYPE_AC=1
-        private const val VIEW_TYPE_COMM=2
+        private const val VIEW_TYPE_COMM=1
     }
 
 
@@ -67,12 +66,11 @@ class PostAdapter(
         }
     }
 
-    override fun getItemCount(): Int = cm.size+2
+    override fun getItemCount(): Int = cm.size+1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
             VIEW_TYPE_POST->PostVH(view.inflate(R.layout.postcard, parent,false))
-            VIEW_TYPE_AC->AddCommentVH(view.inflate(R.layout.addcomment, parent,false))
             VIEW_TYPE_COMM->CommentVH(view.inflate(R.layout.commentblock, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
         }
@@ -83,11 +81,9 @@ class PostAdapter(
             is PostVH ->{
                 holder.bind(post)
             }
-            is AddCommentVH ->{
-                //addComment()
-            }
+
             is CommentVH->{
-                val comment = cm[position-2]
+                val comment = cm[position-1]
                 holder.bind(comment)
             }
         }
@@ -96,9 +92,20 @@ class PostAdapter(
     override fun getItemViewType(position: Int): Int {
         return when(position){
             0-> VIEW_TYPE_POST
-            1-> VIEW_TYPE_AC
             else-> VIEW_TYPE_COMM
         }
+    }
+
+    fun addComment(commtext:String, user:String){
+        Log.e("bruzzo", "Rtext=${commtext} ", )
+        Log.e("bruzzo", "Ruser=${user} ", )
+
+        val newComm = CommentData(
+            text = commtext,
+            uid = user
+        )
+        cm.add(0,newComm)
+        notifyItemInserted(1)
     }
 
     inner class PostVH(view: View):RecyclerView.ViewHolder(view){
@@ -120,10 +127,13 @@ class PostAdapter(
             likes.text=post.likes.toString()
         }
     }
-    inner class AddCommentVH(view: View):RecyclerView.ViewHolder(view){
-
-    }
     inner class CommentVH(view: View):RecyclerView.ViewHolder(view){
-        fun bind(comment:CommentData){}
+        val usertag = view.findViewById<TextView>(R.id.userTag)
+        val commenttext = view.findViewById<TextView>(R.id.commentText)
+
+        fun bind(comment:CommentData){
+            usertag.text = "@${comment.uid}"
+            commenttext.text = comment.text
+        }
     }
 }

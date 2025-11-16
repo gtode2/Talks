@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.example.talks.AppSettings
 import com.example.talks.MainActivity
 import com.example.talks.R
 
 class UserPageFragment:Fragment(R.layout.userpage) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val appsettings = requireContext().applicationContext as AppSettings
+
         var yourposts = view.findViewById<Button>(R.id.yourpostsBtn)
         var saved = view.findViewById<Button>(R.id.savedBtn)
         var settings = view.findViewById<Button>(R.id.settingsBtn)
@@ -17,7 +21,7 @@ class UserPageFragment:Fragment(R.layout.userpage) {
 
 
         logout.setOnClickListener{
-            (requireActivity() as MainActivity).logout()
+            (requireActivity() as MainActivity).logout(appsettings)
         }
         settings.setOnClickListener{
            val ft = requireActivity().supportFragmentManager.beginTransaction()

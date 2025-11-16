@@ -77,18 +77,16 @@ class PostCreationActivity: AppCompatActivity() {
             //invia info a DB
             val db = Firebase.firestore
             val UID = settings.getUID()
-            val emptyMap: Map<String, String> = mapOf()
             val postContent = hashMapOf(
                 "uid" to UID,
                 "likes" to 0,
-                "comments" to emptyMap,
                 "post" to post.text.toString(),
                 "source" to source.text.toString(),
                 "title" to title.text.toString(),
                 "image" to "",
                 "createdAt" to FieldValue.serverTimestamp()
             )
-            Log.e("NVNC", "ID="+UID)
+            Log.e("NVNC", "ID=${UID}")
             db.collection("Posts")
                 .add(postContent)
                 .addOnFailureListener {

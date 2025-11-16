@@ -59,4 +59,8 @@
     <string name="loadImage">Carica immagine</string>
     <string name="uploadPost">Pubblica</string>
     <string name="errMissingTitleOrText">Titolo o testo del post non possono essere vuoti</string>
+
+    <!-- Comments -->
+
+    <string name="addcomment">Aggiungi un commento</string>
 </resources>

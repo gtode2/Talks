@@ -22,9 +22,6 @@ class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
             recyclerViewHomepage.adapter = PostCardAdapter(postList, this )
-            for (post in postList){
-                Log.e("TEST", post.title)
-            }
         }
 
     }

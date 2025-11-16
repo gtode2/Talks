@@ -59,4 +59,8 @@
     <string name="loadImage">Load image</string>
     <string name="uploadPost">Post</string>
     <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
+
+    <!-- Comments -->
+
+    <string name="addcomment">Add a reply</string>
 </resources>

@@ -55,10 +55,12 @@ class MainActivity : AppCompatActivity() {
     fun setLgd(par:Boolean){
         lgd=par
     }
-    fun logout(){
+    fun logout(settings:AppSettings){
         lgd=false
         act="home"
+        settings.setUID(null)
         accountpage()
+
     }
 
 
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
+
 
         homebtn = findViewById(R.id.homebtn)
         searchbtn = findViewById(R.id.searchbtn)

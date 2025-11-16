@@ -2,6 +2,8 @@ package com.example.talks
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -12,13 +14,31 @@ import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
+import com.example.talks.databinding.AddcommentBinding
+import com.example.talks.databinding.PostfullscreenBinding
 import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostCardHomepage
 
 class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
+    lateinit var binding:PostfullscreenBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.postfullscreen)
+
+        //uso binding per poter rimuovere addcomment da xml quando non loggato
+        binding = PostfullscreenBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+
+        val settings = this.applicationContext as AppSettings
+        val UID = settings.getUID()
+        val addcomm = binding.addcomment.sendcommbtn
+
+        var adapter:PostAdapter?= null
+
+
+        if (UID.isNullOrBlank()){
+            binding.addcomment.root.visibility=View.GONE
+        }
 
         val postId = intent.getStringExtra("id")
         if (postId.isNullOrBlank()){
@@ -27,7 +47,8 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
         }
 
         //request db info post - PostDatabase
-        var rvPost = findViewById<RecyclerView>(R.id.postrv)
+        var rvPost = binding.postrv
+
         rvPost.layoutManager = LinearLayoutManager(this)
         PostDatabase.getPost(postId!!) { postlist ->
             //verifico esistenza post - gestione errore
@@ -37,24 +58,50 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
                 //carico info
                 val post = postlist[0]
                 getComments(postId!!){ comments->
-
-                    rvPost.adapter = PostAdapter(post, comments,this, this)
+                    adapter = PostAdapter(post, comments,this, this)
+                    rvPost.adapter = adapter
                 }
             }
         }
 
 
 
-        //inserisco addcomment.xml
         //request db commenti - CommentsDatabase
         //carico commenti da xml - DA CREARE
 
+        addcomm.setOnClickListener{
+            //ottenere testo commento
+            val commenttext = binding.addcomment.textcomment.text.toString()
+            //ottenere id post
+            if (!commenttext.isNullOrBlank()){
+                addComment(UID!!, commenttext, postId!!){res->
+                    if (res==0){
+                        binding.addcomment.textcomment.text.clear()
+                        adapter!!.addComment(commenttext,UID)
+                        Log.e("bruzzo", "Itext${commenttext} ", )
+                        Log.e("bruzzo", "Iuser${UID} ", )
+
+                    }else{
+                        Toast.makeText(this, "si è verificato un errore nel caricamento del commento", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }else{
+                Toast.makeText(this, "scrivi un commento per inviare", Toast.LENGTH_SHORT).show()
+            }
+
+        }
 
     }
 
-    fun getComments(id:String, onResult: (List<CommentData>)->Unit){
+    fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
         CommentsDatabase.getComments(id){
             comments->onResult(comments)
+        }
+    }
+
+    fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
+        CommentsDatabase.addComment(uid, text, post){res->
+            onResult(res)
         }
     }
 

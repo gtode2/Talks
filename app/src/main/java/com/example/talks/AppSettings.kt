@@ -9,7 +9,7 @@ data class Settings(
 */
 class AppSettings: Application(){
     var uid:String? = null
-    fun setUID(id:String){
+    fun setUID(id:String?){
         //imposta userId
         uid = id
 
