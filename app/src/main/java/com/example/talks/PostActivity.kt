@@ -78,8 +78,6 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
                     if (res==0){
                         binding.addcomment.textcomment.text.clear()
                         adapter!!.addComment(commenttext,UID)
-                        Log.e("bruzzo", "Itext${commenttext} ", )
-                        Log.e("bruzzo", "Iuser${UID} ", )
 
                     }else{
                         Toast.makeText(this, "si è verificato un errore nel caricamento del commento", Toast.LENGTH_SHORT).show()
@@ -108,7 +106,12 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
     //funzioni interfaccia
 
     override fun addLike(postId: String) {
-        TODO("Not yet implemented")
+        //GESTIONE FIREBASE FREE - unico documento -> letture e scritture limitate
+        //SCALABILITÀ LIMITATA -> gestire un documento per ogni like anche per utente
+
+
+
+
     }
 
     override fun savePost(postId: String) {

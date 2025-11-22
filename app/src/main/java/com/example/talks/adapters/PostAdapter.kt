@@ -97,8 +97,6 @@ class PostAdapter(
     }
 
     fun addComment(commtext:String, user:String){
-        Log.e("bruzzo", "Rtext=${commtext} ", )
-        Log.e("bruzzo", "Ruser=${user} ", )
 
         val newComm = CommentData(
             text = commtext,

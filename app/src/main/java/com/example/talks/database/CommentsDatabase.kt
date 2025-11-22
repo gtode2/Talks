@@ -4,6 +4,7 @@ import com.example.talks.data.CommentData
 import com.example.talks.interfaces.Comment
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
 
 class CommentsDatabase {
@@ -14,6 +15,7 @@ class CommentsDatabase {
                 .collection("Posts")
                 .document(post)
                 .collection("comments")
+                .orderBy("date",Query.Direction.DESCENDING)
                 .get()
                 .addOnSuccessListener { res ->
                     for(document in res){
