@@ -57,14 +57,15 @@ class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
         if (!UID.isNullOrBlank()){
             LikeRepository.addLike(UID!!,postId){res->
                 //0 = aggiunta eseguita
-                //1 = già aggiunto ma in altra istanza - segna come aggiunto
-                //2 = già presente - rimosso
+                //1 = già presente - rimosso
                 //-1= errore
 
-
                 if (res==0){
-                    Toast.makeText(context, "incremento like", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "like aggiunto", Toast.LENGTH_SHORT).show()
                     adapter!!.incrLike(postId)
+                }else if(res==1){
+                    Toast.makeText(context, "like rimosso", Toast.LENGTH_SHORT).show()
+                    adapter!!.decrLike(postId)
                 }else if (res==-1){
                     //errore
                     Toast.makeText(context, "si è verificato un errore", Toast.LENGTH_SHORT).show()

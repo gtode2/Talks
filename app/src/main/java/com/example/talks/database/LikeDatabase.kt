@@ -23,30 +23,55 @@ class LikeDatabase {
 
             var ex = false //ex - exists in prev
             db.runTransaction{ tr ->
-                    //eseguo verifica presenza
-                    val prev= tr.get(user)
-                        .get("likes") as? Map<String, Boolean>?: emptyMap()
-                    if (prev.containsKey(postid)){
-                        ex=true
-                        throw Exception("already liked")
-                    }
-                    //carico map
-                    tr.update(user, "likes.$postid",true)
-                    //incremento
-                    tr.update(post, "likes", FieldValue.increment(1))
+                //eseguo verifica presenza
+                val prev= tr.get(user)
+                    .get("likes") as? Map<String, Boolean>?: emptyMap()
+                if (prev.containsKey(postid)){
+                    ex=true
+                    throw Exception("already liked")
                 }
-                .addOnSuccessListener {
-                    onResult(0)
+                //carico map
+                tr.update(user, "likes.$postid",true)
+                //incremento
+                tr.update(post, "likes", FieldValue.increment(1))
+            }
+            .addOnSuccessListener {
+                onResult(0)
+            }
+            .addOnFailureListener {
+                if (ex){
+                    onResult(1)
+                }else{
+                    onResult(-1)
                 }
-                .addOnFailureListener {
-                    if (ex){
-                        onResult(1)
-                    }else{
-                        onResult(-1)
-                    }
-                }
+            }
         }
-        fun removeLike(){}
-        //fun uploadUserLikes(){}
+        fun removeLike(uid:String, postid:String, onResult: (Int) -> Unit){
+            val db = FirebaseFirestore.getInstance()
+            val user = db.collection("Users").document(uid)
+            val post = db.collection("Posts").document(postid)
+
+            var ex = true
+            db.runTransaction{ tr->
+                val prev = tr.get(user)
+                    .get("likes") as? Map<String, Boolean>?: emptyMap()
+                if (!prev.containsKey(postid)){
+                    ex=false
+                    throw Exception("not liked")
+                }
+                tr.update(user, "likes.$postid", FieldValue.delete())
+                tr.update(post, "likes", FieldValue.increment(-1))
+            }
+            .addOnSuccessListener {
+                onResult(0)
+            }
+            .addOnFailureListener {
+                if (ex){
+                    onResult(0)
+                }else{
+                    onResult(-1)
+                }
+            }
+        }
     }
 }

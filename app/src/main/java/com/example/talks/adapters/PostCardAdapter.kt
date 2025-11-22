@@ -72,6 +72,7 @@ class PostCardAdapter(
         holder.bind(posts[position])
     }
     override fun getItemCount(): Int = posts.size
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.postcard, parent, false)
@@ -83,6 +84,14 @@ class PostCardAdapter(
         if (index!=-1){
             posts[index].likes+=1
             posts[index].isLiked=true
+        }
+        notifyItemChanged(index)
+    }
+    fun decrLike(postid:String){
+        val index = posts.indexOfFirst {it.id==postid}
+        if (index!=-1){
+            posts[index].likes-=1
+            posts[index].isLiked=false
         }
         notifyItemChanged(index)
     }

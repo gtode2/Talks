@@ -26,11 +26,17 @@ object LikeRepository {
             }
         }else{
             //già presente - rimozione
+            LikeDatabase.removeLike(uid, postid){res->
+                if (res==0 || res==1){
+                    likedPosts.remove(postid)
+                    onResult(1)
+                }else{
+                    onResult(-1)
+                }
+            }
             // chiama removeLike()
             //restituisce 2 se rimosso correttamente
-            onResult(-1) //TEMPORANEO, SOLO PER TEST
 
         }
     }
-    fun removeLike(){}
 }
