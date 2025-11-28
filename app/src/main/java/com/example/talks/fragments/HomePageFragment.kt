@@ -39,16 +39,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         var recyclerViewHomepage = Fragview!!.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
-            adapter = PostCardAdapter(
-                postList.toMutableList(),
-                null,
-                requireContext()
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter=adapter
-            )
-            adapter!!.pch=handler
             var liked = LikeRepository.getLikes()
             if (!liked.isEmpty()){
                 postList.forEach{ el->
@@ -65,6 +55,18 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                     }
                 }
             }
+
+            adapter = PostCardAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext()
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter=adapter
+            )
+            adapter!!.pch=handler
+
             recyclerViewHomepage.adapter = adapter
         }
     }

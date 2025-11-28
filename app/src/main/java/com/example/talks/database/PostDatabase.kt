@@ -4,6 +4,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.text.rememberTextMeasurer
 import com.example.talks.data.PostData
+import com.example.talks.repository.BookmarkRepository
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -48,6 +50,24 @@ class PostDatabase {
                             onResult(pl)
                         }
                 }
+                "saved"->{
+                    getSaved(search){res->
+                        FirebaseFirestore.getInstance()
+                            .collection("Posts")
+                            .whereIn(FieldPath.documentId(), res)
+                            .get()
+                            .addOnSuccessListener { result->
+                                for (document in result){
+                                    var post = document.toObject(PostData::class.java)
+                                    post.id = document.id
+                                    pl.add(post)
+                                }
+                                onResult(pl)
+                            }.addOnFailureListener {
+
+                            }
+                    }
+                }
 
             }
         }
@@ -64,6 +84,16 @@ class PostDatabase {
                         pl.add(post)
                     }
                     onResult(pl)
+                }
+        }
+        private fun getSaved(uid:String, onResult: (List<String>) -> Unit){
+            FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { res ->
+                    val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
+                    onResult(savedPosts.keys.toList())
                 }
         }
         fun savePost(uid:String, postid:String, onResult: (Int) -> Unit){

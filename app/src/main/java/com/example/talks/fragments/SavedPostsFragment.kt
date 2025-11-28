@@ -10,25 +10,57 @@ import com.example.talks.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.PostCardHomepage
+import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.LikeRepository
 
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: PostCardAdapter?=null
-    private var UID:String?=null
-    val settings = requireActivity().applicationContext as AppSettings
-    var uid = settings.getUID()
+    private var uid:String?=null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
+        val settings = requireActivity().applicationContext as AppSettings
+        uid = settings.getUID()
         if (uid.isNullOrBlank()){
-            //Toast.makeText(this, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
-            //finish()
+            Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
+            requireActivity().finish()
         }
         val rv=view.findViewById<RecyclerView>(R.id.savedRV)
         rv.layoutManager = LinearLayoutManager(context)
 
+        PostDatabase.getPosts("saved", uid!!){postList->
+            var liked = LikeRepository.getLikes()
+            if (!liked.isEmpty()){
+                postList.forEach{ el->
+                    if (liked.containsKey(el.id)){
+                        el.isLiked=true
+                    }
+                }
+            }
+            val saved = BookmarkRepository.getSaved()
+            if (!saved.isEmpty()){
+                postList.forEach{el->
+                    if (saved.containsKey(el.id)){
+                        el.isSaved=true
+                    }
+                }
+            }
+
+            adapter = PostCardAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext()
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter=adapter
+            )
+            adapter!!.pch=handler
+            rv.adapter=adapter
+        }
     }
 
 }
