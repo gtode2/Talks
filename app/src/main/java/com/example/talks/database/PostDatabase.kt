@@ -2,7 +2,9 @@ package com.example.talks.database
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.ui.text.rememberTextMeasurer
 import com.example.talks.data.PostData
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
@@ -64,6 +66,51 @@ class PostDatabase {
                     onResult(pl)
                 }
         }
+        fun savePost(uid:String, postid:String, onResult: (Int) -> Unit){
+            val db = FirebaseFirestore.getInstance()
+            val user = db.collection("Users").document(uid)
 
+            var ex=false
+            db.runTransaction{ tr->
+                val prev = tr.get(user)
+                    .get("saved") as?Map<String,Boolean>?: emptyMap()
+                if (prev.containsKey(postid)){
+                    ex=true
+                    throw Exception("already saved")
+                }
+                tr.update(user, "saved.$postid", true)
+            }.addOnSuccessListener {
+                onResult(0)
+            }.addOnFailureListener {
+                if (ex){
+                    onResult(1)
+                }else{
+                    onResult(-1)
+                }
+            }
+        }
+        fun unsavePost(uid:String, postid:String, onResult: (Int) -> Unit){
+            val db = FirebaseFirestore.getInstance()
+            val user = db.collection("Users").document(uid)
+
+            var ex=true
+            db.runTransaction{tr->
+                val prev = tr.get(user)
+                    .get("saved") as?Map<String,Boolean>?: emptyMap()
+                if (!prev.containsKey(postid)){
+                    ex=false
+                    throw Exception("not found")
+                }
+                tr.update(user,"saved.$postid",FieldValue.delete())
+            }.addOnSuccessListener {
+                onResult(0)
+            }.addOnFailureListener {
+                if (!ex){
+                    onResult(1)
+                }else{
+                    onResult(-1)
+                }
+            }
+        }
     }
 }

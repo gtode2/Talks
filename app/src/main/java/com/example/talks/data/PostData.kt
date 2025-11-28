@@ -8,5 +8,6 @@ data class PostData(
     val source:String="",
     val uid:String="",
     val image:String="",
-    var isLiked:Boolean=false
+    var isLiked:Boolean=false,
+    var isSaved:Boolean=false
 )

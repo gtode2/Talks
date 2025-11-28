@@ -2,20 +2,16 @@ package com.example.talks.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.compose.ui.res.colorResource
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
-import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
-import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostHandlerInterface
 
 class PostCardAdapter(
@@ -51,6 +47,12 @@ class PostCardAdapter(
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
             }
 
+            if (el.isSaved){
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+            }else{
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+            }
+
             //verifica presenza link
             //verifica tag
 
@@ -82,19 +84,35 @@ class PostCardAdapter(
         return ViewHolder(view)
     }
 
-    override fun incrLike(postid:String){
-        val index = posts.indexOfFirst{it.id==postid}
+    override fun incrLike(postId:String){
+        val index = posts.indexOfFirst{it.id==postId}
         if (index!=-1){
             posts[index].likes+=1
             posts[index].isLiked=true
         }
         notifyItemChanged(index)
     }
-    override fun decrLike(postid:String){
-        val index = posts.indexOfFirst {it.id==postid}
+    override fun decrLike(postId:String){
+        val index = posts.indexOfFirst {it.id==postId}
         if (index!=-1){
             posts[index].likes-=1
             posts[index].isLiked=false
+        }
+        notifyItemChanged(index)
+    }
+
+    override fun savePost(postId: String) {
+        val index = posts.indexOfFirst { it.id==postId}
+        if (index!=-1){
+            posts[index].isSaved=true
+        }
+        notifyItemChanged(index)
+    }
+
+    override fun unsavePost(postId: String) {
+        val index = posts.indexOfFirst { it.id==postId}
+        if (index!=-1){
+            posts[index].isSaved=false
         }
         notifyItemChanged(index)
     }

@@ -6,6 +6,7 @@ import android.widget.Toast
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.interfaces.PostHandlerInterface
+import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 
 class PostCardHandler(
@@ -53,6 +54,19 @@ class PostCardHandler(
     }
 
     override fun savePost(postId: String) {
-
+        val UID = (contextProvider().applicationContext as AppSettings).getUID()
+        if (!UID.isNullOrBlank()){
+            BookmarkRepository.savePost(UID, postId){ res->
+                if (res==0){
+                    Toast.makeText(contextProvider(), "Post salvato", Toast.LENGTH_SHORT).show()
+                    adapter?.savePost(postId)
+                }else if (res==1){
+                    Toast.makeText(contextProvider(), "Post rimosso", Toast.LENGTH_SHORT).show()
+                    adapter?.unsavePost(postId)
+                }else if (res==-1){
+                    Toast.makeText(contextProvider(), "si è verificato un errore", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 }

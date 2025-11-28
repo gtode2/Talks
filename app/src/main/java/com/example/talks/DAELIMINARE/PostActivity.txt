@@ -1,27 +1,24 @@
-package com.example.talks
+package com.example.talks.DAELIMINARE
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.AppSettings
 import com.example.talks.adapters.PostAdapter
-import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
-import com.example.talks.databinding.AddcommentBinding
 import com.example.talks.databinding.PostfullscreenBinding
 import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostCardHomepage
 
-class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
-    lateinit var binding:PostfullscreenBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
+class PostActivity:AppCompatActivity() {
+    //implementava PostCardHomepage, Comment
+    //lateinit var binding:PostfullscreenBinding
+    //override fun onCreate(savedInstanceState: Bundle?) {
+    /*
         super.onCreate(savedInstanceState)
 
         //uso binding per poter rimuovere addcomment da xml quando non loggato
@@ -71,13 +68,15 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
                     rvPost.adapter = adapter
                 }
             }
-        }
+        */
+        //}
+
 
 
 
         //request db commenti - CommentsDatabase
         //carico commenti da xml - DA CREARE
-
+/*
         addcomm.setOnClickListener{
             //ottenere testo commento
             val commenttext = binding.addcomment.textcomment.text.toString()
@@ -97,7 +96,7 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
             }
 
         }
-
+*/
     }
 
 

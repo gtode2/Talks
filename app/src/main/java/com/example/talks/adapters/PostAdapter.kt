@@ -1,11 +1,14 @@
 package com.example.talks.adapters
 
+import android.content.Context
+import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.CommentData
@@ -20,7 +23,8 @@ class PostAdapter(
     private val post:PostData,
     private val cm: MutableList<CommentData>,
     private val comdata: Comment,
-    private val pch:PostCardHomepage
+    var pch:PostCardHomepage?=null,
+    private val context: Context
 
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     companion object {
@@ -28,7 +32,7 @@ class PostAdapter(
         private const val VIEW_TYPE_COMM=1
     }
 
-
+    /*
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
         val posttext = view.findViewById<TextView>(R.id.postText)
@@ -50,23 +54,23 @@ class PostAdapter(
             //verifica tag
 
             usertag.setOnClickListener{
-                pch.openUser(el.uid)
+                pch!!.openUser(el.uid)
             }
             itemView.setOnClickListener{
-                pch.openPost(el.id)
+                pch!!.openPost(el.id)
             }
             likebtn.setOnClickListener{
-                pch.addLike(el.id)
+                pch!!.addLike(el.id)
             }
             commbtn.setOnClickListener{
-                pch.openComments(el.id)
+                pch!!.openComments(el.id)
             }
             savebtn.setOnClickListener{
-                pch.savePost(el.id)
+                pch!!.savePost(el.id)
             }
         }
     }
-
+    */
     override fun getItemCount(): Int = cm.size+1
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -122,8 +126,38 @@ class PostAdapter(
             if (post.image.isNullOrBlank()){
                 postImg.visibility=View.GONE
             }
+
+            if (post.isLiked){
+                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+            }else{
+                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+            }
+
+            if (post.isSaved){
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+            }else{
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+            }
+
             //gestire link
             likes.text=post.likes.toString()
+
+            usertag.setOnClickListener{
+                //pch!!.openUser(el.uid)
+            }
+            itemView.setOnClickListener{
+                //pch!!.openPost(el.id)
+            }
+            likebtn.setOnClickListener{
+                pch!!.addLike(post.id)
+            }
+            /*commbtn.setOnClickListener{
+                //pch!!.openComments(el.id)
+            }*/
+            savebtn.setOnClickListener{
+                pch!!.savePost(post.id)
+            }
+
         }
     }
     inner class CommentVH(view: View):RecyclerView.ViewHolder(view){
@@ -137,10 +171,24 @@ class PostAdapter(
     }
 
     override fun incrLike(postId: String) {
-        TODO("Not yet implemented")
+        post.likes+=1
+        post.isLiked=true
+        notifyItemChanged(0)
     }
 
     override fun decrLike(postId: String) {
-        TODO("Not yet implemented")
+        post.likes-=1
+        post.isLiked=false
+        notifyItemChanged(0)
+    }
+
+    override fun savePost(postId: String) {
+        post.isSaved=true
+        notifyItemChanged(0)
+    }
+
+    override fun unsavePost(postId: String) {
+        post.isSaved=false
+        notifyItemChanged(0)
     }
 }

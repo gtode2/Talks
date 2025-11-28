@@ -11,31 +11,34 @@ import com.example.talks.AppSettings
 import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.interfaces.PostCardHomepage
-import com.example.talks.PostActivity
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.database.PostDatabase
+import com.example.talks.repository.BookmarkRepository
 
 class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
-
+    var Fragview:View?=null
     private var UID:String?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Fragview = view
+        init()
+    }
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+
+    fun init(){
         val settings = requireActivity().applicationContext as AppSettings
         if (!settings.getUID().isNullOrBlank()){
             UID = settings.getUID()
         }
 
-
-
-
-
-
-        var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
+        var recyclerViewHomepage = Fragview!!.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
-
             adapter = PostCardAdapter(
                 postList.toMutableList(),
                 null,
@@ -49,16 +52,22 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             var liked = LikeRepository.getLikes()
             if (!liked.isEmpty()){
                 postList.forEach{ el->
-                       if (liked.containsKey(el.id)){
-                           el.isLiked=true
-                       }
+                    if (liked.containsKey(el.id)){
+                        el.isLiked=true
+                    }
+                }
+            }
+            val saved = BookmarkRepository.getSaved()
+            if (!saved.isEmpty()){
+                postList.forEach{el->
+                    if (saved.containsKey(el.id)){
+                        el.isSaved=true
+                    }
                 }
             }
             recyclerViewHomepage.adapter = adapter
         }
-
     }
-
     /*
     override fun openPost(postId: String) {
         val intent = Intent(requireContext(), PostActivity::class.java)

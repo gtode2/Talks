@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.talks.AppSettings
 import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
-import com.example.talks.PostActivity
 import com.example.talks.R
 
 class UserPageFragment:Fragment(R.layout.userpage) {

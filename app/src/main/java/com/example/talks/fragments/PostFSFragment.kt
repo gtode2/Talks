@@ -13,20 +13,17 @@ import com.example.talks.adapters.PostAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
+import com.example.talks.interfaces.Comment
+import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.LikeRepository
 
-class PostFSFragment:Fragment(R.layout.postfullscreen) {
+class PostFSFragment:Fragment(R.layout.postfullscreen), Comment {
     var postId:String? = null
-    var adapter:PostAdapter?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postId = arguments?.getString("postid")
     }
-    private val handler by lazy{
-        PostCardHandler(
-            contextProvider = {requireContext()},
-            adapter = adapter
-        )
-    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val settings = requireActivity().applicationContext as AppSettings
@@ -53,10 +50,35 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
             }else{
                 //carico info
                 val post = postList[0]
-                /*
+
                 getComments(postId!!){comments->
-                    adapter=PostAdapter(post, comments, aaaaa, bbbbb)
-                }*/
+                    adapter = PostAdapter(
+                        post,
+                        comments,
+                        this,
+                        null,
+                        requireContext()
+                    )
+                    val handler = PostCardHandler(
+                        contextProvider = {requireContext()},
+                        adapter=adapter
+                    )
+                    adapter!!.pch = handler
+                    var liked = LikeRepository.getLikes()
+                    if (!liked.isEmpty()){
+                        if (liked.containsKey(post.id)){
+                            post.isLiked=true
+                        }
+                    }
+                    val saved = BookmarkRepository.getSaved()
+                    if (!saved.isEmpty()){
+                        if (saved.containsKey(post.id)){
+                            post.isSaved=true
+                        }
+                    }
+                    rvPost.adapter = adapter
+
+                }
             }
 
 
@@ -66,5 +88,9 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
         CommentsDatabase.getComments(id){
                 comments->onResult(comments)
         }
+    }
+
+    override fun openUser() {
+        TODO("Not yet implemented")
     }
 }

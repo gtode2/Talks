@@ -9,6 +9,34 @@ object BookmarkRepository {
     fun loadSaved(posts:Map<String, Boolean>){
         savedPosts = posts.toMutableMap()
     }
+
+    fun getSaved():MutableMap<String,Boolean>{
+        return savedPosts
+    }
+
+    fun savePost(uid:String, postid:String, onResult: (Int)->Unit){
+        if (!savedPosts.containsKey(postid)){
+            //add
+            PostDatabase.savePost(uid, postid){ res->
+                if (res==-1){
+                    onResult(-1)
+                }else if (res==0 || res==1){
+                    savedPosts.put(postid, true)
+                    onResult(0)
+                }
+            }
+        }else{
+            //remove
+            PostDatabase.unsavePost(uid, postid) { res ->
+                if (res == -1) {
+                    onResult(-1)
+                } else if (res == 0 || res == 1) {
+                    savedPosts.remove(postid)
+                    onResult(1)
+                }
+            }
+        }
+    }
     /*
     fun getLikes():MutableMap<String, Boolean>{
         return savedPosts
