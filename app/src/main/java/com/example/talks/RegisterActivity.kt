@@ -109,7 +109,8 @@ class RegisterActivity: AppCompatActivity() {
                                 "name" to name.text.toString(),
                                 "surname" to surname.text.toString(),
                                 "bday" to dob.text.toString(),
-                                "likes" to mutableMapOf<String,Boolean>()
+                                "likes" to mutableMapOf<String,Boolean>(),
+                                "saved" to mutableMapOf<String, Boolean>()
                             )
 
                             //verificare username duplicati

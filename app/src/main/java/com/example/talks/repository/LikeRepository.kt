@@ -1,6 +1,5 @@
-package com.example.talks
+package com.example.talks.repository
 
-import android.widget.Toast
 import com.example.talks.database.LikeDatabase
 
 object LikeRepository {
@@ -8,9 +7,13 @@ object LikeRepository {
 
     fun loadLikes(uid:String){
         //chiamata a LikeDatabase e poi memorizza
-        LikeDatabase.getLikes(uid){ likesMap ->
+        LikeDatabase.init(uid){ likesMap ->
             likedPosts = likesMap
         }
+    }
+
+    fun getLikes():MutableMap<String, Boolean>{
+        return likedPosts
     }
 
     fun addLike(uid:String, postid:String, onResult:(Int)->Unit){
@@ -21,7 +24,7 @@ object LikeRepository {
                     onResult(-1)
                 }else if (res==0 || res==1){
                     likedPosts.put(postid, true)
-                    onResult(res)
+                    onResult(0)
                 }
             }
         }else{
@@ -34,8 +37,6 @@ object LikeRepository {
                     onResult(-1)
                 }
             }
-            // chiama removeLike()
-            //restituisce 2 se rimosso correttamente
 
         }
     }

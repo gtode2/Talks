@@ -1,11 +1,12 @@
 package com.example.talks.database
 
+import com.example.talks.repository.BookmarkRepository
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LikeDatabase {
     companion object{
-        fun getLikes(uid:String, onResult:(MutableMap<String, Boolean>) ->Unit){
+        fun init(uid:String, onResult:(MutableMap<String, Boolean>) ->Unit){
             //richiede file likes utente
             FirebaseFirestore.getInstance()
                 .collection("Users")
@@ -13,6 +14,10 @@ class LikeDatabase {
                 .get()
                 .addOnSuccessListener { res ->
                     val likedPosts = res.get("likes") as? Map<String, Boolean>?: emptyMap()
+
+                    //sfrutto query likes per non dover caricare due volte gli stessi dati
+                    val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
+                    BookmarkRepository.loadSaved(savedPosts)
                     onResult(likedPosts.toMutableMap())
                 }
         }

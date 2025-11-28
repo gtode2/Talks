@@ -16,12 +16,13 @@ import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.Comment
+import com.example.talks.interfaces.PostHandlerInterface
 
 class PostCardAdapter(
     private val posts:MutableList<PostData>,
-    private val pch:PostCardHomepage,
+    var pch:PostCardHomepage?,
     private val context: Context
-):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(){
+):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(), PostHandlerInterface{
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
         val posttext = view.findViewById<TextView>(R.id.postText)
@@ -46,25 +47,27 @@ class PostCardAdapter(
 
             if (el.isLiked){
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+            }else{
+                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
             }
 
             //verifica presenza link
             //verifica tag
 
             usertag.setOnClickListener{
-                pch.openUser(el.uid)
+                pch!!.openUser(el.uid)
             }
             itemView.setOnClickListener{
-                pch.openPost(el.id)
+                pch!!.openPost(el.id)
             }
             likebtn.setOnClickListener{
-                pch.addLike(el.id)
+                pch!!.addLike(el.id)
             }
             commbtn.setOnClickListener{
-                pch.openComments(el.id)
+                pch!!.openComments(el.id)
             }
             savebtn.setOnClickListener{
-                pch.savePost(el.id)
+                pch!!.savePost(el.id)
             }
         }
     }
@@ -79,7 +82,7 @@ class PostCardAdapter(
         return ViewHolder(view)
     }
 
-    fun incrLike(postid:String){
+    override fun incrLike(postid:String){
         val index = posts.indexOfFirst{it.id==postid}
         if (index!=-1){
             posts[index].likes+=1
@@ -87,7 +90,7 @@ class PostCardAdapter(
         }
         notifyItemChanged(index)
     }
-    fun decrLike(postid:String){
+    override fun decrLike(postid:String){
         val index = posts.indexOfFirst {it.id==postid}
         if (index!=-1){
             posts[index].likes-=1

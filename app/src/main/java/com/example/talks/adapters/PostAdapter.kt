@@ -13,6 +13,7 @@ import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.Comment
+import com.example.talks.interfaces.PostHandlerInterface
 import org.w3c.dom.Text
 
 class PostAdapter(
@@ -21,7 +22,7 @@ class PostAdapter(
     private val comdata: Comment,
     private val pch:PostCardHomepage
 
-):RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     companion object {
         private const val VIEW_TYPE_POST=0
         private const val VIEW_TYPE_COMM=1
@@ -133,5 +134,13 @@ class PostAdapter(
             usertag.text = "@${comment.uid}"
             commenttext.text = comment.text
         }
+    }
+
+    override fun incrLike(postId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun decrLike(postId: String) {
+        TODO("Not yet implemented")
     }
 }

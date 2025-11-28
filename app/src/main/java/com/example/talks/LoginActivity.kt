@@ -7,6 +7,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.LikeRepository
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -52,7 +54,6 @@ class LoginActivity: AppCompatActivity() {
                                     }
                                     Toast.makeText(this,"Login eseguito", Toast.LENGTH_SHORT).show()
                                     LikeRepository.loadLikes(userTag)
-
                                     val intent = Intent(this, MainActivity::class.java)
                                     intent.putExtra("From","Login")
                                     settings.setUID(userTag)

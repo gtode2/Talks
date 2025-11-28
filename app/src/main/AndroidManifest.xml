@@ -28,6 +28,7 @@
         <activity android:name=".RegisterActivity"/>
         <activity android:name=".PostCreationActivity"/>
         <activity android:name=".PostActivity"/>
+        <activity android:name=".EmptyActivity"/>
     </application>
 
 </manifest>

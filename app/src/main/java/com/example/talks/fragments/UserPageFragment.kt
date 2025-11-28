@@ -1,11 +1,14 @@
 package com.example.talks.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.example.talks.AppSettings
+import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
+import com.example.talks.PostActivity
 import com.example.talks.R
 
 class UserPageFragment:Fragment(R.layout.userpage) {
@@ -23,10 +26,17 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         logout.setOnClickListener{
             (requireActivity() as MainActivity).logout(appsettings)
         }
+
         settings.setOnClickListener{
            val ft = requireActivity().supportFragmentManager.beginTransaction()
            ft.replace(R.id.frame, SettingsFragment())
                .commit()
+        }
+
+        saved.setOnClickListener{
+            val intent = Intent(requireContext(), EmptyActivity::class.java)
+                .putExtra("screen", "saved")
+            startActivity(intent)
         }
     }
 }

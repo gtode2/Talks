@@ -2,23 +2,23 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.AppSettings
-import com.example.talks.LikeRepository
+import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
-import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.PostActivity
+import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.database.PostDatabase
 
-class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
+class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
+
     private var UID:String?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -27,19 +27,41 @@ class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
             UID = settings.getUID()
         }
 
+
+
+
+
+
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
-            adapter = PostCardAdapter(postList.toMutableList(), this, requireContext())
+
+            adapter = PostCardAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext()
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter=adapter
+            )
+            adapter!!.pch=handler
+            var liked = LikeRepository.getLikes()
+            if (!liked.isEmpty()){
+                postList.forEach{ el->
+                       if (liked.containsKey(el.id)){
+                           el.isLiked=true
+                       }
+                }
+            }
             recyclerViewHomepage.adapter = adapter
         }
 
     }
 
+    /*
     override fun openPost(postId: String) {
-        Log.e("NVNC", "caricamento nuova activity")
         val intent = Intent(requireContext(), PostActivity::class.java)
-        Log.e("NVNC", "intent creato")
         intent.putExtra("id", postId)
         startActivity(intent)
 
@@ -55,7 +77,7 @@ class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
 
     override fun addLike(postId: String) {
         if (!UID.isNullOrBlank()){
-            LikeRepository.addLike(UID!!,postId){res->
+            LikeRepository.addLike(UID!!,postId){ res->
                 //0 = aggiunta eseguita
                 //1 = già presente - rimosso
                 //-1= errore
@@ -77,4 +99,6 @@ class HomePageFragment:Fragment(R.layout.homepage), PostCardHomepage {
     override fun savePost(postId: String) {
 
     }
+
+     */
 }

@@ -33,6 +33,7 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
         val UID = settings.getUID()
         val addcomm = binding.addcomment.sendcommbtn
 
+
         var adapter:PostAdapter?= null
 
 
@@ -45,6 +46,14 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
             Toast.makeText(this, "post id non inserito", Toast.LENGTH_SHORT)
             finish()
         }
+
+
+
+
+
+
+
+
 
         //request db info post - PostDatabase
         var rvPost = binding.postrv
@@ -91,6 +100,22 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
 
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
         CommentsDatabase.getComments(id){
             comments->onResult(comments)
@@ -102,6 +127,15 @@ class PostActivity:AppCompatActivity(), PostCardHomepage, Comment{
             onResult(res)
         }
     }
+
+
+
+
+
+
+
+
+
 
     //funzioni interfaccia
 

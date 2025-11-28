@@ -9,26 +9,44 @@ import com.google.firebase.firestore.toObject
 
 class PostDatabase {
     companion object{
-        fun getPosts(type:String="all", search: String="-1",  onResult: (List<PostData>) -> Unit){
+        fun getPosts(type:String="all", search: String="-1",  onResult: (List<PostData>) -> Unit) {
             val pl = mutableListOf<PostData>()
             //all
             //followed accounts
             //your posts
-            //saved
             //search
-            if (type=="all"){
-                FirebaseFirestore.getInstance()
-                    .collection("Posts")
-                    .orderBy("createdAt", Query.Direction.DESCENDING)
-                    .get()
-                    .addOnSuccessListener { res ->
-                        for (document in res){
-                            var post = document.toObject(PostData::class.java)
-                            post.id = document.id
-                            pl.add(post)
+            when (type) {
+                "all" -> {
+                    FirebaseFirestore.getInstance()
+                        .collection("Posts")
+                        .orderBy("createdAt", Query.Direction.DESCENDING)
+                        .get()
+                        .addOnSuccessListener { res ->
+                            for (document in res) {
+                                var post = document.toObject(PostData::class.java)
+                                post.id = document.id
+                                pl.add(post)
+                            }
+                            onResult(pl)
                         }
-                        onResult(pl)
-                    }
+                }
+                "your"->{
+                    FirebaseFirestore.getInstance()
+                        .collection("Posts")
+                        .orderBy("createdAt", Query.Direction.DESCENDING)
+                        //UID lo passo come parametro "search"
+                        .whereEqualTo("users.uid",search)
+                        .get()
+                        .addOnSuccessListener { res ->
+                            for (document in res) {
+                                var post = document.toObject(PostData::class.java)
+                                post.id = document.id
+                                pl.add(post)
+                            }
+                            onResult(pl)
+                        }
+                }
+
             }
         }
         fun getPost(search: String,  onResult: (List<PostData>) -> Unit){
