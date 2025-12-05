@@ -1,19 +1,23 @@
 package com.example.talks
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
 import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCardYourPosts
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 
 class PostCardHandler(
     private val contextProvider:() ->Context,
-    private val adapter:PostHandlerInterface?=null
-):PostCardHomepage{
-
+    private val adapter:PostHandlerInterface?=null,
+    private val openEdit:((String)->Unit)?=null
+):PostCardHomepage, PostCardYourPosts{
 
     override fun openPost(postId: String) {
         val intent = Intent(contextProvider(), EmptyActivity::class.java)
@@ -67,6 +71,31 @@ class PostCardHandler(
                     Toast.makeText(contextProvider(), "si è verificato un errore", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    override fun editPost(postId: String) {
+        //apri openEdit()
+        openEdit?.invoke(postId)
+    }
+
+    override fun deletePost(postId: String) {
+        val UID = (contextProvider().applicationContext as AppSettings).getUID()
+        if (!UID.isNullOrBlank()){
+            AlertDialog.Builder(contextProvider())
+                .setTitle("Elimina post")
+                .setMessage("Sei sicuro di voler eliminare il post?")
+                .setPositiveButton("Elimina"){_,_->
+                    PostDatabase.deletePost(UID,postId){ res->
+                        if (res==0 || res==1){
+                            adapter?.deletePost(postId)
+                        }else{
+                            Toast.makeText(contextProvider(), "si è verificato un errore nell'eliminazione del post", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                .setNegativeButton("Annulla", null)
+                .show()
         }
     }
 }

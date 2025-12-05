@@ -2,7 +2,6 @@ package com.example.talks.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.CommentData
-import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostHandlerInterface
-import org.w3c.dom.Text
 
 class PostAdapter(
     private val post:PostData,
@@ -117,7 +114,7 @@ class PostAdapter(
         val postImg = view.findViewById<ImageView>(R.id.postImageArea)
         val likebtn = view.findViewById<ImageView>(R.id.likebtn)
         val likes = view.findViewById<TextView>(R.id.likeCtr)
-        val commentbtn = view.findViewById<ImageView>(R.id.commentsbtn)
+        val commentbtn = view.findViewById<ImageView>(R.id.commbtn)
         val savebtn = view.findViewById<ImageView>(R.id.savebtn)
 
         fun bind(post:PostData){

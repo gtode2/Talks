@@ -18,17 +18,26 @@ import com.example.talks.repository.LikeRepository
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: PostCardAdapter?=null
     private var uid:String?=null
-
+    var Fragview:View?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Fragview=view
+        init()
+    }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+
+    fun init(){
         val settings = requireActivity().applicationContext as AppSettings
         uid = settings.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
-        val rv=view.findViewById<RecyclerView>(R.id.savedRV)
+        val rv=Fragview!!.findViewById<RecyclerView>(R.id.savedRV)
         rv.layoutManager = LinearLayoutManager(context)
 
         PostDatabase.getPosts("saved", uid!!){postList->

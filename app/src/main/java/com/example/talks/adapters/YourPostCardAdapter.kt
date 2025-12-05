@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
+import com.example.talks.interfaces.PostCardYourPosts
 import com.example.talks.interfaces.PostHandlerInterface
 
-class PostCardAdapter(
+class YourPostCardAdapter(
     private val posts:MutableList<PostData>,
-    var pch:PostCardHomepage?,
+    var pch:PostCardYourPosts?,
     private val context: Context,
-    private val type: String = "all"
-):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(), PostHandlerInterface{
+):RecyclerView.Adapter<YourPostCardAdapter.ViewHolder>(), PostHandlerInterface{
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
         val posttext = view.findViewById<TextView>(R.id.postText)
@@ -27,12 +27,8 @@ class PostCardAdapter(
         val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
         val likebtn = view.findViewById<ImageView>(R.id.likebtn)
-        val commentbtn = view.findViewById<ImageView>(R.id.commbtn)
-            //comment in all
-            //edit in your
-        val savebtn = view.findViewById<ImageView>(R.id.savebtn)
-            //save in all
-            //delete in your
+        val editbtn = view.findViewById<ImageView>(R.id.editbtn)
+        val delbtn = view.findViewById<ImageView>(R.id.delbtn)
 
         fun bind(el:PostData){
             usertag.text = "@"+el.uid
@@ -46,31 +42,17 @@ class PostCardAdapter(
             }
 
 
-            if (el.isLiked){
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
-            }
-
-            if (el.isSaved){
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
-            }
             usertag.setOnClickListener{
                 pch!!.openUser(el.uid)
             }
             itemView.setOnClickListener{
                 pch!!.openPost(el.id)
             }
-            likebtn.setOnClickListener{
-                pch!!.addLike(el.id)
+            editbtn.setOnClickListener{
+                pch!!.editPost(el.id)
             }
-            commentbtn.setOnClickListener{
-                pch!!.openComments(el.id)
-            }
-            savebtn.setOnClickListener{
-                pch!!.savePost(el.id)
+            delbtn.setOnClickListener{
+                pch!!.deletePost(el.id)
             }
 
             //verifica presenza link
@@ -86,7 +68,7 @@ class PostCardAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.postcard, parent, false)
+            .inflate(R.layout.postcardyour, parent, false)
         return ViewHolder(view)
     }
 
@@ -120,5 +102,15 @@ class PostCardAdapter(
             posts[index].isSaved=false
         }
         notifyItemChanged(index)
+    }
+
+
+    override fun editPost(postId: String) {
+        //
+    }
+    override fun deletePost(postId: String) {
+        val index = posts.indexOfFirst { it.id==postId }
+        posts.removeIf { it.id===postId }
+        notifyItemRemoved(index)
     }
 }

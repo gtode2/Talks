@@ -1,15 +1,10 @@
 package com.example.talks.database
 
-import android.util.Log
-import android.widget.Toast
-import androidx.compose.ui.text.rememberTextMeasurer
 import com.example.talks.data.PostData
-import com.example.talks.repository.BookmarkRepository
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.toObject
 
 class PostDatabase {
     companion object{
@@ -37,9 +32,9 @@ class PostDatabase {
                 "your"->{
                     FirebaseFirestore.getInstance()
                         .collection("Posts")
-                        .orderBy("createdAt", Query.Direction.DESCENDING)
                         //UID lo passo come parametro "search"
-                        .whereEqualTo("users.uid",search)
+                        .whereEqualTo("uid",search)
+                        .orderBy("createdAt", Query.Direction.DESCENDING)
                         .get()
                         .addOnSuccessListener { res ->
                             for (document in res) {
@@ -48,6 +43,8 @@ class PostDatabase {
                                 pl.add(post)
                             }
                             onResult(pl)
+                        }.addOnFailureListener {e->
+
                         }
                 }
                 "saved"->{
@@ -141,6 +138,42 @@ class PostDatabase {
                     onResult(-1)
                 }
             }
+        }
+        fun deletePost(uid:String, postid: String, onResult: (Int) -> Unit){
+            val db = FirebaseFirestore.getInstance()
+            val post = db.collection("Posts").document(postid)
+
+            var ex=true
+            db.runTransaction{tr->
+                var p = tr.get(post)
+                if (!p.exists()){
+                    ex=false
+                    throw Exception("not found")
+                }
+
+                var prev:String? = p.get("uid").toString()
+                if (prev!=uid){
+                    throw Exception("Unauthorized")
+                }
+
+                //post esiste ed è dell'utente
+                post.delete()
+            }.addOnSuccessListener {
+                onResult(0)
+            }.addOnFailureListener {
+                if (!ex){
+                    onResult(1)
+                }else{
+                    onResult(-1)
+                }
+            }
+            //verifica esistenza post
+            //elimina post
+            //0 -> eseguito correttamente
+            //-1-> errore
+        }
+        fun editPost(uid:String, postid: String, onResult: (Int) -> Unit){
+            //aggiungere parametro contenente info da modificare
         }
     }
 }

@@ -42,14 +42,14 @@
         app:layout_constraintTop_toBottomOf="@+id/postText" />
 
     <ImageView
-        android:id="@+id/commbtn"
+        android:id="@+id/editbtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="28dp"
         android:background="#FFFFFF"
         android:contentDescription="immagine vuota"
-        android:src="@drawable/comments"
-        app:layout_constraintEnd_toStartOf="@+id/savebtn"
+        android:src="@drawable/edit"
+        app:layout_constraintEnd_toStartOf="@+id/delbtn"
         app:layout_constraintHorizontal_bias="0.412"
         app:layout_constraintStart_toEndOf="@+id/likeCtr"
         app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
@@ -78,13 +78,13 @@
         app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
 
     <ImageView
-        android:id="@+id/savebtn"
+        android:id="@+id/delbtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="28dp"
         android:background="#FFFFFF"
         android:contentDescription="immagine vuota"
-        android:src="@drawable/save"
+        android:src="@drawable/bin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.722"
         app:layout_constraintStart_toStartOf="parent"

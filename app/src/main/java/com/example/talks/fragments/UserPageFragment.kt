@@ -37,5 +37,10 @@ class UserPageFragment:Fragment(R.layout.userpage) {
                 .putExtra("screen", "saved")
             startActivity(intent)
         }
+        yourposts.setOnClickListener{
+            val intent = Intent(requireContext(),EmptyActivity::class.java)
+                .putExtra("screen","your")
+            startActivity(intent)
+        }
     }
 }

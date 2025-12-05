@@ -2,25 +2,72 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.AppSettings
+import com.example.talks.PostCardHandler
 import com.example.talks.R
+import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.adapters.YourPostCardAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
+import com.example.talks.database.PostDatabase
 
-class YourPostsFragment:Fragment(R.layout.postfullscreen) {
-
-
-    private var UID:String?=null
+class YourPostsFragment:Fragment(R.layout.yourposts) {
+    var adapter: YourPostCardAdapter?=null
+    private var uid:String?=null
+    var Fragview:View?=null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val settings = requireActivity().applicationContext as AppSettings
-        if (!settings.getUID().isNullOrBlank()){
-            UID = settings.getUID()
-        }
+        Fragview=view
+        init()
     }
 
+    override fun onResume() {
+        super.onResume()
+        init()
+    }
+    fun init(){
+        val settings = requireActivity().applicationContext as AppSettings
+        uid = settings.getUID()
+        if (uid.isNullOrBlank()){
+            Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
+            requireActivity().finish()
+        }
+        val rv = Fragview!!.findViewById<RecyclerView>(R.id.yourRV)
+        rv.layoutManager = LinearLayoutManager(context)
+
+        PostDatabase.getPosts("your", uid!!){postList->
+            //passare parametro per generazione pagina senza like o save ma solo edit e remove
+            Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
+            adapter = YourPostCardAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext()
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter=adapter,
+                openEdit = {postId->editPost(postId)}
+            )
+            adapter!!.pch=handler
+            rv.adapter=adapter
+
+        }
+
+    }
+    fun editPost(postId:String){
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.emptyframe, EditPostFragment().apply {
+                arguments=Bundle().apply {
+                    putString(postId, "id")
+                }
+            })
+            .commit()
+    }
 
 
 
