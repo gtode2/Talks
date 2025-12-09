@@ -29,7 +29,7 @@ class PostDatabase {
                             onResult(pl)
                         }
                 }
-                "your"->{
+                "user"->{
                     FirebaseFirestore.getInstance()
                         .collection("Posts")
                         //UID lo passo come parametro "search"
@@ -65,7 +65,6 @@ class PostDatabase {
                             }
                     }
                 }
-
             }
         }
         fun getPost(search: String,  onResult: (List<PostData>) -> Unit){
@@ -172,8 +171,50 @@ class PostDatabase {
             //0 -> eseguito correttamente
             //-1-> errore
         }
-        fun editPost(uid:String, postid: String, onResult: (Int) -> Unit){
-            //aggiungere parametro contenente info da modificare
+        fun editPost(uid:String, postid: String,data:PostData, onResult: (Int) -> Unit){
+            val db = FirebaseFirestore.getInstance()
+            val post = db.collection("Posts").document(postid)
+
+            var ex=true
+            db.runTransaction { tr->
+                //verifico possesso post
+                var p = tr.get(post)
+                if (!p.exists()){
+                    ex=false
+                    throw Exception("not found")
+                }
+
+                val prev:String?= p.get("uid").toString()
+                if (prev!=uid){
+                    throw Exception("Unauthorized")
+                }
+
+
+                //verifico postdata not empty
+
+                if(data.title!=""){
+                    tr.update(post,"title", data.title)
+                }
+                if(data.post!=""){
+                    tr.update(post,"post", data.post)
+                }
+                if(data.source!=""){
+                    tr.update(post,"source", data.source)
+                }
+                if(data.image!=""){
+                    //edit image
+                }
+            }.addOnSuccessListener {
+                onResult(0)
+            }.addOnFailureListener {
+                if (ex){
+                    onResult(-1)
+                }else{
+                    onResult(1)
+                }
+            }
+
+
         }
     }
 }

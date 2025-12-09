@@ -9,7 +9,7 @@ import com.example.talks.LoginActivity
 import com.example.talks.R
 import com.example.talks.RegisterActivity
 
-class UserUnloggedFragment:Fragment(R.layout.userpage_unlgd) {
+class UnloggedAccountPageFragment:Fragment(R.layout.userpage_unlgd) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         var loginBtn = view.findViewById<Button>(R.id.loginBtn)

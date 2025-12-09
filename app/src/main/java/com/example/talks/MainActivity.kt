@@ -9,8 +9,8 @@ import androidx.core.content.ContextCompat
 import com.example.talks.fragments.HomePageFragment
 import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.fragments.SearchPageFragment
-import com.example.talks.fragments.UserPageFragment
-import com.example.talks.fragments.UserUnloggedFragment
+import com.example.talks.fragments.AccountPageFragment
+import com.example.talks.fragments.UnloggedAccountPageFragment
 
 
 var act = "home"
@@ -43,11 +43,11 @@ class MainActivity : AppCompatActivity() {
             act="acc"
             if (lgd){
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, UserPageFragment())
+                    .replace(R.id.frame, AccountPageFragment())
                     .commit()
             }else{
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, UserUnloggedFragment())
+                    .replace(R.id.frame, UnloggedAccountPageFragment())
                     .commit()
             }
         }

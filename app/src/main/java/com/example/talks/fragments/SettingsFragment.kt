@@ -14,7 +14,7 @@ class SettingsFragment:Fragment(R.layout.settings) {
         var back = view.findViewById<Button>(R.id.settcancbtn)
         back.setOnClickListener{
             val ft = requireActivity().supportFragmentManager.beginTransaction()
-            ft.replace(R.id.frame, UserPageFragment())
+            ft.replace(R.id.frame, AccountPageFragment())
                 .commit()
         }
     }

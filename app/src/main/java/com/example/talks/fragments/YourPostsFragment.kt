@@ -40,7 +40,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         val rv = Fragview!!.findViewById<RecyclerView>(R.id.yourRV)
         rv.layoutManager = LinearLayoutManager(context)
 
-        PostDatabase.getPosts("your", uid!!){postList->
+        PostDatabase.getPosts("user", uid!!){postList->
             //passare parametro per generazione pagina senza like o save ma solo edit e remove
             Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
             adapter = YourPostCardAdapter(
@@ -63,7 +63,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         parentFragmentManager.beginTransaction()
             .replace(R.id.emptyframe, EditPostFragment().apply {
                 arguments=Bundle().apply {
-                    putString(postId, "id")
+                    putString("id", postId)
                 }
             })
             .commit()

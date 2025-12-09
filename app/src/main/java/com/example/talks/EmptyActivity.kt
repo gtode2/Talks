@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.talks.fragments.PostFSFragment
 import com.example.talks.fragments.YourPostsFragment
 import com.example.talks.fragments.SavedPostsFragment
+import com.example.talks.fragments.UserPageFragment
 
 class EmptyActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,7 +15,7 @@ class EmptyActivity:AppCompatActivity() {
 
         var id:String? = null
         val screen = intent.getStringExtra("screen")
-        if (screen == "fs"){
+        if (screen == "fs" || screen == "user"){
             id=intent.getStringExtra("id")
         }
 
@@ -27,7 +28,14 @@ class EmptyActivity:AppCompatActivity() {
                     }
                 }},
             "your" to {YourPostsFragment()},
-            "saved" to {SavedPostsFragment()}
+            "saved" to {SavedPostsFragment()},
+            "user" to {
+                UserPageFragment().apply {
+                    arguments=Bundle().apply {
+                        putString("id",id)
+                    }
+                }
+            }
         )
 
         val fragment = map[screen]?.invoke()?:throw IllegalArgumentException()

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.AppSettings
+import com.example.talks.EmptyActivity
 import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.interfaces.PostCardHomepage
@@ -63,12 +64,20 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             )
             val handler = PostCardHandler(
                 contextProvider = {requireContext()},
-                adapter=adapter
+                adapter=adapter,
+                null,
+                openUser = {userid->openUser(userid)}
             )
             adapter!!.pch=handler
 
             recyclerViewHomepage.adapter = adapter
         }
+    }
+    fun openUser(userId:String){
+        val intent = Intent(requireContext(), EmptyActivity::class.java)
+            .putExtra("screen","user")
+            .putExtra("id",userId)
+        startActivity(intent)
     }
     /*
     override fun openPost(postId: String) {

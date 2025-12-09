@@ -16,7 +16,8 @@ import com.example.talks.repository.LikeRepository
 class PostCardHandler(
     private val contextProvider:() ->Context,
     private val adapter:PostHandlerInterface?=null,
-    private val openEdit:((String)->Unit)?=null
+    private val openEdit:((String)->Unit)?=null,
+    private val openUser:((String)->Unit)?=null
 ):PostCardHomepage, PostCardYourPosts{
 
     override fun openPost(postId: String) {
@@ -32,7 +33,7 @@ class PostCardHandler(
     }
 
     override fun openUser(userId: String) {
-
+        openUser?.invoke(userId)
     }
 
     override fun addLike(postId: String) {
@@ -75,7 +76,6 @@ class PostCardHandler(
     }
 
     override fun editPost(postId: String) {
-        //apri openEdit()
         openEdit?.invoke(postId)
     }
 

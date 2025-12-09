@@ -1,0 +1,78 @@
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/profPicIW"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/followersTv"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:text="followers : 888K"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="170dp"/>
+
+    <TextView
+        android:id="@+id/followedTv"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="170dp"
+        android:layout_marginTop="90dp"
+        android:text="followed: numero"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/yourpostsBtn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="200dp"
+        android:text="@string/yourposts"/>
+    <Button
+        android:id="@+id/savedBtn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="300dp"
+        android:text="@string/saved"/>
+    <Button
+        android:id="@+id/settingsBtn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="400dp"
+        android:text="@string/settings"/>
+    <Button
+        android:id="@+id/logoutBtn"
+        android:layout_width="200dp"
+        android:layout_height="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="500dp"
+        android:text="@string/logout"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

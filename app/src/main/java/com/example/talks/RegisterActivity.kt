@@ -109,6 +109,7 @@ class RegisterActivity: AppCompatActivity() {
                                 "name" to name.text.toString(),
                                 "surname" to surname.text.toString(),
                                 "bday" to dob.text.toString(),
+                                "followers" to 0,
                                 "likes" to mutableMapOf<String,Boolean>(),
                                 "saved" to mutableMapOf<String, Boolean>()
                             )

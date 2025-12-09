@@ -1,46 +1,78 @@
 package com.example.talks.fragments
 
-import android.content.Intent
+
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.AppSettings
-import com.example.talks.EmptyActivity
-import com.example.talks.MainActivity
+import com.example.talks.PostCardHandler
 import com.example.talks.R
+import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.data.PostData
+import com.example.talks.database.PostDatabase
+import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.LikeRepository
+
 
 class UserPageFragment:Fragment(R.layout.userpage) {
+    var userid:String?=null
+    var UID:String?=null
+    var adapter:PostCardAdapter?=null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        userid = arguments?.getString("id")
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val appsettings = requireContext().applicationContext as AppSettings
+        val usertag = view.findViewById<TextView>(R.id.uptag)
+        usertag.setText(userid)
 
-        var yourposts = view.findViewById<Button>(R.id.yourpostsBtn)
-        var saved = view.findViewById<Button>(R.id.savedBtn)
-        var settings = view.findViewById<Button>(R.id.settingsBtn)
-        var logout = view.findViewById<Button>(R.id.logoutBtn)
-
-
-        logout.setOnClickListener{
-            (requireActivity() as MainActivity).logout(appsettings)
+        val settings = requireActivity().applicationContext as AppSettings
+        if (!settings.getUID().isNullOrBlank()){
+            UID = settings.getUID()
         }
 
-        settings.setOnClickListener{
-           val ft = requireActivity().supportFragmentManager.beginTransaction()
-           ft.replace(R.id.frame, SettingsFragment())
-               .commit()
+        var rv = view.findViewById<RecyclerView>(R.id.uprv)
+        rv.layoutManager=LinearLayoutManager(context)
+
+        PostDatabase.getPosts("user", userid!!){ postList->
+            var liked = LikeRepository.getLikes()
+            if (!liked.isEmpty()){
+                postList.forEach{ el->
+                    if (liked.containsKey(el.id)){
+                        el.isLiked=true
+                    }
+                }
+            }
+            val saved = BookmarkRepository.getSaved()
+            if (!saved.isEmpty()){
+                postList.forEach{el->
+                    if (saved.containsKey(el.id)){
+                        el.isSaved=true
+                    }
+                }
+            }
+
+            adapter = PostCardAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext()
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter = adapter,
+                null,
+                null
+            )
+            adapter!!.pch=handler
+
+            rv.adapter=adapter
         }
 
-        saved.setOnClickListener{
-            val intent = Intent(requireContext(), EmptyActivity::class.java)
-                .putExtra("screen", "saved")
-            startActivity(intent)
-        }
-        yourposts.setOnClickListener{
-            val intent = Intent(requireContext(),EmptyActivity::class.java)
-                .putExtra("screen","your")
-            startActivity(intent)
-        }
+
     }
 }
