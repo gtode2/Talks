@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.talks.AppSettings
+import com.example.talks.singleton.AppSettings
 import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.R

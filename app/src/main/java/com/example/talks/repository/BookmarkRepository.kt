@@ -37,6 +37,10 @@ object BookmarkRepository {
             }
         }
     }
+
+    fun isSaved(id: String): Boolean{
+        return savedPosts.containsKey(id)
+    }
     /*
     fun getLikes():MutableMap<String, Boolean>{
         return savedPosts

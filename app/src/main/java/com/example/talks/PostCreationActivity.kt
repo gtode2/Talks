@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import com.example.talks.singleton.AppSettings
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore

@@ -1,4 +1,4 @@
-package com.example.talks
+package com.example.talks.singleton
 
 import android.app.Application
 

@@ -11,6 +11,7 @@ import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.fragments.SearchPageFragment
 import com.example.talks.fragments.AccountPageFragment
 import com.example.talks.fragments.UnloggedAccountPageFragment
+import com.example.talks.singleton.AppSettings
 
 
 var act = "home"
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     fun setLgd(par:Boolean){
         lgd=par
     }
-    fun logout(settings:AppSettings){
+    fun logout(settings: AppSettings){
         lgd=false
         act="home"
         settings.setUID(null)

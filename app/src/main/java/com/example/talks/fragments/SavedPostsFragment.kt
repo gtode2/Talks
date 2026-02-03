@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.AppSettings
+import com.example.talks.singleton.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter

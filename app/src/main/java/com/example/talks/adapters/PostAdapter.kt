@@ -106,6 +106,7 @@ class PostAdapter(
         )
         cm.add(0,newComm)
         notifyItemInserted(1)
+
     }
 
     inner class PostVH(view: View):RecyclerView.ViewHolder(view){

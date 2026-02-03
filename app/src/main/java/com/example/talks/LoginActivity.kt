@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.AppSettings
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

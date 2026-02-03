@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.talks.AppSettings
+import com.example.talks.singleton.AppSettings
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase

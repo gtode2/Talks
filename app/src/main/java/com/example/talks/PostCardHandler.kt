@@ -12,6 +12,8 @@ import com.example.talks.interfaces.PostCardYourPosts
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.AppSettings
+import com.example.talks.singleton.LastPost
 
 class PostCardHandler(
     private val contextProvider:() ->Context,
@@ -22,6 +24,7 @@ class PostCardHandler(
 
     override fun openPost(postId: String) {
         val intent = Intent(contextProvider(), EmptyActivity::class.java)
+        LastPost.addPost(postId)
         intent.putExtra("id", postId)
         intent.putExtra("screen", "fs")
         contextProvider().startActivity(intent) //creare implementazione di startActivity in fragment / activity

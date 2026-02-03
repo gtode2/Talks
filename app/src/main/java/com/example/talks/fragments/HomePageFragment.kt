@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.AppSettings
+import com.example.talks.singleton.AppSettings
 import com.example.talks.EmptyActivity
 import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
@@ -16,30 +16,23 @@ import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
+import com.example.talks.singleton.LastPost
 
 class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
-    var Fragview:View?=null
     private var UID:String?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Fragview = view
-        init()
-    }
-    override fun onResume() {
-        super.onResume()
-        init()
-    }
-
-    fun init(){
         val settings = requireActivity().applicationContext as AppSettings
         if (!settings.getUID().isNullOrBlank()){
             UID = settings.getUID()
         }
 
-        var recyclerViewHomepage = Fragview!!.findViewById<RecyclerView>(R.id.homepageRV)
+        var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         PostDatabase.getPosts {postList->
+            if (!isAdded) return@getPosts
+            val ctx = requireContext()
             var liked = LikeRepository.getLikes()
             if (!liked.isEmpty()){
                 postList.forEach{ el->
@@ -60,7 +53,7 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             adapter = PostCardAdapter(
                 postList.toMutableList(),
                 null,
-                requireContext()
+                ctx
             )
             val handler = PostCardHandler(
                 contextProvider = {requireContext()},
@@ -73,6 +66,34 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             recyclerViewHomepage.adapter = adapter
         }
     }
+    override fun onResume() {
+        super.onResume()
+        var lp = LastPost.getPost()
+        if (lp.id!="-1"){
+            //verifica elemento
+            if (lp.liked!= LikeRepository.isLiked(lp.id)){
+                //like prec != like attuale
+                //se precedente è liked -> attuale no
+                if (lp.liked){
+                    adapter!!.decrLike(lp.id)
+                }else{
+                    adapter!!.incrLike(lp.id)
+                }
+            }
+
+            if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
+                //save prec != save attuale
+                //se precedente è saved -> attuale no
+                if (lp.saved){
+                    adapter!!.unsavePost(lp.id)
+                }else{
+                    adapter!!.savePost(lp.id)
+                }
+            }
+        }
+    }
+
+
     fun openUser(userId:String){
         val intent = Intent(requireContext(), EmptyActivity::class.java)
             .putExtra("screen","user")

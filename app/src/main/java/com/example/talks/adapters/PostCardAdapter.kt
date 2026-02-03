@@ -45,18 +45,17 @@ class PostCardAdapter(
                 postImg.visibility = View.GONE
             }
 
-
             if (el.isLiked){
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
             }
-
             if (el.isSaved){
                 savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
                 savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
             }
+
             usertag.setOnClickListener{
                 pch!!.openUser(el.uid)
             }
