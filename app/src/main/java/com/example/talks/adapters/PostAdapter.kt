@@ -141,7 +141,7 @@ class PostAdapter(
             likes.text=post.likes.toString()
 
             usertag.setOnClickListener{
-                //pch!!.openUser(el.uid)
+                pch!!.openUser(post.uid)
             }
             itemView.setOnClickListener{
                 //pch!!.openPost(el.id)

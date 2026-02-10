@@ -1,5 +1,6 @@
 package com.example.talks.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.EmptyActivity
 import com.example.talks.singleton.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
@@ -16,10 +18,11 @@ import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.Comment
+import com.example.talks.interfaces.PostCard
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 
-class PostFSFragment:Fragment(R.layout.postfullscreen), Comment {
+class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
 
     var postId:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,7 +82,10 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), Comment {
                     )
                     val handler = PostCardHandler(
                         contextProvider = {requireContext()},
-                        adapter=adapter
+                        adapter=adapter,
+                        null,
+                        openUser = {userid->openUser(userid)}
+
                     )
                     adapter!!.pch = handler
                     rvPost.adapter = adapter
@@ -126,6 +132,24 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), Comment {
         }
     }
 
+    override fun openPost(postId: String) {
+        TODO("Not yet implemented")
+    }
+
+
+    override fun openUser(uid:String) {
+        val intent = Intent(requireContext(), EmptyActivity::class.java)
+            .putExtra("screen","user")
+            .putExtra("id",uid)
+        startActivity(intent)    }
+
+    override fun addLike(postId: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun savePost(postId: String) {
+        TODO("Not yet implemented")
+    }
 
     override fun openUser() {
         TODO("Not yet implemented")

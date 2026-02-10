@@ -9,12 +9,14 @@ interface PostCard{
     //OPZIONALE
     fun  openImage(imgId:String){}
     //OPZIONALE
-    fun openComments(postId:String)
+
+    fun addLike(postId: String)
+    fun savePost(postId: String)
 
 }
 interface PostCardHomepage:PostCard{
-    fun addLike(postId: String)
-    fun savePost(postId: String)
+
+    fun openComments(postId:String)
 }
 interface PostCardYourPosts:PostCard{
     fun editPost(postId: String)

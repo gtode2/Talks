@@ -12,9 +12,9 @@ import com.example.talks.fragments.SearchPageFragment
 import com.example.talks.fragments.AccountPageFragment
 import com.example.talks.fragments.UnloggedAccountPageFragment
 import com.example.talks.singleton.AppSettings
+import com.example.talks.singleton.LastPage
 
 
-var act = "home"
 var lgd = false
 class MainActivity : AppCompatActivity() {
     lateinit var homebtn:ImageView
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun btnreset(){
-        when(act){
+        when(LastPage.getPage()){
             "home"->homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
             "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
             "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
@@ -38,10 +38,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun accountpage(){
+        val act = LastPage.getPage()
         if (act!="acc"){
             btnreset()
             accbtn.imageTintList = ColorStateList.valueOf(col_act!!)
-            act="acc"
+            LastPage.setPage("acc")
             if (lgd){
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, AccountPageFragment())
@@ -58,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun logout(settings: AppSettings){
         lgd=false
-        act="home"
+        LastPage.setPage("home")
         settings.setUID(null)
         accountpage()
 
@@ -78,14 +79,15 @@ class MainActivity : AppCompatActivity() {
         ntfybtn = findViewById(R.id.ntfybtn)
         col_act = ContextCompat.getColor(this, R.color.lime)
         col_nact = ContextCompat.getColor(this, R.color.desel)
+
         val intent = intent
         val from = intent.getStringExtra("From")?:0
         if (from=="Login"){
             lgd=true
-            act="home"
+            LastPage.setPage("home")
         }
 
-        if (act=="home"){
+        if (LastPage.getPage() =="home"){
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, HomePageFragment())
                 .commit()
@@ -93,20 +95,20 @@ class MainActivity : AppCompatActivity() {
 
 
         homebtn.setOnClickListener{
-            if (act!="home"){
+            if (LastPage.getPage() !="home"){
                 btnreset()
                 homebtn.imageTintList = ColorStateList.valueOf(col_act!!)
-                act="home"
+                LastPage.setPage("home")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, HomePageFragment())
                     .commit()
             }
         }
         searchbtn.setOnClickListener{
-            if (act!="search"){
+            if (LastPage.getPage() !="search"){
                 btnreset()
                 searchbtn.imageTintList = ColorStateList.valueOf(col_act!!)
-                act="search"
+                LastPage.setPage("search")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, SearchPageFragment())
                     .commit()
@@ -122,10 +124,10 @@ class MainActivity : AppCompatActivity() {
             accountpage()
         }
         ntfybtn.setOnClickListener{
-            if (act!="ntfy"){
+            if (LastPage.getPage() !="ntfy"){
                 btnreset()
                 ntfybtn.imageTintList = ColorStateList.valueOf(col_act!!)
-                act="ntfy"
+                LastPage.setPage("ntfy")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, NotificationPageFragment())
                     .commit()
@@ -139,6 +141,7 @@ class MainActivity : AppCompatActivity() {
         //enableEdgeToEdge()
 
     }
+
 
 
 }

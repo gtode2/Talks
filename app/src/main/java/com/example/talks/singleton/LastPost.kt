@@ -1,6 +1,6 @@
 package com.example.talks.singleton
 
-import com.example.talks.data.PrPost
+import com.example.talks.data.PrPostData
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 
@@ -17,11 +17,11 @@ object LastPost {
         liked= LikeRepository.isLiked(id)
     }
 
-    fun getPost(): PrPost{
+    fun getPost(): PrPostData{
         if (lastPost!=null){
-            return PrPost(lastPost!!, liked, saved)
+            return PrPostData(lastPost!!, liked, saved)
         }else{
-            return PrPost("-1", false, false)
+            return PrPostData("-1", false, false)
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,9 @@ import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
+import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.FollowedRepository
 import com.example.talks.repository.LikeRepository
 
 
@@ -29,7 +32,10 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         super.onViewCreated(view, savedInstanceState)
 
         val usertag = view.findViewById<TextView>(R.id.uptag)
-        usertag.setText(userid)
+        usertag.text = userid
+        val followers = view.findViewById<TextView>(R.id.upflr)
+        val followed = view.findViewById<TextView>(R.id.upfld)
+        val followbtn = view.findViewById<Button>(R.id.followbutton)
 
         val settings = requireActivity().applicationContext as AppSettings
         if (!settings.getUID().isNullOrBlank()){
@@ -39,6 +45,12 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         var rv = view.findViewById<RecyclerView>(R.id.uprv)
         rv.layoutManager=LinearLayoutManager(context)
 
+        UserDatabase.getUser(userid!!){ res->
+            if (res.getValue("fw")>-1) {
+                followed.text = res.getValue("fd").toString()
+                followers.text = res.getValue("fw").toString()
+            }
+        }
         PostDatabase.getPosts("user", userid!!){ postList->
             var liked = LikeRepository.getLikes()
             if (!liked.isEmpty()){
@@ -73,6 +85,38 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             rv.adapter=adapter
         }
 
+        //verifico se utente è seguito o no
+        if(FollowedRepository.isFollowed(userid!!)){
+            followbtn.text="unfollow"
+        }else{
+            followbtn.text="follow"
+        }
+        followbtn.setOnClickListener {
+            //verifica se esiste o no
+            if(FollowedRepository.isFollowed(userid!!)) {
+                UserDatabase.unfollow(UID!!, userid!!) { res ->
+                    if (res != -1) {
+                        //rimozione eseguita
+                        //ridurre count
+                        followers.text = (followers.text.toString().toInt() - 1).toString()
+                        FollowedRepository.removeFollowed(userid!!)
+                        //modifica bottone
+                        followbtn.text = "follow"
+                    }
+                }
+            }else{
+                UserDatabase.follow(UID!!, userid!!) { res ->
+                    if (res != -1) {
+                        //aggiunta eseguita
+                        //aumentare count
+                        followers.text = (followers.text.toString().toInt() + 1).toString()
+                        FollowedRepository.addFollowed(userid!!)
+                        //modifica bottone
+                        followbtn.text = "unfollow"
+                    }
+                }
+            }
+        }
 
     }
 }

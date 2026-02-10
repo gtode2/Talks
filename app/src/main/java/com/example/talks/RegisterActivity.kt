@@ -112,7 +112,8 @@ class RegisterActivity: AppCompatActivity() {
                                 "bday" to dob.text.toString(),
                                 "followers" to 0,
                                 "likes" to mutableMapOf<String,Boolean>(),
-                                "saved" to mutableMapOf<String, Boolean>()
+                                "saved" to mutableMapOf<String, Boolean>(),
+                                "followed" to mutableMapOf<String, Boolean>()
                             )
 
                             //verificare username duplicati
