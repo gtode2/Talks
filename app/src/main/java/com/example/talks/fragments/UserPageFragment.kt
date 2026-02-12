@@ -40,6 +40,8 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         val settings = requireActivity().applicationContext as AppSettings
         if (!settings.getUID().isNullOrBlank()){
             UID = settings.getUID()
+        }else{
+            followbtn.visibility=View.GONE
         }
 
         var rv = view.findViewById<RecyclerView>(R.id.uprv)

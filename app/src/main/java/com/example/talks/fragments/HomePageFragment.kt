@@ -3,6 +3,7 @@ package com.example.talks.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
+import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.LastPost
 
 class HomePageFragment:Fragment(R.layout.homepage) {
@@ -27,6 +29,45 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         if (!settings.getUID().isNullOrBlank()){
             UID = settings.getUID()
         }
+        val hpAll= view.findViewById<TextView>(R.id.homepageAll)
+        val hpFwl= view.findViewById<TextView>(R.id.homepageFollowed)
+
+        val colAct = requireContext().getColor(R.color.lime)
+        val colNact = requireContext().getColor(R.color.desel)
+
+        if (LastPage.getHomepage()=="all"){
+            hpAll.setTextColor(colAct)
+            hpFwl.setTextColor(colNact)
+        }else{
+            hpAll.setTextColor(colNact)
+            hpFwl.setTextColor(colAct)
+        }
+        
+
+
+        //ottengo pagina da caricare
+
+
+        hpAll.setOnClickListener {
+            Toast.makeText(requireContext(), "all", Toast.LENGTH_SHORT).show()
+            LastPage.setHomepage("all")
+            hpAll.setTextColor(colAct)
+            hpFwl.setTextColor(colNact)
+
+        }
+        hpFwl.setOnClickListener {
+            Toast.makeText(requireContext(), "followed", Toast.LENGTH_SHORT).show()
+            LastPage.setHomepage("followed")
+            hpFwl.setTextColor(colAct)
+            hpAll.setTextColor(colNact)
+        }
+
+
+
+        //////
+
+
+
 
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)

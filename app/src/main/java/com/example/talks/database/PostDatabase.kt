@@ -1,8 +1,11 @@
 package com.example.talks.database
 
+import android.util.Log
+import android.widget.Toast
 import com.example.talks.data.PostData
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
@@ -64,6 +67,32 @@ class PostDatabase {
 
                             }
                     }
+                }
+                "search"->{
+                    FirebaseFirestore.getInstance()
+                        .collection("Posts")
+                        .where(
+                            Filter.or(
+                                Filter.equalTo("post", search),
+                                Filter.equalTo("source", search),
+                                Filter.equalTo("title",search),
+                                Filter.equalTo("uid",search)
+                            )
+                        )
+                        .orderBy("createdAt", Query.Direction.DESCENDING)
+                        .get()
+                        .addOnSuccessListener {res->
+                            for (document in res){
+                                var post=document.toObject(PostData::class.java)
+                                post.id=document.id
+                                pl.add(post)
+                            }
+
+                            onResult(pl)
+                        }
+                        .addOnFailureListener {e->
+                            Log.e("A", "getPosts: ",e )
+                        }
                 }
             }
         }
