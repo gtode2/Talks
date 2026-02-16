@@ -1,5 +1,6 @@
 package com.example.talks.database
 
+import com.example.talks.data.UserData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -102,6 +103,21 @@ class UserDatabase {
             //se non seguito -> return 1
             //errore -> return -1
         }
-
+        fun searchUser(string:String, onResult:(UserData)->Unit){
+            FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(string)
+                .get()
+                .addOnSuccessListener { res->
+                    if (res.exists()){
+                        val fwd = res.get("followed") as Map<String, Boolean>
+                        val followers = (res.getLong("followers") ?: -1).toInt()
+                        onResult(UserData(string, followers, fwd.size))
+                    }else{
+                        onResult(UserData("", -1, 0))
+                    }
+                }
+                .addOnFailureListener {  }
+        }
     }
 }

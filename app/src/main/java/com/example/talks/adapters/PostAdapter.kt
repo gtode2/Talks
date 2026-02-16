@@ -77,7 +77,6 @@ class PostAdapter(
             else-> throw IllegalArgumentException("tipo non valido")
         }
     }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is PostVH ->{

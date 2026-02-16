@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.adapters.PostCardSearchAdapter
+import com.example.talks.data.UserData
 import com.example.talks.database.PostDatabase
+import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 
 class SearchPageFragment:Fragment(R.layout.searchpage) {
-    var adapter:PostCardAdapter?=null
+    var adapter: PostCardSearchAdapter?=null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -30,6 +33,13 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
         searchbtn.setOnClickListener {
             val string = searchbar.text.toString()
             rv.layoutManager= LinearLayoutManager(context)
+            var ud: UserData?=null
+
+            UserDatabase.searchUser(string){res->
+                if (res.followers!=-1){
+                    ud=res
+                }
+            }
             PostDatabase.getPosts("search", string){ postList->
 
                 Log.e("AA", postList.size.toString())
@@ -54,11 +64,15 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     }
                 }
 
-                adapter = PostCardAdapter(
-                    postList.toMutableList(),
+                adapter = PostCardSearchAdapter(
                     null,
-                    ctx
+                    null,
+                    ctx,
+                    ud
                 )
+                if (postList.size!=0){
+                    adapter?.posts =postList.toMutableList()
+                }
                 val handler = PostCardHandler(
                     contextProvider = {requireContext()},
                     adapter=adapter,
