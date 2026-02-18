@@ -167,6 +167,13 @@ class PostDatabase {
                 }
             }
         }
+
+
+
+        fun createPost(uid:String){
+
+        }
+
         fun deletePost(uid:String, postid: String, onResult: (Int) -> Unit){
             val db = FirebaseFirestore.getInstance()
             val post = db.collection("Posts").document(postid)

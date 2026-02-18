@@ -15,10 +15,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import com.example.talks.database.TagDatabase
+import com.example.talks.managers.TagManager
 import com.example.talks.singleton.AppSettings
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.launch
 
 
 class PostCreationActivity: AppCompatActivity() {
@@ -74,8 +78,21 @@ class PostCreationActivity: AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            lifecycleScope.launch {
+                val el = TagManager().validate(post.text.toString(), this@PostCreationActivity)
+
+            }
+
+
+
+
+
+
             //esegue verifica e compressione immagine
             //invia info a DB
+
+
+            //SPOSTARE IN POSTDATABASE
             val db = Firebase.firestore
             val UID = settings.getUID()
             val postContent = hashMapOf(
