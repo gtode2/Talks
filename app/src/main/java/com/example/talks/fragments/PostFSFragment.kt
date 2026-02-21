@@ -21,6 +21,7 @@ import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostCard
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.UserID
 
 class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
 
@@ -34,7 +35,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
         super.onViewCreated(view, savedInstanceState)
 
         val settings = requireActivity().applicationContext as AppSettings
-        val UID = settings.getUID()
+        val UID = UserID.getUID()
         val addCombutton = view.findViewById<ImageView>(R.id.sendcommbtn)
         val addCom = view.findViewById<View>(R.id.addcomment)
         val addComTxt = view.findViewById<EditText>(R.id.textcomment)

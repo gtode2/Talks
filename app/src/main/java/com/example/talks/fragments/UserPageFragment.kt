@@ -18,6 +18,7 @@ import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.FollowedRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.UserID
 
 
 class UserPageFragment:Fragment(R.layout.userpage) {
@@ -38,8 +39,8 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         val followbtn = view.findViewById<Button>(R.id.followbutton)
 
         val settings = requireActivity().applicationContext as AppSettings
-        if (!settings.getUID().isNullOrBlank()){
-            UID = settings.getUID()
+        if (!UserID.getUID().isNullOrBlank()){
+            UID = UserID.getUID()
         }else{
             followbtn.visibility=View.GONE
         }

@@ -14,6 +14,7 @@ import com.example.talks.adapters.YourPostCardAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
+import com.example.talks.singleton.UserID
 
 class YourPostsFragment:Fragment(R.layout.yourposts) {
     var adapter: YourPostCardAdapter?=null
@@ -32,7 +33,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
     }
     fun init(){
         val settings = requireActivity().applicationContext as AppSettings
-        uid = settings.getUID()
+        uid = UserID.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
             requireActivity().finish()

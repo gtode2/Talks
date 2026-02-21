@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.talks.singleton.AppSettings
+import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -129,7 +130,7 @@ class RegisterActivity: AppCompatActivity() {
 
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("From","Login")
-                            settings.setUID(username.text.toString())
+                            UserID.setUID(username.text.toString())
                             startActivity(intent)
                             finish()
                         }else if (task.exception is FirebaseAuthUserCollisionException){

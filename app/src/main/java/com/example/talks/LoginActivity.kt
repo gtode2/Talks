@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.AppSettings
+import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -57,7 +58,7 @@ class LoginActivity: AppCompatActivity() {
                                     LikeRepository.loadLikes(userTag)
                                     val intent = Intent(this, MainActivity::class.java)
                                     intent.putExtra("From","Login")
-                                    settings.setUID(userTag)
+                                    UserID.setUID(userTag)
                                     startActivity(intent)
                                     finish()
                                 }

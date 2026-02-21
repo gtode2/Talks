@@ -16,9 +16,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.data.PostData
+import com.example.talks.database.PostDatabase
 import com.example.talks.database.TagDatabase
 import com.example.talks.managers.TagManager
 import com.example.talks.singleton.AppSettings
+import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.firestore
@@ -79,8 +82,27 @@ class PostCreationActivity: AppCompatActivity() {
             }
 
             lifecycleScope.launch {
-                val el = TagManager().validate(post.text.toString(), this@PostCreationActivity)
+                val taglist = TagManager().validate(post.text.toString(), this@PostCreationActivity)
+                //pubblica post
 
+
+                val UID = UserID.getUID()
+                if (UID.isNullOrBlank()){
+                    //gestione errore
+                    return@launch
+                }
+
+                var res = PostDatabase.createPost(UID!!, post.text.toString(), source.text.toString(), title.text.toString())
+                Log.e("AAA", "taglist"+taglist.toString())
+                Log.e("AAA", "pca res"+res)
+                if (res!="-1" && taglist.isNotEmpty()){
+                    //aggiungi eventuali notifiche tag
+                    TagDatabase.addTag(taglist,res)
+                }else if (res=="-1"){
+                    //gestire errore
+                }
+
+                finish()
             }
 
 
@@ -91,31 +113,6 @@ class PostCreationActivity: AppCompatActivity() {
             //esegue verifica e compressione immagine
             //invia info a DB
 
-
-            //SPOSTARE IN POSTDATABASE
-            val db = Firebase.firestore
-            val UID = settings.getUID()
-            val postContent = hashMapOf(
-                "uid" to UID,
-                "likes" to 0,
-                "post" to post.text.toString(),
-                "source" to source.text.toString(),
-                "title" to title.text.toString(),
-                "image" to "",
-                "createdAt" to FieldValue.serverTimestamp()
-            )
-            Log.e("NVNC", "ID=${UID}")
-            db.collection("Posts")
-                .add(postContent)
-                .addOnFailureListener {
-                    //gestione errore
-                    Toast.makeText(this, "Errore", Toast.LENGTH_SHORT).show()
-                    return@addOnFailureListener
-                }
-                .addOnSuccessListener {
-                    Toast.makeText(this, "AAAAAAA", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
 
 
             //gestione eventuali tag nel testo del post

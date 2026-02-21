@@ -19,6 +19,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.LastPost
+import com.example.talks.singleton.UserID
 
 class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
@@ -26,8 +27,8 @@ class HomePageFragment:Fragment(R.layout.homepage) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val settings = requireActivity().applicationContext as AppSettings
-        if (!settings.getUID().isNullOrBlank()){
-            UID = settings.getUID()
+        if (UserID.getUID().isNullOrBlank()){
+            UID = UserID.getUID()
         }
         val hpAll= view.findViewById<TextView>(R.id.homepageAll)
         val hpFwl= view.findViewById<TextView>(R.id.homepageFollowed)

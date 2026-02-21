@@ -13,6 +13,7 @@ import com.example.talks.singleton.AppSettings
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
+import com.example.talks.singleton.UserID
 
 class EditPostFragment:Fragment(R.layout.postcreation) {
     //con postcreation definitivo decidere se modificare testo aggiunta o se duplicare e creare nuova pagina con label diverse
@@ -36,7 +37,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
         //estraggo uid
         val settings = requireActivity().applicationContext as AppSettings
-        uid = settings.getUID()
+        uid = UserID.getUID()
 
         if (postId.isNullOrBlank()){
             //gestisci errore

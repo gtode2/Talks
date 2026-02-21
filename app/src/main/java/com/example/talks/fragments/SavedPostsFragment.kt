@@ -14,6 +14,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.UserID
 
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: PostCardAdapter?=null
@@ -32,7 +33,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
 
     fun init(){
         val settings = requireActivity().applicationContext as AppSettings
-        uid = settings.getUID()
+        uid = UserID.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
             requireActivity().finish()

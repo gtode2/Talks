@@ -140,7 +140,7 @@ class TagManager {
     private var nList=mutableListOf<String>()
     //found List
     private var fList=mutableListOf<String>()
-    private var fTxt = ""
+    private var nTxt = ""
 
 
     suspend fun validate(str:String, ctx:Context): MutableList<String>{
@@ -149,6 +149,8 @@ class TagManager {
         val regex = Regex("@[A-Za-z0-9_]+(?:\\.[A-Za-z0-9_]+)*")
         //tag List
         val tList = regex.findAll(str).map{ it.value.removePrefix("@")}.toList()
+        Log.e("AAA", tList.toString())
+
         do {
             check(tList)
             //gestione risultati
@@ -172,11 +174,13 @@ class TagManager {
             }
         }while (rt)
         //se nlist non vuota
+        Log.e("AAA", nList.toString())
         if (nList.isNotEmpty()){
-            fTxt += "\nVuoi modificare i tag o ignorare e pubblicare lo stesso?"
+            Log.e("AAA", "nlist non vuota")
+            nTxt += "\nVuoi modificare i tag o ignorare e pubblicare lo stesso?"
             AlertDialog.Builder(ctx)
                 .setTitle("Utenti non trovati")
-                .setMessage(fTxt)
+                .setMessage(nTxt)
                 .setPositiveButton("Continua"){dialog, _->
                     dialog.dismiss()
                     confirm=true
@@ -185,7 +189,9 @@ class TagManager {
                     dialog.dismiss()
                 } //cancel
                 .show()
-
+        }
+        else if (nList.isEmpty()){
+            confirm = true
         }
 
 
@@ -198,8 +204,8 @@ class TagManager {
     private suspend fun check(tList:List<String>){
         //reset error
         error=false
-        var nList=mutableListOf<String>()
         tList.forEach { tag->
+            Log.e("AAA", tag )
             val result = suspendCancellableCoroutine<Int> { cont->
                 TagDatabase.checkUser(tag){res->
                     cont.resume(res)
@@ -207,10 +213,13 @@ class TagManager {
             }
             when(result) {
                 0 -> {
+                    Log.e("AAA", tag+" in flist")
                     fList.add(tag)
-                    fTxt += "@$tag\n"
                 }
-                1 -> nList.add(tag)
+                1 -> {
+                    nList.add(tag)
+                    nTxt += "@$tag\n"
+                }
                 -1 -> error=true
             }
         }

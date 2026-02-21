@@ -8,6 +8,8 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Filter
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import kotlinx.coroutines.suspendCancellableCoroutine
+
 
 class PostDatabase {
     companion object{
@@ -170,8 +172,29 @@ class PostDatabase {
 
 
 
-        fun createPost(uid:String){
+        suspend fun createPost(uid:String, post:String, source: String, title:String):String = suspendCancellableCoroutine{ cont->
+            val db = FirebaseFirestore.getInstance()
+            val postContent = hashMapOf(
+                "uid" to uid,
+                "likes" to 0,
+                "post" to post,
+                "source" to source,
+                "title" to title,
+                "image" to "",
+                "createdAt" to FieldValue.serverTimestamp()
+            )
+            db.collection("Posts")
+            .add(postContent)
+            .addOnSuccessListener { ref->
+                val id = ref.id
+                cont.resume(id){}
+            }
+            .addOnFailureListener {
+                //gestione errore
 
+
+                cont.resume("-1"){}
+            }
         }
 
         fun deletePost(uid:String, postid: String, onResult: (Int) -> Unit){

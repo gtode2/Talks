@@ -14,6 +14,8 @@ import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.LastPost
+import com.example.talks.singleton.UserID
+import com.google.firebase.firestore.auth.User
 
 class PostCardHandler(
     private val contextProvider:() ->Context,
@@ -40,7 +42,7 @@ class PostCardHandler(
     }
 
     override fun addLike(postId: String) {
-        val UID = (contextProvider().applicationContext as AppSettings).getUID()
+        val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
             LikeRepository.addLike(UID!!,postId){ res->
                 //0 = aggiunta eseguita
@@ -62,7 +64,7 @@ class PostCardHandler(
     }
 
     override fun savePost(postId: String) {
-        val UID = (contextProvider().applicationContext as AppSettings).getUID()
+        val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
             BookmarkRepository.savePost(UID, postId){ res->
                 if (res==0){
@@ -83,7 +85,7 @@ class PostCardHandler(
     }
 
     override fun deletePost(postId: String) {
-        val UID = (contextProvider().applicationContext as AppSettings).getUID()
+        val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
             AlertDialog.Builder(contextProvider())
                 .setTitle("Elimina post")

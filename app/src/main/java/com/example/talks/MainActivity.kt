@@ -13,6 +13,7 @@ import com.example.talks.fragments.AccountPageFragment
 import com.example.talks.fragments.UnloggedAccountPageFragment
 import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.LastPage
+import com.example.talks.singleton.UserID
 
 
 var lgd = false
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity() {
     fun logout(settings: AppSettings){
         lgd=false
         LastPage.setPage("home")
-        settings.setUID(null)
+        UserID.setUID(null)
         accountpage()
 
     }
