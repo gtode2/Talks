@@ -1,6 +1,7 @@
 package com.example.talks.database
 
 import android.util.Log
+import com.example.talks.data.NotificationData
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -67,6 +68,42 @@ class NotificationsDatabase {
                         //gestione errore
                         cont.resume(false) {}
                     }
+            }
+        }
+
+        suspend fun get(): List<NotificationData>{//cambiare tipo return
+            return suspendCancellableCoroutine { cont ->
+                var nl = mutableListOf<NotificationData>()
+
+                val uid = UserID.getUID()
+                if (uid.isNullOrBlank()){
+                    //gestione errore
+                    nl.add(NotificationData(true))
+                    cont.resume(nl){}
+                }
+
+                //ottieni notifiche
+                FirebaseFirestore.getInstance()
+                    .collection("Users")
+                    .document(uid!!)
+                    .collection("notifications")
+                    .orderBy("createdAt")
+                    .get()
+                    .addOnSuccessListener { res ->
+                        for (n in res){
+                            var notif = n.toObject(NotificationData::class.java)
+                            nl.add(notif)
+                        }
+                        Log.e("AAA", nl.toString())
+                        cont.resume(nl){}
+
+                    }
+                    .addOnFailureListener {
+                        //gestione errore
+                        nl.add(NotificationData(true))
+                        cont.resume(nl){}
+                    }
+
             }
         }
     }

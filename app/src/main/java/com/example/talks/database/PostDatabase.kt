@@ -171,7 +171,6 @@ class PostDatabase {
         }
 
 
-
         suspend fun createPost(uid:String, post:String, source: String, title:String):String = suspendCancellableCoroutine{ cont->
             val db = FirebaseFirestore.getInstance()
             val postContent = hashMapOf(
