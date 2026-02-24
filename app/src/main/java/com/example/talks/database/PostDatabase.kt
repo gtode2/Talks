@@ -171,7 +171,7 @@ class PostDatabase {
         }
 
 
-        suspend fun createPost(uid:String, post:String, source: String, title:String):String = suspendCancellableCoroutine{ cont->
+        suspend fun createPost(uid:String, post:String, source: String, title:String, img:Boolean):String = suspendCancellableCoroutine{ cont->
             val db = FirebaseFirestore.getInstance()
             val postContent = hashMapOf(
                 "uid" to uid,
@@ -179,7 +179,7 @@ class PostDatabase {
                 "post" to post,
                 "source" to source,
                 "title" to title,
-                "image" to "",
+                "image" to img,
                 "createdAt" to FieldValue.serverTimestamp()
             )
             db.collection("Posts")

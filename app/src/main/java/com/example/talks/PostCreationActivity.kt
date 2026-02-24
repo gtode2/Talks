@@ -1,5 +1,6 @@
 package com.example.talks
 
+import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -17,8 +18,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.data.PostData
+import com.example.talks.database.ImageDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.database.TagDatabase
+import com.example.talks.managers.ImageManager
 import com.example.talks.managers.TagManager
 import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.UserID
@@ -33,7 +36,6 @@ class PostCreationActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.postcreation)
-        val settings = this.applicationContext as AppSettings
 
         val title = findViewById<EditText>(R.id.titleet)
         val post = findViewById<EditText>(R.id.postet)
@@ -43,13 +45,18 @@ class PostCreationActivity: AppCompatActivity() {
         val imgbtn = findViewById<Button>(R.id.imgbtn)
         val prev = findViewById<ImageView>(R.id.imgprev)
         val createPost = findViewById<Button>(R.id.pcContinue)
+        var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
-                prev.setImageURI(it)  // o qualsiasi altra cosa tu voglia fare con l'immagine
+                prev.setImageURI(it)
+                Imguri=it
             }
         }
         val errCol = ContextCompat.getColor(this, R.color.error)
         val origCol = rem.textColors
+
+
+
 
         imgbtn.setOnClickListener{
             pickImageLauncher.launch("image/*")
@@ -75,6 +82,12 @@ class PostCreationActivity: AppCompatActivity() {
             finish()
         }
         createPost.setOnClickListener{
+            val UID = UserID.getUID()
+            if (UID.isNullOrBlank()){
+                //gestione errore
+                return@setOnClickListener
+            }
+
             //verifica elementi
             if (title.text.isBlank() || post.text.isBlank()){
                 Toast.makeText(this, R.string.errMissingTitleOrText, Toast.LENGTH_SHORT).show()
@@ -82,23 +95,40 @@ class PostCreationActivity: AppCompatActivity() {
             }
 
             lifecycleScope.launch {
-                val taglist = TagManager().validate(post.text.toString(), this@PostCreationActivity)
-                //pubblica post
-
-
-                val UID = UserID.getUID()
-                if (UID.isNullOrBlank()){
-                    //gestione errore
-                    return@launch
+                //verifica immagine
+                Log.e("AAA", Imguri.toString() )
+                var img = ""
+                if (Imguri!=null){
+                     img = ImageManager.compressor(this@PostCreationActivity, Imguri)
+                    if (img==""){
+                        //gestione errore
+                        Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
                 }
+                var imgbool = if (img!="") true else false
 
-                var res = PostDatabase.createPost(UID!!, post.text.toString(), source.text.toString(), title.text.toString())
-                Log.e("AAA", "taglist"+taglist.toString())
-                Log.e("AAA", "pca res"+res)
-                if (res!="-1" && taglist.isNotEmpty()){
-                    //aggiungi eventuali notifiche tag
-                    TagDatabase.addTag(taglist,res)
+                //verifica tag
+                val taglist = TagManager().validate(post.text.toString(), this@PostCreationActivity)
+
+                //crea post
+                //res = post id | -1
+
+                var res = PostDatabase.createPost(UID, post.text.toString(), source.text.toString(), title.text.toString(), imgbool)
+
+                //gestione post e errori upload
+                if (res!="-1"){
+                    //se upload post eseguito correttamente -> upload img e tag
+                    if (taglist.isNotEmpty()){
+                        TagDatabase.addTag(taglist,res)
+                    }
+                    if (img!=""){
+                        ImageDatabase.add(img, res)
+                    }
+
+
                 }else if (res=="-1"){
+                    Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
                     //gestire errore
                 }
 
