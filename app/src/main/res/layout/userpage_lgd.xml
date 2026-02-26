@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    >
+    android:background="@color/background">
 
     <ImageView
         android:id="@+id/profPicIW"
@@ -25,7 +25,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="40dp"
-        android:layout_marginLeft="170dp"/>
+        android:layout_marginLeft="170dp"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
 
     <TextView
         android:id="@+id/followedTv"
@@ -36,7 +38,9 @@
         android:text="followed: numero"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
 
     <Button
         android:id="@+id/yourpostsBtn"

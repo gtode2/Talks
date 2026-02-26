@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/background">
 
     <ImageView
         android:id="@+id/profileimg"
@@ -14,7 +15,8 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"/>
 
     <TextView
         android:id="@+id/notiftxt"
@@ -25,10 +27,11 @@
         android:layout_marginTop="10dp"
         android:text="Utente x ti ha taggato in un commento"
         android:textSize="15sp"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profileimg"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
 
     <View
         android:layout_width="match_parent"

@@ -78,7 +78,7 @@ class ImageManager {
         }
 
 
-        private fun decode(str:String):Bitmap {
+        fun decode(str:String):Bitmap {
             val img = Base64.decode(str, Base64.NO_WRAP)
             return BitmapFactory.decodeByteArray(img, 0, img.size)
         }

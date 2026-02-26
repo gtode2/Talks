@@ -259,7 +259,7 @@ class PostDatabase {
                 if(data.source!=""){
                     tr.update(post,"source", data.source)
                 }
-                if(data.image!=""){
+                if(!data.image){
                     //edit image
                 }
             }.addOnSuccessListener {

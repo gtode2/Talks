@@ -12,7 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
+import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostHandlerInterface
+import com.example.talks.managers.ImageCache
+import com.example.talks.managers.ImageManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PostCardAdapter(
     private val posts:MutableList<PostData>,
@@ -41,19 +48,46 @@ class PostCardAdapter(
 
 
             //verifica immagini
-            if (el.image.isBlank()){
+            var cache = ImageCache(20)
+
+            if (!el.image){
                 postImg.visibility = View.GONE
+            }else{
+                //aggiunta immagine
+                postImg.visibility=View.VISIBLE
+                //postImg.setImageBitmap(R.drawable.placeholder.bit)
+                val cachedbmp = cache.get(el.id)
+                if (cachedbmp!=null){
+                    postImg.setImageBitmap(cachedbmp)
+                }else{
+                    //richiesta immagine
+                    //Dispatchers->thread
+                    CoroutineScope(Dispatchers.IO).launch{
+                        val b64 = ImageDatabase.get(el.id)
+                        val bmp = ImageManager.decode(b64)
+                        cache.add(el.id, bmp)
+                        val currentPostId = el.id
+
+                        withContext(Dispatchers.Main){
+                            //torno in main thread
+                            if (adapterPosition!= RecyclerView.NO_POSITION && posts[adapterPosition].id==currentPostId){
+                                postImg.setImageBitmap(bmp)
+                            }
+                        }
+
+                    }
+                }
             }
 
             if (el.isLiked){
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
             if (el.isSaved){
                 savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
 
             usertag.setOnClickListener{

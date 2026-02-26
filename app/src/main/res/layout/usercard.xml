@@ -5,7 +5,8 @@
     android:id="@+id/postcardbg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true">
+    android:clickable="true"
+    android:background="@color/background">
 
 
     <TextView
@@ -19,7 +20,9 @@
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/postImageArea"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
     <TextView
         android:id="@+id/searchFw"
         android:layout_width="0dp"
@@ -31,18 +34,21 @@
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/postImageArea"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
 
     <ImageView
         android:id="@+id/postImageArea"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
         android:background="#EEEEEE"
         android:contentDescription="immagine vuota"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <View
         android:layout_width="match_parent"

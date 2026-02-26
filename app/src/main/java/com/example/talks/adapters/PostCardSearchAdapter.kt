@@ -105,7 +105,7 @@ class PostCardSearchAdapter(
 
 
             //verifica immagini
-            if (el.image.isBlank()){
+            if (!el.image){
                 postImg.visibility = View.GONE
             }
 

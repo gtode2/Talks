@@ -5,7 +5,8 @@
     android:id="@+id/postcardbg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:clickable="true">
+    android:clickable="true"
+    android:background="@color/background">
 
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
+        android:textColor="@color/text"
         android:text=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +25,7 @@
         android:layout_width="345dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:textColor="@color/text"
         android:text=""
         android:autoLink="web"
         android:textAlignment="textStart"
@@ -32,40 +35,43 @@
 
     <ImageView
         android:id="@+id/postImageArea"
-        android:layout_width="345dp"
-        android:layout_height="51dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="#EEEEEE"
-        android:contentDescription="immagine vuota"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="immagine post"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/postText"/>
 
     <ImageView
         android:id="@+id/commbtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="28dp"
-        android:background="#FFFFFF"
+        android:background="@color/background"
         android:contentDescription="immagine vuota"
         android:src="@drawable/comments"
         app:layout_constraintEnd_toStartOf="@+id/savebtn"
         app:layout_constraintHorizontal_bias="0.412"
         app:layout_constraintStart_toEndOf="@+id/likeCtr"
-        app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
+        app:layout_constraintTop_toBottomOf="@+id/postImageArea"
+        app:tint="@color/desel"/>
 
     <ImageView
         android:id="@+id/likebtn"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="28dp"
-        android:background="#FFFFFF"
+        android:background="@color/background"
         android:contentDescription="immagine vuota"
         android:src="@drawable/like"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.224"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
+        app:layout_constraintTop_toBottomOf="@+id/postImageArea"
+        app:tint="@color/desel"/>
 
     <TextView
         android:id="@+id/likeCtr"
@@ -74,6 +80,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:text=""
+        android:textColor="@color/text"
         app:layout_constraintStart_toEndOf="@+id/likebtn"
         app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
 
@@ -82,13 +89,14 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginTop="28dp"
-        android:background="#FFFFFF"
+        android:background="@color/background"
         android:contentDescription="immagine vuota"
         android:src="@drawable/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.722"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/postImageArea" />
+        app:layout_constraintTop_toBottomOf="@+id/postImageArea"
+        app:tint="@color/desel"/>
 
     <View
         android:layout_width="match_parent"

@@ -120,7 +120,7 @@ class PostAdapter(
         fun bind(post:PostData){
             usertag.text=post.uid
             posttxt.text=post.post
-            if (post.image.isNullOrBlank()){
+            if (!post.image){
                 postImg.visibility=View.GONE
             }
 

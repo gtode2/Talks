@@ -127,7 +127,7 @@ class PostCreationActivity: AppCompatActivity() {
                     }
 
 
-                }else if (res=="-1"){
+                }else{
                     Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
                     //gestire errore
                 }

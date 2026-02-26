@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
     <TextView
         android:id="@+id/textView3"
@@ -11,14 +12,17 @@
         android:layout_height="50dp"
         android:gravity="center_horizontal"
         android:text="Post salvati"
-        android:textSize="25dp"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        android:textSize="25sp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/background"
+        android:textColor="@color/text"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="32dp">
+        tools:layout_editor_absoluteX="32dp"
+        android:background="@color/background">
 
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
