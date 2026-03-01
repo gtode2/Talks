@@ -30,38 +30,11 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         if (UserID.getUID().isNullOrBlank()){
             UID = UserID.getUID()
         }
-        val hpAll= view.findViewById<TextView>(R.id.homepageAll)
-        val hpFwl= view.findViewById<TextView>(R.id.homepageFollowed)
+
 
         val colAct = requireContext().getColor(R.color.lime)
         val colNact = requireContext().getColor(R.color.desel)
 
-        if (LastPage.getHomepage()=="all"){
-            hpAll.setTextColor(colAct)
-            hpFwl.setTextColor(colNact)
-        }else{
-            hpAll.setTextColor(colNact)
-            hpFwl.setTextColor(colAct)
-        }
-        
-
-
-        //ottengo pagina da caricare
-
-
-        hpAll.setOnClickListener {
-            Toast.makeText(requireContext(), "all", Toast.LENGTH_SHORT).show()
-            LastPage.setHomepage("all")
-            hpAll.setTextColor(colAct)
-            hpFwl.setTextColor(colNact)
-
-        }
-        hpFwl.setOnClickListener {
-            Toast.makeText(requireContext(), "followed", Toast.LENGTH_SHORT).show()
-            LastPage.setHomepage("followed")
-            hpFwl.setTextColor(colAct)
-            hpAll.setTextColor(colNact)
-        }
 
 
 

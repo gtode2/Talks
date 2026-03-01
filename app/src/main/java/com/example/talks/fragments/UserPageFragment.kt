@@ -15,6 +15,7 @@ import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
+import com.example.talks.managers.SettingsManager
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.FollowedRepository
 import com.example.talks.repository.LikeRepository
@@ -22,15 +23,20 @@ import com.example.talks.singleton.UserID
 
 
 class UserPageFragment:Fragment(R.layout.userpage) {
+    private lateinit var settingsManager: SettingsManager
     var userid:String?=null
     var UID:String?=null
     var adapter:PostCardAdapter?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userid = arguments?.getString("id")
+        settingsManager = SettingsManager(requireContext())
+        settingsManager.applyLang()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         val usertag = view.findViewById<TextView>(R.id.uptag)
         usertag.text = userid
@@ -120,6 +126,11 @@ class UserPageFragment:Fragment(R.layout.userpage) {
                 }
             }
         }
+
+    }
+
+    override fun onResume() {
+        super.onResume()
 
     }
 }

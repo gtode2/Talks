@@ -11,6 +11,7 @@ import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.fragments.SearchPageFragment
 import com.example.talks.fragments.AccountPageFragment
 import com.example.talks.fragments.UnloggedAccountPageFragment
+import com.example.talks.managers.SettingsManager
 import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
@@ -69,6 +70,10 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val settings = SettingsManager(this)
+        settings.applyLang()
+        settings.applyTheme()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main)
 
@@ -82,7 +87,14 @@ class MainActivity : AppCompatActivity() {
         col_nact = ContextCompat.getColor(this, R.color.desel)
 
         val intent = intent
+
         val from = intent.getStringExtra("From")?:0
+        if (from=="sett"){
+            //caricamento fragment impostazioni
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, com.example.talks.fragments.AccountPageFragment())
+                .commit()
+        }
         if (from=="Login"){
             lgd=true
             LastPage.setPage("home")
@@ -142,7 +154,9 @@ class MainActivity : AppCompatActivity() {
         //enableEdgeToEdge()
 
     }
+    fun applyLang(){
 
+    }
 
 
 }
