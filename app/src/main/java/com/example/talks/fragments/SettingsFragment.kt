@@ -1,11 +1,15 @@
 package com.example.talks.fragments
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.addCallback
+import androidx.core.app.ActivityCompat.recreate
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +23,9 @@ class SettingsFragment:Fragment(R.layout.settings) {
     private lateinit var settingsManager: SettingsManager
     private lateinit var btnIt:TextView
     private lateinit var btnEn:TextView
+    private lateinit var btnDk: ImageView
+    private lateinit var btnLt: ImageView
+
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -29,12 +36,12 @@ class SettingsFragment:Fragment(R.layout.settings) {
         var back = view.findViewById<Button>(R.id.settcancbtn)
         back.setOnClickListener{
             //ricreare activity -> intent = sett
-            requireActivity().intent.putExtra("From", "sett")
+            requireActivity().intent.putExtra("From", "user")
             requireActivity().recreate()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             //ricreare activity -> intent = sett
-            requireActivity().intent.putExtra("From", "sett")
+            requireActivity().intent.putExtra("From", "user")
             requireActivity().recreate()
         }
 
@@ -42,7 +49,8 @@ class SettingsFragment:Fragment(R.layout.settings) {
         btnEn = view.findViewById(R.id.btnEn)
         val langtv = view.findViewById<TextView>(R.id.languagetv)
 
-
+        btnLt = view.findViewById(R.id.btnLt)
+        btnDk = view.findViewById(R.id.btnDk)
 
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -62,6 +70,19 @@ class SettingsFragment:Fragment(R.layout.settings) {
                 btnIt.isSelected=false
                 btnEn.isSelected=true
             }
+
+            var theme: String? = settingsManager.getTheme()
+            if (theme==null){
+                theme = defaultTheme(requireContext())
+            }
+            if (theme=="light"){
+                btnLt.isSelected=true
+                btnDk.isSelected=false
+            }else{
+                btnLt.isSelected=false
+                btnDk.isSelected=true
+            }
+
         }
 
 
@@ -88,6 +109,29 @@ class SettingsFragment:Fragment(R.layout.settings) {
                 //modificare stringhe
                 langtv.text="Language"
             }
+        }
+
+        btnLt.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                settingsManager.setTheme("light")
+                requireActivity().intent.putExtra("From", "sett")
+                requireActivity().recreate()
+                //passo parametro a activity -> from settings
+            }
+        }
+        btnDk.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                settingsManager.setTheme("dark")
+                requireActivity().intent.putExtra("From", "sett")
+                requireActivity().recreate()
+            }
+        }
+    }
+    fun defaultTheme(context: Context): String {
+        return when (context.resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> "dark"
+            else -> "light"
         }
     }
 }

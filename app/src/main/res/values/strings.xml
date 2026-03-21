@@ -63,4 +63,8 @@
     <!-- Comments -->
 
     <string name="addcomment">Add a reply</string>
+
+    <!-- Settings -->
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
 </resources>

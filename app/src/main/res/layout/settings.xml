@@ -8,6 +8,7 @@
 
 
     <LinearLayout
+        android:id="@+id/langsel"
         android:layout_width="320dp"
         android:layout_height="70dp"
         android:layout_marginTop="160dp"
@@ -29,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Lingua"
+            android:text="@string/language"
             android:textSize="20sp"
             android:textColor="@color/text"
             android:paddingStart="16dp"/>
@@ -66,6 +67,71 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/themesel"
+        android:layout_width="320dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="270dp"
+        android:background="@drawable/switchbg"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/theme"
+            app:tint="@color/text"/>
+        <TextView
+            android:id="@+id/themetv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/theme"
+            android:textSize="20sp"
+            android:textColor="@color/text"
+            android:paddingStart="16dp"/>
+
+        <LinearLayout
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/langbtn"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/btnLt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="IT"
+                android:background="@drawable/lang_selector"
+                android:src="@drawable/sun"
+                android:scaleType="centerInside"
+                android:padding="6dp"
+                android:textSize="16sp"/>
+
+            <ImageView
+                android:id="@+id/btnDk"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="EN"
+                android:background="@drawable/lang_selector"
+                android:src="@drawable/moon"
+                android:scaleType="centerInside"
+                android:padding="6dp"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <Button

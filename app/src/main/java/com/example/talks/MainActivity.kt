@@ -89,8 +89,8 @@ class MainActivity : AppCompatActivity() {
         val intent = intent
 
         val from = intent.getStringExtra("From")?:0
-        if (from=="sett"){
-            //caricamento fragment impostazioni
+        if (from=="user"){
+            //caricamento fragment utente
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, com.example.talks.fragments.AccountPageFragment())
                 .commit()
@@ -99,6 +99,12 @@ class MainActivity : AppCompatActivity() {
             lgd=true
             LastPage.setPage("home")
         }
+        if (from=="sett"){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
+                .commit()
+        }
+
 
         if (LastPage.getPage() =="home"){
             supportFragmentManager.beginTransaction()
