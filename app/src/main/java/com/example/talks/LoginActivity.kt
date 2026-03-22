@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
-import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -22,10 +21,9 @@ class LoginActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login)
-        val settings = this.applicationContext as AppSettings
 
         var loginBtn = findViewById<Button>(R.id.loginBtn)
-        var backBtn = findViewById<Button>(R.id.backBtn)
+        //var backBtn = findViewById<Button>(R.id.backBtn)
         var mail = findViewById<EditText>(R.id.emailET)
         var password = findViewById<EditText>(R.id.pwET)
         Firebase.initialize(this)
@@ -73,9 +71,9 @@ class LoginActivity: AppCompatActivity() {
             }
 
         }
-        backBtn.setOnClickListener{
+        /*backBtn.setOnClickListener{
             finish()
-        }
+        }*/
     }
 
 

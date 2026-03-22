@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import com.example.talks.singleton.AppSettings
 import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.R
@@ -14,8 +13,6 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val appsettings = requireContext().applicationContext as AppSettings
-
         var yourposts = view.findViewById<Button>(R.id.yourpostsBtn)
         var saved = view.findViewById<Button>(R.id.savedBtn)
         var settings = view.findViewById<Button>(R.id.settingsBtn)
@@ -23,7 +20,7 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
 
 
         logout.setOnClickListener{
-            (requireActivity() as MainActivity).logout(appsettings)
+            (requireActivity() as MainActivity).logout()
         }
 
         settings.setOnClickListener{

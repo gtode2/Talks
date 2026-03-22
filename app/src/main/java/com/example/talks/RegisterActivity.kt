@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -26,7 +25,6 @@ class RegisterActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.register)
-        val settings = this.applicationContext as AppSettings
         name = findViewById(R.id.nameET)
         surname = findViewById(R.id.surnameET)
         username = findViewById(R.id.usernameET)

@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.singleton.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
@@ -44,7 +43,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         val followed = view.findViewById<TextView>(R.id.upfld)
         val followbtn = view.findViewById<Button>(R.id.followbutton)
 
-        val settings = requireActivity().applicationContext as AppSettings
         if (!UserID.getUID().isNullOrBlank()){
             UID = UserID.getUID()
         }else{

@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.talks.singleton.AppSettings
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
@@ -36,7 +35,6 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val contbtn = view.findViewById<Button>(R.id.pcContinue)
 
         //estraggo uid
-        val settings = requireActivity().applicationContext as AppSettings
         uid = UserID.getUID()
 
         if (postId.isNullOrBlank()){

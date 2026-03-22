@@ -10,9 +10,9 @@ import com.example.talks.fragments.HomePageFragment
 import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.fragments.SearchPageFragment
 import com.example.talks.fragments.AccountPageFragment
+import com.example.talks.fragments.LoginFragment
 import com.example.talks.fragments.UnloggedAccountPageFragment
 import com.example.talks.managers.SettingsManager
-import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 
@@ -26,8 +26,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var ntfybtn:ImageView
     var col_act:Int?=null
     var col_nact:Int?=null
-
-
 
 
     fun btnreset(){
@@ -45,29 +43,25 @@ class MainActivity : AppCompatActivity() {
             btnreset()
             accbtn.imageTintList = ColorStateList.valueOf(col_act!!)
             LastPage.setPage("acc")
-            if (lgd){
+            val uid = UserID.getUID()
+            if (uid!=null){
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, AccountPageFragment())
                     .commit()
             }else{
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, UnloggedAccountPageFragment())
+                    .replace(R.id.frame, LoginFragment())
                     .commit()
             }
         }
     }
-    fun setLgd(par:Boolean){
-        lgd=par
-    }
-    fun logout(settings: AppSettings){
+    fun logout(){
         lgd=false
         LastPage.setPage("home")
         UserID.setUID(null)
         accountpage()
 
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val settings = SettingsManager(this)
@@ -153,16 +147,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
         //enableEdgeToEdge()
 
-    }
-    fun applyLang(){
+        //RIMUOVERE LGD -> SPOSTARE TUTTO IN UserID.getUID
 
     }
-
-
 }

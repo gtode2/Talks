@@ -12,7 +12,6 @@ import com.example.talks.interfaces.PostCardYourPosts
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
-import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.auth.User

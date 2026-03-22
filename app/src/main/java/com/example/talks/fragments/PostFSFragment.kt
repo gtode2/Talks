@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.EmptyActivity
-import com.example.talks.singleton.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostAdapter
@@ -34,7 +33,6 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val settings = requireActivity().applicationContext as AppSettings
         val UID = UserID.getUID()
         val addCombutton = view.findViewById<ImageView>(R.id.sendcommbtn)
         val addCom = view.findViewById<View>(R.id.addcomment)

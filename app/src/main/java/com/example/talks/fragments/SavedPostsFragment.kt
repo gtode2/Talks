@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.singleton.AppSettings
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
@@ -32,7 +31,6 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
     }
 
     fun init(){
-        val settings = requireActivity().applicationContext as AppSettings
         uid = UserID.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()

@@ -23,7 +23,6 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.TagDatabase
 import com.example.talks.managers.ImageManager
 import com.example.talks.managers.TagManager
-import com.example.talks.singleton.AppSettings
 import com.example.talks.singleton.UserID
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
