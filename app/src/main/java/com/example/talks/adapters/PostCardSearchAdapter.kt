@@ -90,11 +90,11 @@ class PostCardSearchAdapter(
         val postImg = view.findViewById<ImageView>(R.id.postImageArea)
         val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-        val likebtn = view.findViewById<ImageView>(R.id.likebtn)
-        val commentbtn = view.findViewById<ImageView>(R.id.commbtn)
+        val likebtn = view.findViewById<ImageView>(R.id.likeIcon)
+        val commentbtn = view.findViewById<ImageView>(R.id.commIcon)
             //comment in all
             //edit in your
-        val savebtn = view.findViewById<ImageView>(R.id.savebtn)
+        val savebtn = view.findViewById<ImageView>(R.id.saveIcon)
             //save in all
             //delete in your
 

@@ -110,16 +110,18 @@ class PostAdapter(
 
     inner class PostVH(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
-        val posttxt = view.findViewById<TextView>(R.id.postText)
+        val posttitle = view.findViewById<TextView>(R.id.postTitle)
+        val posttext = view.findViewById<TextView>(R.id.postText)
         val postImg = view.findViewById<ImageView>(R.id.postImageArea)
-        val likebtn = view.findViewById<ImageView>(R.id.likebtn)
+        val likebtn = view.findViewById<ImageView>(R.id.likeIcon)
         val likes = view.findViewById<TextView>(R.id.likeCtr)
-        val commentbtn = view.findViewById<ImageView>(R.id.commbtn)
-        val savebtn = view.findViewById<ImageView>(R.id.savebtn)
+        val commentbtn = view.findViewById<ImageView>(R.id.commIcon)
+        val savebtn = view.findViewById<ImageView>(R.id.saveIcon)
 
         fun bind(post:PostData){
             usertag.text=post.uid
-            posttxt.text=post.post
+            posttitle.text=post.title
+            posttext.text=post.post
             if (!post.image){
                 postImg.visibility=View.GONE
             }
@@ -127,13 +129,13 @@ class PostAdapter(
             if (post.isLiked){
                 likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
 
             if (post.isSaved){
                 savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
+                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
 
             //gestire link

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -29,20 +30,29 @@ class PostCardAdapter(
 ):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(), PostHandlerInterface{
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.userTag)
+        val posttitle = view.findViewById<TextView>(R.id.postTitle)
         val posttext = view.findViewById<TextView>(R.id.postText)
         val postImg = view.findViewById<ImageView>(R.id.postImageArea)
+        //aggiungere source
+
+        val likeBtn = view.findViewById<LinearLayout>(R.id.likeBtn)
+        val likeIcon = view.findViewById<ImageView>(R.id.likeIcon)
         val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-        val likebtn = view.findViewById<ImageView>(R.id.likebtn)
-        val commentbtn = view.findViewById<ImageView>(R.id.commbtn)
-            //comment in all
-            //edit in your
-        val savebtn = view.findViewById<ImageView>(R.id.savebtn)
-            //save in all
-            //delete in your
+        val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
+        val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
+        val commentCtr = view.findViewById<TextView>(R.id.commCtr)
+
+
+        val saveBtn = view.findViewById<LinearLayout>(R.id.saveBtn)
+        val saveIcon = view.findViewById<ImageView>(R.id.saveIcon)
+        val saveTxt = view.findViewById<TextView>(R.id.saveTxt)
+
+
 
         fun bind(el:PostData){
-            usertag.text = "@"+el.uid
+            usertag.text = "@${el.uid}"
+            posttitle.text = el.title
             posttext.text = el.post
             postLikes.text = el.likes.toString()
 
@@ -80,14 +90,14 @@ class PostCardAdapter(
             }
 
             if (el.isLiked){
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+                likeIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
+                likeIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
             if (el.isSaved){
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
+                saveIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
             }else{
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
+                saveIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
             }
 
             usertag.setOnClickListener{
@@ -96,13 +106,13 @@ class PostCardAdapter(
             itemView.setOnClickListener{
                 pch!!.openPost(el.id)
             }
-            likebtn.setOnClickListener{
+            likeBtn.setOnClickListener{
                 pch!!.addLike(el.id)
             }
-            commentbtn.setOnClickListener{
+            commBtn.setOnClickListener{
                 pch!!.openComments(el.id)
             }
-            savebtn.setOnClickListener{
+            saveBtn.setOnClickListener{
                 pch!!.savePost(el.id)
             }
 
@@ -122,6 +132,7 @@ class PostCardAdapter(
             .inflate(R.layout.postcard, parent, false)
         return ViewHolder(view)
     }
+
 
     override fun incrLike(postId:String){
         val index = posts.indexOfFirst{it.id==postId}
