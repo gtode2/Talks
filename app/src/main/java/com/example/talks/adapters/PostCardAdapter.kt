@@ -27,110 +27,16 @@ class PostCardAdapter(
     var pch:PostCardHomepage?,
     private val context: Context,
     private val type: String = "all"
-):RecyclerView.Adapter<PostCardAdapter.ViewHolder>(), PostHandlerInterface{
-    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
-        val usertag = view.findViewById<TextView>(R.id.userTag)
-        val posttitle = view.findViewById<TextView>(R.id.postTitle)
-        val posttext = view.findViewById<TextView>(R.id.postText)
-        val postImg = view.findViewById<ImageView>(R.id.postImageArea)
-        //aggiungere source
+):RecyclerView.Adapter<PostViewHolder>(), PostHandlerInterface{
 
-        val likeBtn = view.findViewById<LinearLayout>(R.id.likeBtn)
-        val likeIcon = view.findViewById<ImageView>(R.id.likeIcon)
-        val postLikes = view.findViewById<TextView>(R.id.likeCtr)
-
-        val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
-        val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
-        val commentCtr = view.findViewById<TextView>(R.id.commCtr)
-
-
-        val saveBtn = view.findViewById<LinearLayout>(R.id.saveBtn)
-        val saveIcon = view.findViewById<ImageView>(R.id.saveIcon)
-        val saveTxt = view.findViewById<TextView>(R.id.saveTxt)
-
-
-
-        fun bind(el:PostData){
-            usertag.text = "@${el.uid}"
-            posttitle.text = el.title
-            posttext.text = el.post
-            postLikes.text = el.likes.toString()
-
-
-            //verifica immagini
-            var cache = ImageCache(20)
-
-            if (!el.image){
-                postImg.visibility = View.GONE
-            }else{
-                //aggiunta immagine
-                postImg.visibility=View.VISIBLE
-                //postImg.setImageBitmap(R.drawable.placeholder.bit)
-                val cachedbmp = cache.get(el.id)
-                if (cachedbmp!=null){
-                    postImg.setImageBitmap(cachedbmp)
-                }else{
-                    //richiesta immagine
-                    //Dispatchers->thread
-                    CoroutineScope(Dispatchers.IO).launch{
-                        val b64 = ImageDatabase.get(el.id)
-                        val bmp = ImageManager.decode(b64)
-                        cache.add(el.id, bmp)
-                        val currentPostId = el.id
-
-                        withContext(Dispatchers.Main){
-                            //torno in main thread
-                            if (adapterPosition!= RecyclerView.NO_POSITION && posts[adapterPosition].id==currentPostId){
-                                postImg.setImageBitmap(bmp)
-                            }
-                        }
-
-                    }
-                }
-            }
-
-            if (el.isLiked){
-                likeIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                likeIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
-            }
-            if (el.isSaved){
-                saveIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                saveIcon.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.desel))
-            }
-
-            usertag.setOnClickListener{
-                pch!!.openUser(el.uid)
-            }
-            itemView.setOnClickListener{
-                pch!!.openPost(el.id)
-            }
-            likeBtn.setOnClickListener{
-                pch!!.addLike(el.id)
-            }
-            commBtn.setOnClickListener{
-                pch!!.openComments(el.id)
-            }
-            saveBtn.setOnClickListener{
-                pch!!.savePost(el.id)
-            }
-
-            //verifica presenza link
-            //verifica tag
-
-            
-        }
-    }
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(posts[position])
     }
     override fun getItemCount(): Int = posts.size
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.postcard, parent, false)
-        return ViewHolder(view)
+        return PostViewHolder(view, context, pch, posts)
     }
 
 

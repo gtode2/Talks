@@ -14,6 +14,7 @@ import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.data.UserData
 import com.example.talks.interfaces.PostHandlerInterface
+import com.example.talks.adapters.PostViewHolder
 
 class PostCardSearchAdapter(
     var posts:MutableList<PostData>?=null,
@@ -30,7 +31,7 @@ class PostCardSearchAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
-            VIEW_TYPE_POST->PostVH(view.inflate(R.layout.postcard, parent,false))
+            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch, posts!!)
             VIEW_TYPE_USER->UserVH(view.inflate(R.layout.usercard, parent,false))
             VIEW_TYPE_EMPTY->EmptyVH(view.inflate(R.layout.searchnoitemfound, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
@@ -41,7 +42,7 @@ class PostCardSearchAdapter(
             is UserVH->{
                 holder.bind()
             }
-            is PostVH ->{
+            is PostViewHolder ->{
                 var index = if (user!=null) position-1 else position
                 holder.bind(posts!![index])
             }
@@ -84,64 +85,10 @@ class PostCardSearchAdapter(
 
         }
     }
-    inner class PostVH(view: View):RecyclerView.ViewHolder(view){
-        val usertag = view.findViewById<TextView>(R.id.userTag)
-        val posttext = view.findViewById<TextView>(R.id.postText)
-        val postImg = view.findViewById<ImageView>(R.id.postImageArea)
-        val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-        val likebtn = view.findViewById<ImageView>(R.id.likeIcon)
-        val commentbtn = view.findViewById<ImageView>(R.id.commIcon)
-            //comment in all
-            //edit in your
-        val savebtn = view.findViewById<ImageView>(R.id.saveIcon)
-            //save in all
-            //delete in your
+    /*
 
-        fun bind(el:PostData){
-            usertag.text = "@"+el.uid
-            posttext.text = el.post
-            postLikes.text = el.likes.toString()
-
-
-            //verifica immagini
-            if (!el.image){
-                postImg.visibility = View.GONE
-            }
-
-            if (el.isLiked){
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                likebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
-            }
-            if (el.isSaved){
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.lime))
-            }else{
-                savebtn.imageTintList= ColorStateList.valueOf(ContextCompat.getColor(context, R.color.black))
-            }
-
-            usertag.setOnClickListener{
-                pch!!.openUser(el.uid)
-            }
-            itemView.setOnClickListener{
-                pch!!.openPost(el.id)
-            }
-            likebtn.setOnClickListener{
-                pch!!.addLike(el.id)
-            }
-            commentbtn.setOnClickListener{
-                pch!!.openComments(el.id)
-            }
-            savebtn.setOnClickListener{
-                pch!!.savePost(el.id)
-            }
-
-            //verifica presenza link
-            //verifica tag
-
-            
-        }
-    }
+     */
     inner class EmptyVH(view: View): RecyclerView.ViewHolder(view){
 
     }
