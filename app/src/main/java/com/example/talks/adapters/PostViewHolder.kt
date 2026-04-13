@@ -51,6 +51,8 @@ class PostViewHolder(
     private val src = view.findViewById<ConstraintLayout>(R.id.sourceBlock)
     private val srcImg = view.findViewById<ImageView>(R.id.sourcePreview)
     private val srcUrl = view.findViewById<TextView>(R.id.sourceURL)
+    private val srcTitle = view.findViewById<TextView>(R.id.sourceTitle)
+
 
     private val cache = ImageCache(20)
 
@@ -86,15 +88,20 @@ class PostViewHolder(
         if (el.source==""){
             src.visibility = View.GONE
         }else{
+            //check anti recycle?
             CoroutineScope(Dispatchers.IO).launch {
                 //verifica url
                 val img = SourceManager.getFavicon(el.source)
-                if (img.startsWith("/")){
-                    //gestione errore
-                }else{
-                    srcImg.load(img)
+                withContext(Dispatchers.Main) {
+                    if (img.startsWith("/")){
+                        //gestione errore
+                    }else{
+                        srcImg.load(img)
+                    }
+                    srcUrl.text=el.source
                 }
-                //aggiungi info
+
+                //aggiungere titolo
             }
         }
 
