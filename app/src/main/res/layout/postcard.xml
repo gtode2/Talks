@@ -81,6 +81,46 @@
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"/>
 
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/sourceBlock"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                >
+
+                <ImageView
+                    android:id="@+id/sourcePreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="70dp"
+                    android:background="@drawable/prevbg"
+                    android:minWidth="70dp"
+                    android:maxWidth="134dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/sourceURL"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Esempio di url"
+                    android:textColor="@color/text"
+                    android:layout_marginLeft="15dp"
+                    app:layout_constraintStart_toEndOf="@+id/sourcePreview"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/sourceTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Esempio di url"
+                    android:textColor="@color/text"
+                    android:layout_marginLeft="15dp"
+                    app:layout_constraintStart_toEndOf="@+id/sourcePreview"
+                    app:layout_constraintTop_toBottomOf="@id/sourceURL"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!--aggiungere link-->
         </LinearLayout>
         <!--LL BUTTONS-->

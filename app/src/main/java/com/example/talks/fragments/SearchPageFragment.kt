@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +25,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val searchbtn = view.findViewById<Button>(R.id.searchbtn)
+        val searchbtn = view.findViewById<ImageView>(R.id.searchbtn)
         val searchbar = view.findViewById<EditText>(R.id.searchstring)
 
         val rv = view.findViewById<RecyclerView>(R.id.searchrv)
@@ -41,8 +42,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                 }
             }
             PostDatabase.getPosts("search", string){ postList->
-
-                Log.e("AA", postList.size.toString())
                 if (!isAdded) return@getPosts
                 val ctx = requireContext()
 

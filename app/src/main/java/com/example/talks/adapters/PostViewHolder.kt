@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
@@ -14,10 +15,14 @@ import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.managers.ImageCache
 import com.example.talks.managers.ImageManager
+import com.example.talks.managers.SourceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import coil.load
+import okhttp3.Dispatcher
+
 
 class PostViewHolder(
     private val view: View,
@@ -42,6 +47,10 @@ class PostViewHolder(
     private val saveBtn = view.findViewById<LinearLayout>(R.id.saveBtn)
     private val saveIcon = view.findViewById<ImageView>(R.id.saveIcon)
     private val saveTxt = view.findViewById<TextView>(R.id.saveTxt)
+
+    private val src = view.findViewById<ConstraintLayout>(R.id.sourceBlock)
+    private val srcImg = view.findViewById<ImageView>(R.id.sourcePreview)
+    private val srcUrl = view.findViewById<TextView>(R.id.sourceURL)
 
     private val cache = ImageCache(20)
 
@@ -71,6 +80,21 @@ class PostViewHolder(
                         }
                     }
                 }
+            }
+        }
+
+        if (el.source==""){
+            src.visibility = View.GONE
+        }else{
+            CoroutineScope(Dispatchers.IO).launch {
+                //verifica url
+                val img = SourceManager.getFavicon(el.source)
+                if (img.startsWith("/")){
+                    //gestione errore
+                }else{
+                    srcImg.load(img)
+                }
+                //aggiungi info
             }
         }
 
