@@ -8,4 +8,5 @@ interface PostHandlerInterface {
 
     fun editPost(postId:String=""){}
     fun deletePost(postId:String=""){}
+    fun openSource(src:String){}
 }

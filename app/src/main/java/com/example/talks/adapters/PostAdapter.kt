@@ -102,4 +102,8 @@ class PostAdapter(
         post.isSaved=false
         notifyItemChanged(0)
     }
+
+    override fun openSource(src: String) {
+        super.openSource(src)
+    }
 }

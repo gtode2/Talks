@@ -3,6 +3,7 @@ package com.example.talks
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -11,7 +12,6 @@ import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.fragments.SearchPageFragment
 import com.example.talks.fragments.AccountPageFragment
 import com.example.talks.fragments.LoginFragment
-import com.example.talks.fragments.UnloggedAccountPageFragment
 import com.example.talks.managers.SettingsManager
 import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
 
     fun btnreset(){
+        Log.e("AAA", "btnreset\n"+LastPage.getPage())
         when(LastPage.getPage()){
             "home"->homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
             "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
@@ -89,10 +90,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.frame, com.example.talks.fragments.AccountPageFragment())
                 .commit()
         }
-        if (from=="Login"){
-            lgd=true
-            LastPage.setPage("home")
-        }
+
         if (from=="sett"){
             supportFragmentManager.beginTransaction()
                 .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
@@ -150,6 +148,20 @@ class MainActivity : AppCompatActivity() {
         //enableEdgeToEdge()
 
         //RIMUOVERE LGD -> SPOSTARE TUTTO IN UserID.getUID
+    }
+
+    fun setBottomBar(page:String){
+        btnreset()
+        LastPage.setPage(page)
+        when(page){
+            "home"->homebtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "acc"->accbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "ntfy"->ntfybtn.imageTintList=ColorStateList.valueOf(col_act!!)
+        }
 
     }
+
+
 }

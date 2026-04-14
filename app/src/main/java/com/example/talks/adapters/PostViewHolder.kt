@@ -112,11 +112,13 @@ class PostViewHolder(
             ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
         )
 
+
         // click listener
         usertag.setOnClickListener { pch?.openUser(el.uid) }
         itemView.setOnClickListener { pch?.openPost(el.id) }
         likeBtn.setOnClickListener { pch?.addLike(el.id) }
         commBtn.setOnClickListener { pch?.openComments(el.id) }
         saveBtn.setOnClickListener { pch?.savePost(el.id) }
+        src.setOnClickListener { pch?.openSource(el.source) }
     }
 }

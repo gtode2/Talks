@@ -2,6 +2,7 @@
     <string name="app_name">Talks</string>
     <string name="all">All</string>
     <string name="followed">Followed</string>
+    <string name="followers">Followers</string>
 
     <!-- Login -->
 

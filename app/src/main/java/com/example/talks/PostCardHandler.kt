@@ -3,6 +3,7 @@ package com.example.talks
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.example.talks.adapters.PostCardAdapter
@@ -101,5 +102,10 @@ class PostCardHandler(
                 .setNegativeButton("Annulla", null)
                 .show()
         }
+    }
+
+    override fun openSource(link: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        contextProvider().startActivity(intent)
     }
 }

@@ -4,8 +4,7 @@ interface PostCard{
     fun openPost(postId:String)
     fun openUser(userId:String)
     //openuser funziona sia per utente che per tag
-    fun openLink(link:String){}
-    //openLink funziona per link in testo, per fonti e per click su immagine di anteprima del link
+    fun openSource(link:String){}
     //OPZIONALE
     fun  openImage(imgId:String){}
     //OPZIONALE

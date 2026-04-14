@@ -1,14 +1,17 @@
 package com.example.talks.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
+import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
@@ -32,9 +35,12 @@ class LoginFragment: Fragment(R.layout.login) {
                     val id = AccountDatabase.login(mail.text.toString(), password.text.toString())
                     //controllo id
                     UserID.setUID(id)
+
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.frame, HomePageFragment())
                         .commit()
+                    (activity as MainActivity).setBottomBar("home")
+
                 }
             }
         }
