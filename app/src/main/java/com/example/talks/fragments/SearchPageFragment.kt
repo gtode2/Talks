@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
@@ -18,6 +19,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import kotlinx.coroutines.launch
 
 class SearchPageFragment:Fragment(R.layout.searchpage) {
     var adapter: PostCardSearchAdapter?=null
@@ -36,15 +38,18 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
             rv.layoutManager= LinearLayoutManager(context)
             var ud: UserData?=null
 
-            UserDatabase.searchUser(string){res->
+
+            lifecycleScope.launch {
+                val res = UserDatabase.searchUser(string)
                 if (res.followers!=-1){
                     ud=res
+                    Log.e("AAA", "User", )
                 }
             }
             PostDatabase.getPosts("search", string){ postList->
                 if (!isAdded) return@getPosts
                 val ctx = requireContext()
-
+                Log.e("AAA", "Posts", )
                 //racchiudere in handler?
                 var liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
@@ -69,7 +74,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     ctx,
                     ud
                 )
-                if (postList.size!=0){
+                if (postList.isNotEmpty()){
                     adapter?.posts =postList.toMutableList()
                 }
                 val handler = PostCardHandler(

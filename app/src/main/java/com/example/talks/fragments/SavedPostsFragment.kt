@@ -10,7 +10,6 @@ import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.database.PostDatabase
-import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID

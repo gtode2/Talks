@@ -3,20 +3,16 @@ package com.example.talks.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.EmptyActivity
 import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
-import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
-import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
 

@@ -1,17 +1,18 @@
 package com.example.talks.fragments
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
-import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
@@ -22,6 +23,9 @@ class LoginFragment: Fragment(R.layout.login) {
         var mail = view.findViewById<EditText>(R.id.emailET)
         var password = view.findViewById<EditText>(R.id.pwET)
         var settingsBtn = view.findViewById<ImageView>(R.id.settingsBtn)
+        var googleBtn = view.findViewById<LinearLayout>(R.id.google)
+        var register = view.findViewById<Button>(R.id.register)
+
 
 
         loginBtn.setOnClickListener {
@@ -48,6 +52,12 @@ class LoginFragment: Fragment(R.layout.login) {
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame, SettingsFragment())
                 .commit()
+        }
+
+        register.setOnClickListener {
+            val intent = Intent(requireContext(), EmptyActivity::class.java)
+                .putExtra("screen", "register")
+            startActivity(intent)
         }
 
     }

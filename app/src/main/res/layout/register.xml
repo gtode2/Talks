@@ -6,103 +6,132 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
-    <Button
-        android:id="@+id/signupBtn"
+    <ImageView
+        android:id="@+id/backbtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        app:tint="@color/lime"/>
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/backbtn"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/text"
+            android:layout_marginTop="15dp"
+            android:text="Registrati"/>
+        <!--Bottom text?-->
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/google"
         android:layout_width="200dp"
         android:layout_height="55dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="520dp"
-        android:hint="@string/register"
-        />
-
-    <Button
-        android:id="@+id/backbtn"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/buttonbggrey"
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/googleg_standard_color_18"/>
+        <TextView
+            android:id="@+id/loginBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accedi con google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+    <TextView
+        android:id="@+id/or"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="600dp"
-        android:hint="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/google"
+        android:layout_marginTop="25dp"
+        android:textColor="@color/text"
+        android:textSize="15sp"
+        android:text="oppure"/>
 
-        />
 
     <EditText
+        android:id="@+id/email"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/nameET"
+        app:layout_constraintTop_toBottomOf="@id/or"
+        android:layout_marginTop="25dp"
         android:inputType="textEmailAddress"
-        android:hint="@string/name"
-        android:background="@color/background"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="170dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/surnameET"
-        android:hint="@string/surname"
-        android:background="@color/background"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="240dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/usernameET"
-        android:hint="@string/username"
-        android:background="@color/background"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="310dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/dateET"
-        android:inputType="date"
-        android:hint="@string/dob"
-        android:background="@color/background"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
-    <EditText
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="380dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:inputType="textEmailAddress"
-        android:id="@+id/emailET"
+
         android:hint="@string/email"
         android:background="@color/background"
         android:textColor="@color/text"
         android:textColorHint="@color/hint"/>
     <EditText
+        android:id="@+id/pw"
         android:layout_width="250dp"
         android:layout_height="50dp"
-        android:layout_marginTop="450dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/email"
+        android:layout_marginTop="30dp"
         android:inputType="textEmailAddress"
-        android:id="@+id/pwET"
         android:hint="@string/password"
         android:background="@color/background"
         android:textColor="@color/text"
         android:textColorHint="@color/hint"/>
+
+    <EditText
+        android:id="@+id/pwrep"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pw"
+        android:layout_marginTop="30dp"
+        android:inputType="textEmailAddress"
+        android:hint="@string/password"
+        android:background="@color/background"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"/>
+
+
+    <Button
+        android:id="@+id/contbtn"
+        android:layout_width="220dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pwrep"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:hint="@string/register"
+        android:gravity="center"
+        android:background="@drawable/buttonbgyellow"/>
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

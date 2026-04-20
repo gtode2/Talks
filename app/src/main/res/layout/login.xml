@@ -101,22 +101,36 @@
         android:textSize="20sp"
         android:background="@drawable/buttonbgyellow"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/loginBtn2"
+    <LinearLayout
+        android:id="@+id/google"
         android:layout_width="200dp"
         android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:text="Accedi con google"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8"
+        android:layout_marginTop="25dp"
         android:background="@drawable/buttonbggrey"
-        android:textColor="@color/white"/>
+        android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/googleg_standard_color_18"/>
+        <TextView
+            android:id="@+id/loginBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accedi con google"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView8"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -160,6 +174,14 @@
             android:textColorHint="@color/hint" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/register"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/google"
+        android:layout_marginTop="10dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

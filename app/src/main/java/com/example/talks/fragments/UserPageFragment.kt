@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
-import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.managers.SettingsManager

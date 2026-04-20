@@ -127,7 +127,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/articletemp"
-                android:tint="@color/lime"/>
+                app:tint="@color/lime"/>
         </LinearLayout>
         <TextView
             android:layout_width="0dp"
@@ -147,8 +147,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="10dp"
             android:src="@drawable/right"
-            android:tint="@color/text"
-            />
+            app:tint="@color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--Saved-->
@@ -177,7 +176,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/save"
-                android:tint="@color/lime"/>
+                app:tint="@color/lime"/>
         </LinearLayout>
         <TextView
             android:layout_width="0dp"
@@ -197,8 +196,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="10dp"
             android:src="@drawable/right"
-            android:tint="@color/text"
-            />
+            app:tint="@color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--Settings-->
@@ -227,7 +225,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/settings"
-                android:tint="@color/lime"/>
+                app:tint="@color/lime"/>
         </LinearLayout>
         <TextView
             android:layout_width="0dp"
@@ -247,8 +245,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="10dp"
             android:src="@drawable/right"
-            android:tint="@color/text"
-            />
+            app:tint="@color/white"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--Logout-->
@@ -277,7 +274,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/logout"
-                android:tint="@color/lime"/>
+                app:tint="@color/lime"/>
         </LinearLayout>
         <TextView
             android:layout_width="0dp"
@@ -297,7 +294,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginRight="10dp"
             android:src="@drawable/right"
-            android:tint="@color/text"
+            app:tint="@color/text"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

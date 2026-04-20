@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.talks.fragments.PostFSFragment
+import com.example.talks.fragments.RegisterFragment
 import com.example.talks.fragments.YourPostsFragment
 import com.example.talks.fragments.SavedPostsFragment
 import com.example.talks.fragments.UserPageFragment
@@ -35,7 +36,8 @@ class EmptyActivity:AppCompatActivity() {
                         putString("id",id)
                     }
                 }
-            }
+            },
+            "register" to { RegisterFragment() }
         )
 
         val fragment = map[screen]?.invoke()?:throw IllegalArgumentException()

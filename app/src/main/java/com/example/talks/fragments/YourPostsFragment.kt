@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
-import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.adapters.YourPostCardAdapter
 import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase

@@ -3,6 +3,7 @@ package com.example.talks.database
 import com.example.talks.data.UserData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class UserDatabase {
     //ottenere numero followers
@@ -103,6 +104,26 @@ class UserDatabase {
             //se non seguito -> return 1
             //errore -> return -1
         }
+        suspend fun searchUser(string:String): UserData = suspendCancellableCoroutine{cont->
+            FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(string)
+                .get()
+                .addOnSuccessListener { res->
+                    if (res.exists()){
+                        val fwd = res.get("followed") as Map<String, Boolean>
+                        val followers = (res.getLong("followers") ?: -1).toInt()
+                        cont.resume(UserData(string, followers, fwd.size)){}
+                    }else{
+                        cont.resume(UserData("", -1, 0)){}
+                    }
+                }
+                .addOnFailureListener {  }
+        }
+
+
+        /*
+        *
         fun searchUser(string:String, onResult:(UserData)->Unit){
             FirebaseFirestore.getInstance()
                 .collection("Users")
@@ -119,5 +140,6 @@ class UserDatabase {
                 }
                 .addOnFailureListener {  }
         }
+        * */
     }
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background">
+
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="55dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30sp"
+            android:textColor="@color/text"
+            android:layout_marginTop="15dp"
+            android:text="Crea un account"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:inputType="textEmailAddress"
+        android:hint="@string/name"
+        android:background="@color/background"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"/>
+    <EditText
+        android:id="@+id/surname"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        android:hint="@string/surname"
+        android:background="@color/background"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"/>
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/surname"
+        android:hint="@string/username"
+        android:background="@color/background"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"/>
+    <EditText
+        android:id="@+id/dob"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username"
+        android:inputType="date"
+        android:hint="@string/dob"
+        android:background="@color/background"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"/>
+
+    <Button
+        android:id="@+id/cont"
+        android:layout_width="220dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dob"
+        android:layout_marginTop="30dp"
+        android:textSize="20sp"
+        android:hint="@string/register"
+        android:gravity="center"
+        android:background="@drawable/buttonbgyellow"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

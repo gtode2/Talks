@@ -4,9 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
-import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.interfaces.PostCardYourPosts
@@ -15,7 +13,6 @@ import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
-import com.google.firebase.firestore.auth.User
 
 class PostCardHandler(
     private val contextProvider:() ->Context,

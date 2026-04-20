@@ -1,6 +1,5 @@
 package com.example.talks
 
-import android.content.Context
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
@@ -14,19 +13,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.talks.data.PostData
 import com.example.talks.database.ImageDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.database.TagDatabase
 import com.example.talks.managers.ImageManager
 import com.example.talks.managers.TagManager
 import com.example.talks.singleton.UserID
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.launch
 
 
