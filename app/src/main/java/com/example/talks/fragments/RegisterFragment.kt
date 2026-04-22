@@ -1,6 +1,7 @@
 package com.example.talks.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -41,21 +42,28 @@ class RegisterFragment:Fragment(R.layout.register) {
 
             //aggiungere verifica password e mail
 
-            if (pw.text != pwrep.text) {
+            if (pw.text.toString() != pwrep.text.toString()) {
+                Log.e("AAA", "pw diverse" )
                 valid = false
                 //errore password
             }
 
+            Log.e("AAA", valid.toString() )
 
 
             if (valid){
                 //registro utente
                 lifecycleScope.launch {
                     val res = AccountDatabase.register(mail.text.toString(), pw.text.toString())
-                    if (res){
+                    if (res!=""){
                         //procedo a creazione account
+                        val fragment = AccountCreationFragment().apply{
+                            arguments = Bundle().apply {
+                                putString("uid", res)
+                            }
+                        }
                         parentFragmentManager.beginTransaction()
-                            .replace(R.id.emptyframe, AccountCreationFragment())
+                            .replace(R.id.emptyframe, fragment)
                             .commit()
                     }else{
                         //errore

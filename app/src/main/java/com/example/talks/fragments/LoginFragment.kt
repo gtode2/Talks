@@ -29,6 +29,9 @@ class LoginFragment: Fragment(R.layout.login) {
 
 
         loginBtn.setOnClickListener {
+
+            //GESTIRE UTENTE REGISTRATO MA SENZA PROFILO
+
             if (mail.text.isEmpty()){
                 mail.error=getString(R.string.missingmail)
             }

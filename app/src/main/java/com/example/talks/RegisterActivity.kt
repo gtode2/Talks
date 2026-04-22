@@ -39,9 +39,9 @@ class RegisterActivity: AppCompatActivity() {
         val mail = findViewById<EditText>(R.id.email)
         val pw = findViewById<EditText>(R.id.pw)
         val pwrep = findViewById<EditText>(R.id.pwrep)
-        val register = findViewById<LinearLayout>(R.id.contbtn)
+        //val register = findViewById<LinearLayout>(R.id.contbtn)
 
-
+/*
         register.setOnClickListener {
             var valid = true
             if (mail.text.isEmpty()){
@@ -78,7 +78,8 @@ class RegisterActivity: AppCompatActivity() {
         back.setOnClickListener{
             finish()
         }
-        /*
+
+
         name = findViewById(R.id.nameET)
         surname = findViewById(R.id.surnameET)
         username = findViewById(R.id.usernameET)
@@ -193,7 +194,7 @@ class RegisterActivity: AppCompatActivity() {
                     }
             }
         }
-        */
 
+*/
     }
 }
