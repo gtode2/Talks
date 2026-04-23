@@ -13,13 +13,8 @@ class ImageDatabase {
                 cont.resume(false){}
             }
 
-            var coll:String
+            var coll:String = if(profile) "ProfilePictures" else "Images"
 
-            if (profile){
-                coll = "ProfilePictures"
-            }else{
-                coll = "Images"
-            }
 
             FirebaseFirestore.getInstance()
                 .collection(coll)
@@ -33,13 +28,19 @@ class ImageDatabase {
                     cont.resume(false){}
                 }
         }
-        suspend fun get(postId:String):String = suspendCancellableCoroutine{cont->
+        suspend fun get(id:String, profile:Boolean=false):String? = suspendCancellableCoroutine{cont->
+            var coll:String = if(profile) "ProfilePictures" else "Images"
+
             FirebaseFirestore.getInstance()
-                .collection("Images")
-                .document(postId)
+                .collection(coll)
+                .document(id)
                 .get()
                 .addOnSuccessListener { res ->
-                    cont.resume(res.get("img") as String) {}
+                    if (res.get("img")==null){
+                        cont.resume(null){}
+                    }else{
+                        cont.resume(res.get("img") as String) {}
+                    }
                 }
                 .addOnFailureListener {
                     //gestire errore

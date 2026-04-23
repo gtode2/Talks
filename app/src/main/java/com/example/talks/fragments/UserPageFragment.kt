@@ -4,6 +4,7 @@ package com.example.talks.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,12 @@ import com.example.talks.managers.SettingsManager
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.FollowedRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class UserPageFragment:Fragment(R.layout.userpage) {
@@ -41,11 +47,24 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         val followers = view.findViewById<TextView>(R.id.upflr)
         val followed = view.findViewById<TextView>(R.id.upfld)
         val followbtn = view.findViewById<Button>(R.id.followbutton)
+        val userImg = view.findViewById<ImageView>(R.id.userImg)
+
 
         if (!UserID.getUID().isNullOrBlank()){
             UID = UserID.getUID()
         }else{
             followbtn.visibility=View.GONE
+        }
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val bmp = ImageCache.get("profile${userid}")
+
+            withContext(Dispatchers.Main) {
+                if (bmp!=null){
+                    userImg.setImageBitmap(bmp)
+                }
+                //se non esiste immagine -> lascia default
+            }
         }
 
         var rv = view.findViewById<RecyclerView>(R.id.uprv)

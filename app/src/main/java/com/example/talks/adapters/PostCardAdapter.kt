@@ -15,7 +15,6 @@ import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostHandlerInterface
-import com.example.talks.managers.ImageCache
 import com.example.talks.managers.ImageManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

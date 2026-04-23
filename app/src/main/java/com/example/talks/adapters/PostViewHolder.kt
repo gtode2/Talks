@@ -2,6 +2,7 @@ package com.example.talks.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -13,7 +14,7 @@ import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostCardHomepage
-import com.example.talks.managers.ImageCache
+import com.example.talks.singleton.ImageCache
 import com.example.talks.managers.ImageManager
 import com.example.talks.managers.SourceManager
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +33,8 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(view) {
 
     private val usertag = view.findViewById<TextView>(R.id.userTag)
+    private val userImg = view.findViewById<ImageView>(R.id.userImg)
+
     private val posttitle = view.findViewById<TextView>(R.id.postTitle)
     private val posttext = view.findViewById<TextView>(R.id.postText)
     private val postImg = view.findViewById<ImageView>(R.id.postImageArea)
@@ -54,7 +57,6 @@ class PostViewHolder(
     private val srcTitle = view.findViewById<TextView>(R.id.sourceTitle)
 
 
-    private val cache = ImageCache(20)
 
     fun bind(el: PostData) {
         usertag.text = "@${el.uid}"
@@ -67,20 +69,34 @@ class PostViewHolder(
             postImg.visibility = View.GONE
         } else {
             postImg.visibility = View.VISIBLE
-            val cachedBmp = cache.get(el.id)
-            if (cachedBmp != null) {
-                postImg.setImageBitmap(cachedBmp)
-            } else {
-                CoroutineScope(Dispatchers.IO).launch {
-                    val b64 = ImageDatabase.get(el.id)
-                    val bmp = ImageManager.decode(b64)
-                    cache.add(el.id, bmp)
-                    val currentPostId = el.id
-                    withContext(Dispatchers.Main) {
-                        if (adapterPosition != RecyclerView.NO_POSITION && posts[adapterPosition].id == currentPostId) {
+
+            CoroutineScope(Dispatchers.IO).launch {
+                val bmp = ImageCache.get("image${el.id}")
+                val currentPostId = el.id
+                withContext(Dispatchers.Main) {
+                    if (adapterPosition != RecyclerView.NO_POSITION && posts[adapterPosition].id == currentPostId) {
+                        if (bmp!=null){
                             postImg.setImageBitmap(bmp)
+                        }else{
+                            //in caso di errore, se non trova immagine rimuove blocco
+                            postImg.visibility = View.GONE
                         }
+
                     }
+                }
+            }
+        }
+
+        //gestione profile picture
+        CoroutineScope(Dispatchers.IO).launch {
+            val bmp = ImageCache.get("profile${el.uid}")
+            val currentPostId = el.id
+            withContext(Dispatchers.Main) {
+                if (adapterPosition != RecyclerView.NO_POSITION && posts[adapterPosition].id == currentPostId) {
+                    if (bmp!=null){
+                        userImg.setImageBitmap(bmp)
+                    }
+                    //se non esiste immagine -> lascia default
                 }
             }
         }
