@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
@@ -13,6 +14,9 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: PostCardAdapter?=null
@@ -38,35 +42,40 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
         val rv=Fragview!!.findViewById<RecyclerView>(R.id.savedRV)
         rv.layoutManager = LinearLayoutManager(context)
 
-        PostDatabase.getPosts("saved", uid!!){postList->
-            var liked = LikeRepository.getLikes()
-            if (!liked.isEmpty()){
-                postList.forEach{ el->
-                    if (liked.containsKey(el.id)){
-                        el.isLiked=true
-                    }
-                }
-            }
-            val saved = BookmarkRepository.getSaved()
-            if (!saved.isEmpty()){
-                postList.forEach{el->
-                    if (saved.containsKey(el.id)){
-                        el.isSaved=true
-                    }
-                }
-            }
+        lifecycleScope.launch(Dispatchers.IO) {
+            val postList = PostDatabase.getPosts("saved", uid!!)
 
-            adapter = PostCardAdapter(
-                postList.toMutableList(),
-                null,
-                requireContext()
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter=adapter
-            )
-            adapter!!.pch=handler
-            rv.adapter=adapter
+            withContext(Dispatchers.Main){
+                var liked = LikeRepository.getLikes()
+                if (!liked.isEmpty()){
+                    postList.forEach{ el->
+                        if (liked.containsKey(el.id)){
+                            el.isLiked=true
+                        }
+                    }
+                }
+                val saved = BookmarkRepository.getSaved()
+                if (!saved.isEmpty()){
+                    postList.forEach{el->
+                        if (saved.containsKey(el.id)){
+                            el.isSaved=true
+                        }
+                    }
+                }
+
+                adapter = PostCardAdapter(
+                    postList.toMutableList(),
+                    null,
+                    requireContext()
+                )
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter
+                )
+                adapter!!.pch=handler
+                rv.adapter=adapter
+
+            }
         }
     }
 

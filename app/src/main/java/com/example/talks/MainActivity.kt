@@ -57,7 +57,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun logout(){
-        lgd=false
         LastPage.setPage("home")
         UserID.setUID(null)
         accountpage()
@@ -126,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         cpstbtn.setOnClickListener{
-            if (lgd){
+            if (UserID.getUID()!=null){
                 val intent = Intent(this, PostCreationActivity::class.java)
                 startActivity(intent)
             }

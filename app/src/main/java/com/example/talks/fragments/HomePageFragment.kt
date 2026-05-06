@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.EmptyActivity
@@ -15,6 +16,9 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
@@ -39,40 +43,44 @@ class HomePageFragment:Fragment(R.layout.homepage) {
 
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
-        PostDatabase.getPosts {postList->
-            if (!isAdded) return@getPosts
-            val ctx = requireContext()
-            var liked = LikeRepository.getLikes()
-            if (!liked.isEmpty()){
-                postList.forEach{ el->
-                    if (liked.containsKey(el.id)){
-                        el.isLiked=true
+        lifecycleScope.launch(Dispatchers.IO) {
+            val postList = PostDatabase.getPosts()
+            withContext(Dispatchers.Main){
+                //if (!isAdded) return@getPosts
+                val ctx = requireContext()
+                var liked = LikeRepository.getLikes()
+                if (!liked.isEmpty()){
+                    postList.forEach{ el->
+                        if (liked.containsKey(el.id)){
+                            el.isLiked=true
+                        }
                     }
                 }
-            }
-            val saved = BookmarkRepository.getSaved()
-            if (!saved.isEmpty()){
-                postList.forEach{el->
-                    if (saved.containsKey(el.id)){
-                        el.isSaved=true
+                val saved = BookmarkRepository.getSaved()
+                if (!saved.isEmpty()){
+                    postList.forEach{el->
+                        if (saved.containsKey(el.id)){
+                            el.isSaved=true
+                        }
                     }
                 }
+
+                adapter = PostCardAdapter(
+                    postList.toMutableList(),
+                    null,
+                    ctx
+                )
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter,
+                    null,
+                    openUser = {userid->openUser(userid)}
+                )
+                adapter!!.pch=handler
+
+                recyclerViewHomepage.adapter = adapter
+
             }
-
-            adapter = PostCardAdapter(
-                postList.toMutableList(),
-                null,
-                ctx
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter=adapter,
-                null,
-                openUser = {userid->openUser(userid)}
-            )
-            adapter!!.pch=handler
-
-            recyclerViewHomepage.adapter = adapter
         }
     }
     override fun onResume() {

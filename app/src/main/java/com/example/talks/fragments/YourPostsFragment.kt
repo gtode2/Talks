@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
@@ -13,6 +14,9 @@ import com.example.talks.data.CommentData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class YourPostsFragment:Fragment(R.layout.yourposts) {
     var adapter: YourPostCardAdapter?=null
@@ -38,24 +42,24 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         val rv = Fragview!!.findViewById<RecyclerView>(R.id.yourRV)
         rv.layoutManager = LinearLayoutManager(context)
 
-        PostDatabase.getPosts("user", uid!!){postList->
-            //passare parametro per generazione pagina senza like o save ma solo edit e remove
-            Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
-            adapter = YourPostCardAdapter(
-                postList.toMutableList(),
-                null,
-                requireContext()
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter=adapter,
-                openEdit = {postId->editPost(postId)}
-            )
-            adapter!!.pch=handler
-            rv.adapter=adapter
-
+        lifecycleScope.launch(Dispatchers.IO) {
+            val postList = PostDatabase.getPosts("user", uid!!)
+            withContext(Dispatchers.Main){
+                Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
+                adapter = YourPostCardAdapter(
+                    postList.toMutableList(),
+                    null,
+                    requireContext()
+                )
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter,
+                    openEdit = {postId->editPost(postId)}
+                )
+                adapter!!.pch=handler
+                rv.adapter=adapter
+            }
         }
-
     }
     fun editPost(postId:String){
         parentFragmentManager.beginTransaction()

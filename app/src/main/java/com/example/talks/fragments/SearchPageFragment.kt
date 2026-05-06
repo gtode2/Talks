@@ -19,7 +19,9 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchPageFragment:Fragment(R.layout.searchpage) {
     var adapter: PostCardSearchAdapter?=null
@@ -45,46 +47,50 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     ud=res
                     Log.e("AAA", "User", )
                 }
-            }
-            PostDatabase.getPosts("search", string){ postList->
-                if (!isAdded) return@getPosts
-                val ctx = requireContext()
-                Log.e("AAA", "Posts", )
-                //racchiudere in handler?
-                var liked = LikeRepository.getLikes()
-                if (!liked.isEmpty()){
-                    postList.forEach{ el->
-                        if (liked.containsKey(el.id)){
-                            el.isLiked=true
-                        }
-                    }
-                }
-                val saved = BookmarkRepository.getSaved()
-                if (!saved.isEmpty()){
-                    postList.forEach{el->
-                        if (saved.containsKey(el.id)){
-                            el.isSaved=true
-                        }
-                    }
-                }
 
-                adapter = PostCardSearchAdapter(
-                    null,
-                    null,
-                    ctx,
-                    ud
-                )
-                if (postList.isNotEmpty()){
-                    adapter?.posts =postList.toMutableList()
+
+                withContext(Dispatchers.IO){
+                    val postList = PostDatabase.getPosts("search", string)
+                    withContext(Dispatchers.Main){
+                        val ctx = requireContext()
+                        Log.e("AAA", "Posts", )
+                        //racchiudere in handler?
+                        var liked = LikeRepository.getLikes()
+                        if (!liked.isEmpty()){
+                            postList.forEach{ el->
+                                if (liked.containsKey(el.id)){
+                                    el.isLiked=true
+                                }
+                            }
+                        }
+                        val saved = BookmarkRepository.getSaved()
+                        if (!saved.isEmpty()){
+                            postList.forEach{el->
+                                if (saved.containsKey(el.id)){
+                                    el.isSaved=true
+                                }
+                            }
+                        }
+
+                        adapter = PostCardSearchAdapter(
+                            null,
+                            null,
+                            ctx,
+                            ud
+                        )
+                        if (postList.isNotEmpty()){
+                            adapter?.posts =postList.toMutableList()
+                        }
+                        val handler = PostCardHandler(
+                            contextProvider = {requireContext()},
+                            adapter=adapter,
+                            null,
+                            null
+                        )
+                        adapter!!.pch=handler
+                        rv.adapter = adapter
+                    }
                 }
-                val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter,
-                    null,
-                    null
-                )
-                adapter!!.pch=handler
-                rv.adapter = adapter
             }
         }
 

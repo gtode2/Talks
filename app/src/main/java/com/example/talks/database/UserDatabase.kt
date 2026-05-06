@@ -10,7 +10,7 @@ class UserDatabase {
     //ottenere numero followed
     //eventualmente altre informazioni
     companion object{
-        fun getUser(uid:String, onResult:(MutableMap<String, Int>)->Unit) {
+        suspend fun getUser(uid:String):MutableMap<String,String> = suspendCancellableCoroutine{cont->
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(uid)
@@ -19,29 +19,30 @@ class UserDatabase {
 
                     if (res.exists()) {
                         //0 = utente trovato
-                        //devo restituire followers e followed
-                        val map = mutableMapOf<String, Int>()
+                        val map = mutableMapOf<String, String>()
                         val fws:Long = res.get("followers") as Long
-                        map["fw"] = fws.toInt()
+                        map["fw"] = fws.toString()
                         val fwd = res.get("followed") as Map<String, Boolean>
-                        map["fd"] = fwd.size
-                        onResult(map)
+                        map["fd"] = fwd.size.toString()
+                        map["name"] = res.get("name").toString()
+                        map["surname"] = res.get("surname").toString()
+                        cont.resume(map){}
                     } else {
                         //1 = utente non trovato
-                        val map = mutableMapOf<String, Int>()
-                        map["fw"] = -1
-                        onResult(map)
+                        val map = mutableMapOf<String, String>()
+                        map["fw"] = "-1"
+                        cont.resume(map){}
                     }
 
                 }
                 .addOnFailureListener {
                     //-1 = errore
-                    val map = mutableMapOf<String, Int>()
-                    map["fw"] = -2
-                    onResult(map)
+                    val map = mutableMapOf<String, String>()
+                    map["fw"] = "-2"
+                    cont.resume(map){}
                 }
         }
-        fun follow(uid:String, user:String, onResult:(Int)->Unit){
+        suspend fun follow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->
             val db = FirebaseFirestore.getInstance()
             val userdb = db.collection("Users").document(uid)
             val profileUser = db.collection("Users").document(user)
@@ -61,21 +62,21 @@ class UserDatabase {
                 //incremento
                 tr.update(profileUser, "followers", FieldValue.increment(1))
             }.addOnSuccessListener {
-                onResult(0)
+                cont.resume(0){}
             }.addOnFailureListener {
                 if (ex){
                     //se esiste già
-                    onResult(1)
+                    cont.resume(1){}
                 }else{
                     //errore
-                    onResult(-1)
+                    cont.resume(-1){}
                 }
             }
             //se non seguito -> aggiungi -> return 0
             //se seguito -> return 1
             //errore -> return -1
         }
-        fun unfollow(uid:String, user:String, onResult: (Int)->Unit){
+        suspend fun unfollow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->
             val db = FirebaseFirestore.getInstance()
             val userdb = db.collection("Users").document(uid)
             val profileUser = db.collection("Users").document(user)
@@ -91,12 +92,12 @@ class UserDatabase {
                 tr.update(userdb, "followed.$user", FieldValue.delete())
                 tr.update(profileUser, "followers", FieldValue.increment(-1))
             }.addOnSuccessListener{
-                onResult(0)
+                cont.resume(0){}
             }.addOnFailureListener {
                 if (!ex){
-                    onResult(1)
+                    cont.resume(1){}
                 }else{
-                    onResult(-1)
+                    cont.resume(-1){}
                 }
             }
             //verifica utente seguito

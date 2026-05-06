@@ -1,8 +1,9 @@
 package com.example.talks.repository
 
-import com.example.talks.database.LikeDatabase
+import com.example.talks.database.UserDatabase
+import com.example.talks.singleton.UserID
 
-object FollowedRepository {
+object FollowRepository {
     private var followedAccounts = mutableMapOf<String, Boolean>()
 
     fun loadFollowed(users:Map<String, Boolean>){
@@ -42,10 +43,38 @@ object FollowedRepository {
     fun isFollowed(id:String): Boolean{
         return followedAccounts.containsKey(id)
     }
-    fun addFollowed(userid:String){
-        followedAccounts.put(userid, true)
+    suspend fun addFollow(userid:String):Int {
+        //-1 -> errore
+        //-2 -> uid non trovato -> manda a homepage
+        //0 -> aggiunto
+        //1 -> rimosso
+
+        if (UserID.getUID() == null) {
+            return -2
+        }
+        if (!followedAccounts.contains(userid)) {
+            //aggiungi follow
+
+            val res = UserDatabase.follow(UserID.getUID()!!, userid)
+            if (res!=-1){
+                followedAccounts.put(userid, true)
+                return 0
+            }else{
+                return -1
+                TODO("gestione errore")
+            }
+        }else {
+            //rimuovi follow
+
+            val res = UserDatabase.unfollow(UserID.getUID()!!, userid)
+            if (res != -1) {
+                followedAccounts.remove(userid)
+                return 1
+            } else {
+                return -1
+                TODO("gestione errore")
+            }
+        }
     }
-    fun removeFollowed(userid:String){
-        followedAccounts.remove(userid)
-    }
+
 }

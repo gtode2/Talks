@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
@@ -16,7 +17,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.managers.SettingsManager
 import com.example.talks.repository.BookmarkRepository
-import com.example.talks.repository.FollowedRepository
+import com.example.talks.repository.FollowRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
@@ -35,8 +36,11 @@ class UserPageFragment:Fragment(R.layout.userpage) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userid = arguments?.getString("id")
-        settingsManager = SettingsManager(requireContext())
-        settingsManager.applyLang()
+
+        //capire se serve tenere applyLang()
+
+        //settingsManager = SettingsManager(requireContext())
+        //settingsManager.applyLang()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -56,7 +60,7 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             followbtn.visibility=View.GONE
         }
 
-        CoroutineScope(Dispatchers.IO).launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             val bmp = ImageCache.get("profile${userid}")
 
             withContext(Dispatchers.Main) {
@@ -70,61 +74,83 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         var rv = view.findViewById<RecyclerView>(R.id.uprv)
         rv.layoutManager=LinearLayoutManager(context)
 
-        UserDatabase.getUser(userid!!){ res->
-            if (res.getValue("fw")>-1) {
-                followed.text = res.getValue("fd").toString()
-                followers.text = res.getValue("fw").toString()
-            }
-        }
-        PostDatabase.getPosts("user", userid!!){ postList->
-            var liked = LikeRepository.getLikes()
-            if (!liked.isEmpty()){
-                postList.forEach{ el->
-                    if (liked.containsKey(el.id)){
-                        el.isLiked=true
-                    }
-                }
-            }
-            val saved = BookmarkRepository.getSaved()
-            if (!saved.isEmpty()){
-                postList.forEach{el->
-                    if (saved.containsKey(el.id)){
-                        el.isSaved=true
-                    }
-                }
+
+        lifecycleScope.launch {
+            val user = UserDatabase.getUser(userid!!)
+            if (user.getValue("fw").toInt()>-1) {
+                followed.text = user.getValue("fd")
+                followers.text = user.getValue("fw")
             }
 
-            adapter = PostCardAdapter(
-                postList.toMutableList(),
-                null,
-                requireContext()
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter = adapter,
-                null,
-                null
-            )
-            adapter!!.pch=handler
+            withContext(Dispatchers.IO){
+                val postList = PostDatabase.getPosts("user", userid!!)
+                withContext(Dispatchers.Main){
+                    var liked = LikeRepository.getLikes()
+                    if (!liked.isEmpty()){
+                        postList.forEach{ el->
+                            if (liked.containsKey(el.id)){
+                                el.isLiked=true
+                            }
+                        }
+                    }
+                    val saved = BookmarkRepository.getSaved()
+                    if (!saved.isEmpty()){
+                        postList.forEach{el->
+                            if (saved.containsKey(el.id)){
+                                el.isSaved=true
+                            }
+                        }
+                    }
 
-            rv.adapter=adapter
+                    adapter = PostCardAdapter(
+                        postList.toMutableList(),
+                        null,
+                        requireContext()
+                    )
+                    val handler = PostCardHandler(
+                        contextProvider = {requireContext()},
+                        adapter = adapter,
+                        null,
+                        null
+                    )
+                    adapter!!.pch=handler
+
+                    rv.adapter=adapter
+                }
+            }
         }
+
 
         //verifico se utente è seguito o no
-        if(FollowedRepository.isFollowed(userid!!)){
+        if(FollowRepository.isFollowed(userid!!)){
             followbtn.text="unfollow"
         }else{
             followbtn.text="follow"
         }
+
+
         followbtn.setOnClickListener {
-            //verifica se esiste o no
-            if(FollowedRepository.isFollowed(userid!!)) {
+            lifecycleScope.launch {
+                val res = FollowRepository.addFollow(userid!!)
+                //gestire bottone
+                if (res==0){
+                    followbtn.text = "followed"
+                    followers.text = (followers.text.toString().toInt() + 1).toString()
+                    //NON CORRETTO -> SE ERA FOLLOWED -> NON MODIFICO
+                }else if(res==1){
+                    followbtn.text = "follow"
+                    followers.text = (followers.text.toString().toInt() - 1).toString()
+                    //NON CORRETTO -> SE ERA UNFOLLOWED -> NON MODIFICO
+                }
+            }
+            /*
+            if(FollowRepository.isFollowed(userid!!)) {
                 UserDatabase.unfollow(UID!!, userid!!) { res ->
                     if (res != -1) {
                         //rimozione eseguita
                         //ridurre count
                         followers.text = (followers.text.toString().toInt() - 1).toString()
-                        FollowedRepository.removeFollowed(userid!!)
+                        FollowRepository.removeFollowed(userid!!)
                         //modifica bottone
                         followbtn.text = "follow"
                     }
@@ -135,12 +161,12 @@ class UserPageFragment:Fragment(R.layout.userpage) {
                         //aggiunta eseguita
                         //aumentare count
                         followers.text = (followers.text.toString().toInt() + 1).toString()
-                        FollowedRepository.addFollowed(userid!!)
+                        FollowRepository.addFollowed(userid!!)
                         //modifica bottone
                         followbtn.text = "unfollow"
                     }
                 }
-            }
+            }}*/
         }
 
     }

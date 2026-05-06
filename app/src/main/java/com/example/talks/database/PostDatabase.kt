@@ -13,7 +13,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class PostDatabase {
     companion object{
-        fun getPosts(type:String="all", search: String="-1",  onResult: (List<PostData>) -> Unit) {
+        suspend fun getPosts(type:String="all", search: String="-1"):List<PostData> = suspendCancellableCoroutine{cont->
             val pl = mutableListOf<PostData>()
             //all
             //followed accounts
@@ -31,7 +31,7 @@ class PostDatabase {
                                 post.id = document.id
                                 pl.add(post)
                             }
-                            onResult(pl)
+                            cont.resume(pl){}
                         }
                 }
                 "user"->{
@@ -47,28 +47,42 @@ class PostDatabase {
                                 post.id = document.id
                                 pl.add(post)
                             }
-                            onResult(pl)
+                            cont.resume(pl){}
                         }.addOnFailureListener {e->
 
                         }
                 }
                 "saved"->{
-                    getSaved(search){res->
-                        FirebaseFirestore.getInstance()
-                            .collection("Posts")
-                            .whereIn(FieldPath.documentId(), res)
-                            .get()
-                            .addOnSuccessListener { result->
-                                for (document in result){
-                                    var post = document.toObject(PostData::class.java)
-                                    post.id = document.id
-                                    pl.add(post)
-                                }
-                                onResult(pl)
-                            }.addOnFailureListener {
+                    //
 
+                    FirebaseFirestore.getInstance()
+                        .collection("Users")
+                        .document(search)
+                        .get()
+                        .addOnSuccessListener { res ->
+                            val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
+                            var list = savedPosts.keys.toList()
+
+                            if (list.isNotEmpty()){
+                                FirebaseFirestore.getInstance()
+                                    .collection("Posts")
+                                    .whereIn(FieldPath.documentId(), list)
+                                    .get()
+                                    .addOnSuccessListener { result->
+                                        for (document in result){
+                                            var post = document.toObject(PostData::class.java)
+                                            post.id = document.id
+                                            pl.add(post)
+                                        }
+                                        cont.resume(pl){}
+                                    }.addOnFailureListener {
+                                        //gestire errore
+                                    }
+                            }else{
+                                val el = emptyList<PostData>()
+                                cont.resume(el){}
                             }
-                    }
+                        }
                 }
                 "search"->{
                     FirebaseFirestore.getInstance()
@@ -90,7 +104,7 @@ class PostDatabase {
                                 pl.add(post)
                             }
 
-                            onResult(pl)
+                            cont.resume(pl){}
                         }
                         .addOnFailureListener {e->
                             Log.e("A", "getPosts: ",e )

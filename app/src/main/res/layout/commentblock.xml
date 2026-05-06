@@ -24,11 +24,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp">
-            <ImageView
-                android:id="@+id/commentUserImg"
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/userImg"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="15dp"/>
+                android:layout_marginLeft="15dp"
+                app:shapeAppearanceOverlay="@style/circleImageView"
+                android:scaleType="centerCrop"/>
             <TextView
                 android:id="@+id/commentUserTag"
                 android:layout_width="match_parent"
