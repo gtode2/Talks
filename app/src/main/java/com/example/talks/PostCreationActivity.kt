@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,14 +31,14 @@ class PostCreationActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.postcreation)
 
-        val title = findViewById<EditText>(R.id.titleet)
-        val post = findViewById<EditText>(R.id.postet)
+        val title = findViewById<EditText>(R.id.postTitle)
+        val post = findViewById<EditText>(R.id.postText)
         val source = findViewById<EditText>(R.id.srcPC)
-        val backBtn = findViewById<Button>(R.id.pcBackbtn)
+        val backBtn = findViewById<ImageView>(R.id.close)
         val rem = findViewById<TextView>(R.id.remchcount)
-        val imgbtn = findViewById<Button>(R.id.imgbtn)
+        val imgbtn = findViewById<LinearLayout>(R.id.selectImage)
         val prev = findViewById<ImageView>(R.id.imgprev)
-        val createPost = findViewById<Button>(R.id.pcContinue)
+        val createPost = findViewById<Button>(R.id.postBtn)
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {

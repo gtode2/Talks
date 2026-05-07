@@ -52,7 +52,7 @@ class LoginActivity: AppCompatActivity() {
                                         userTag = doc.id
                                     }
                                     Toast.makeText(this,"Login eseguito", Toast.LENGTH_SHORT).show()
-                                    LikeRepository.loadLikes(userTag)
+                                    //LikeRepository.loadLikes(userTag)
                                     val intent = Intent(this, MainActivity::class.java)
                                     intent.putExtra("From","Login")
                                     UserID.setUID(userTag)

@@ -5,11 +5,10 @@ import com.example.talks.database.LikeDatabase
 object LikeRepository {
     private var likedPosts = mutableMapOf<String, Boolean>()
 
-    fun loadLikes(uid:String){
+    suspend fun loadLikes(uid:String){
         //chiamata a LikeDatabase e poi memorizza
-        LikeDatabase.init(uid){ likesMap ->
-            likedPosts = likesMap
-        }
+        val likesMap = LikeDatabase.init(uid)
+        likedPosts = likesMap
     }
 
     fun getLikes():MutableMap<String, Boolean>{

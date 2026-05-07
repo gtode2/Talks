@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -24,14 +25,14 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val title = view.findViewById<EditText>(R.id.titleet)
-        val text = view.findViewById<EditText>(R.id.postet)
+        val title = view.findViewById<EditText>(R.id.postTitle)
+        val text = view.findViewById<EditText>(R.id.postText)
         val remch = view.findViewById<TextView>(R.id.remchcount) //remaining characters count
         val srctext = view.findViewById<EditText>(R.id.srcPC)
-        val imgbtn = view.findViewById<Button>(R.id.imgbtn)
+        val imgbtn = view.findViewById<LinearLayout>(R.id.selectImage)
         val imgprev = view.findViewById<ImageView>(R.id.imgprev)
-        val backbtn = view.findViewById<Button>(R.id.pcBackbtn)
-        val contbtn = view.findViewById<Button>(R.id.pcContinue)
+        val backbtn = view.findViewById<ImageView>(R.id.close)
+        val contbtn = view.findViewById<Button>(R.id.postBtn)
 
         //estraggo uid
         uid = UserID.getUID()

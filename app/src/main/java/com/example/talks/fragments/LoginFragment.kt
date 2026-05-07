@@ -13,6 +13,7 @@ import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
+import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ class LoginFragment: Fragment(R.layout.login) {
                     val id = AccountDatabase.login(mail.text.toString(), password.text.toString())
                     //controllo id
                     UserID.setUID(id)
-
+                    LikeRepository.loadLikes(id)
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.frame, HomePageFragment())
                         .commit()

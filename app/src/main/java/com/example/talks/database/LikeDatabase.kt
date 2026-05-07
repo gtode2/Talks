@@ -3,10 +3,11 @@ package com.example.talks.database
 import com.example.talks.repository.BookmarkRepository
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class LikeDatabase {
     companion object{
-        fun init(uid:String, onResult:(MutableMap<String, Boolean>) ->Unit){
+        suspend fun init(uid:String):MutableMap<String, Boolean> = suspendCancellableCoroutine{cont->
             //richiede file likes utente
             FirebaseFirestore.getInstance()
                 .collection("Users")
@@ -18,7 +19,7 @@ class LikeDatabase {
                     //sfrutto query likes per non dover caricare due volte gli stessi dati
                     val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
                     BookmarkRepository.loadSaved(savedPosts)
-                    onResult(likedPosts.toMutableMap())
+                    cont.resume(likedPosts.toMutableMap()){}
                 }
         }
         fun addLike(uid:String, postid:String, onResult: (Int) -> Unit){
