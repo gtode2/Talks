@@ -57,7 +57,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/text"
-                android:text="TITOLO DI ESEMPIO"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 

@@ -46,7 +46,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         lifecycleScope.launch(Dispatchers.IO) {
             val postList = PostDatabase.getPosts()
             withContext(Dispatchers.Main){
-                //if (!isAdded) return@getPosts
                 val ctx = requireContext()
                 var liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
@@ -92,9 +91,9 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 //like prec != like attuale
                 //se precedente è liked -> attuale no
                 if (lp.liked){
-                    adapter!!.decrLike(lp.id)
+                    adapter?.decrLike(lp.id)
                 }else{
-                    adapter!!.incrLike(lp.id)
+                    adapter?.incrLike(lp.id)
                 }
             }
 
@@ -102,9 +101,9 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 //save prec != save attuale
                 //se precedente è saved -> attuale no
                 if (lp.saved){
-                    adapter!!.unsavePost(lp.id)
+                    adapter?.unsavePost(lp.id)
                 }else{
-                    adapter!!.savePost(lp.id)
+                    adapter?.savePost(lp.id)
                 }
             }
         }

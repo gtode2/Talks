@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
 
 
     fun btnreset(){
-        Log.e("AAA", "btnreset\n"+LastPage.getPage())
         when(LastPage.getPage()){
             "home"->homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
             "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
@@ -85,9 +84,8 @@ class MainActivity : AppCompatActivity() {
         val from = intent.getStringExtra("From")?:0
         if (from=="user"){
             //caricamento fragment utente
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, com.example.talks.fragments.AccountPageFragment())
-                .commit()
+            LastPage.setPage("sett")
+            accountpage()
         }
 
         if (from=="sett"){
@@ -161,6 +159,4 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-
-
 }

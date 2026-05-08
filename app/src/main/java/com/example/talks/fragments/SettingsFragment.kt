@@ -1,20 +1,25 @@
 package com.example.talks.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.addCallback
 import androidx.core.app.ActivityCompat.recreate
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.MainActivity
+import com.example.talks.PostCreationActivity
 import com.example.talks.R
 import com.example.talks.managers.SettingsManager
+import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -33,16 +38,38 @@ class SettingsFragment:Fragment(R.layout.settings) {
         settingsManager = SettingsManager(requireContext())
         settingsManager.applyLang()
 
-        var back = view.findViewById<Button>(R.id.settcancbtn)
+        val accountSettings = view.findViewById<LinearLayout>(R.id.accountSettings)
+        val profilePicture = view.findViewById<LinearLayout>(R.id.profilePicture)
+
+        if (UserID.getUID()==null){
+            accountSettings.alpha=0.5f
+            accountSettings.isEnabled=false
+            profilePicture.alpha=0.5f
+            profilePicture.isEnabled=false
+        }
+
+        accountSettings.setOnClickListener {
+            Log.e("AAA", "click", )
+        }
+        profilePicture.setOnClickListener {
+            Log.e("AAA", "click", )
+        }
+
+
+
+        var back = view.findViewById<ImageView>(R.id.close)
         back.setOnClickListener{
             //ricreare activity -> intent = sett
-            requireActivity().intent.putExtra("From", "user")
-            requireActivity().recreate()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+                .putExtra("From", "user")
+            startActivity(intent)
+            //requireActivity().finish()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             //ricreare activity -> intent = sett
-            requireActivity().intent.putExtra("From", "user")
-            requireActivity().recreate()
+            //requireActivity().intent.putExtra("From", "user")
+            //requireActivity().recreate()
+            requireActivity().finish()
         }
 
         btnIt = view.findViewById(R.id.btnIt)

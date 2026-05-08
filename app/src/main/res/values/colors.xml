@@ -8,4 +8,6 @@
     <color name="error">#e1002d</color>
     <color name="text">@color/black</color>
     <color name="hint">#43454a</color>
+    <color name="logoutbg">#1d1313</color>
+    <color name="logout">#f87171</color>
 </resources>
