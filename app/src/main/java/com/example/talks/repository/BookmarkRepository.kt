@@ -41,6 +41,9 @@ object BookmarkRepository {
     fun isSaved(id: String): Boolean{
         return savedPosts.containsKey(id)
     }
+    fun clear(){
+        savedPosts.clear()
+    }
     /*
     fun getLikes():MutableMap<String, Boolean>{
         return savedPosts

@@ -76,5 +76,8 @@ object FollowRepository {
             }
         }
     }
+    fun clear(){
+        followedAccounts.clear()
+    }
 
 }

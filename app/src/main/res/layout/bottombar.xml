@@ -8,47 +8,47 @@
     android:gravity="center_vertical">
 
     <ImageView
+        android:id="@+id/homebtn"
         android:layout_width="0dp"
         android:layout_height="27dp"
         android:layout_weight="1"
         android:src="@drawable/hometempicon"
         android:scaleType="fitCenter"
-        app:tint="@color/lime"
-        android:id="@+id/homebtn"/>
+        app:tint="@color/lime"/>
 
     <ImageView
+        android:id="@+id/searchbtn"
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_weight="1"
         android:src="@drawable/searchtemp"
         android:scaleType="fitCenter"
-        app:tint="@color/desel"
-        android:id="@+id/searchbtn"/>
+        app:tint="@color/desel"/>
 
     <ImageView
+        android:id="@+id/cpstbtn"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_weight="1"
         android:src="@drawable/addtemp"
         android:scaleType="fitCenter"
-        app:tint="@color/desel"
-        android:id="@+id/cpstbtn"/>
+        app:tint="@color/desel"/>
 
     <ImageView
+        android:id="@+id/accbtn"
         android:layout_width="0dp"
         android:layout_height="20dp"
         android:layout_weight="1"
         android:src="@drawable/usertemp"
         android:scaleType="fitCenter"
-        app:tint="@color/desel"
-        android:id="@+id/accbtn"/>
+        app:tint="@color/desel" />
     <ImageView
+        android:id="@+id/ntfbtn"
         android:layout_width="0dp"
         android:layout_height="25dp"
         android:layout_weight="1"
         android:src="@drawable/notiftemp"
         android:scaleType="fitCenter"
-        app:tint="@color/desel"
-        android:id="@+id/ntfybtn"/>
+        app:tint="@color/desel"/>
 
 </LinearLayout>

@@ -42,4 +42,7 @@ object LikeRepository {
     fun isLiked(id:String): Boolean{
         return likedPosts.containsKey(id)
     }
+    fun clear(){
+        likedPosts.clear()
+    }
 }

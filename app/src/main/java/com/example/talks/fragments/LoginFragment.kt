@@ -14,6 +14,7 @@ import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
@@ -44,10 +45,11 @@ class LoginFragment: Fragment(R.layout.login) {
                     //controllo id
                     UserID.setUID(id)
                     LikeRepository.loadLikes(id)
+                    LastPage.setPage("home")
                     parentFragmentManager.beginTransaction()
                         .replace(R.id.frame, HomePageFragment())
                         .commit()
-                    (activity as MainActivity).setBottomBar("home")
+                    (activity as MainActivity).bottombar("home")
 
                 }
             }

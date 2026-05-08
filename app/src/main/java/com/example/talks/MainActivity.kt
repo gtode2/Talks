@@ -17,31 +17,36 @@ import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 
 
-var lgd = false
 class MainActivity : AppCompatActivity() {
     lateinit var homebtn:ImageView
     lateinit var searchbtn:ImageView
     lateinit var cpstbtn:ImageView
     lateinit var accbtn:ImageView
-    lateinit var ntfybtn:ImageView
+    lateinit var ntfbtn:ImageView
     var col_act:Int?=null
     var col_nact:Int?=null
 
 
-    fun btnreset(){
-        when(LastPage.getPage()){
-            "home"->homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-            "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-            "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-            "acc"->accbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-            "ntfy"->ntfybtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+    fun bottombar(p:String){
+        homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+        searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+        cpstbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+        accbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+        ntfbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+
+        when(p){
+            "home"->homebtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "acc"->accbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "ntf"->ntfbtn.imageTintList=ColorStateList.valueOf(col_act!!)
         }
     }
     fun accountpage(){
         val act = LastPage.getPage()
         if (act!="acc"){
-            btnreset()
-            accbtn.imageTintList = ColorStateList.valueOf(col_act!!)
+            bottombar("acc")
+            //accbtn.imageTintList = ColorStateList.valueOf(col_act!!)
             LastPage.setPage("acc")
             val uid = UserID.getUID()
             if (uid!=null){
@@ -75,23 +80,24 @@ class MainActivity : AppCompatActivity() {
         searchbtn = findViewById(R.id.searchbtn)
         cpstbtn = findViewById(R.id.cpstbtn)
         accbtn = findViewById(R.id.accbtn)
-        ntfybtn = findViewById(R.id.ntfybtn)
+        ntfbtn = findViewById(R.id.ntfbtn)
         col_act = ContextCompat.getColor(this, R.color.lime)
         col_nact = ContextCompat.getColor(this, R.color.desel)
 
         val intent = intent
 
         val from = intent.getStringExtra("From")?:0
-        if (from=="user"){
-            //caricamento fragment utente
-            LastPage.setPage("sett")
-            accountpage()
-        }
-
-        if (from=="sett"){
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
-                .commit()
+        when (from){
+            "user"->{
+                //caricamento fragment utente
+                LastPage.setPage("sett")
+                accountpage()
+            }
+            "sett"->{
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
+                    .commit()
+            }
         }
 
 
@@ -104,8 +110,8 @@ class MainActivity : AppCompatActivity() {
 
         homebtn.setOnClickListener{
             if (LastPage.getPage() !="home"){
-                btnreset()
-                homebtn.imageTintList = ColorStateList.valueOf(col_act!!)
+                bottombar("home")
+                //homebtn.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("home")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, HomePageFragment())
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity() {
         }
         searchbtn.setOnClickListener{
             if (LastPage.getPage() !="search"){
-                btnreset()
+                bottombar("search")
                 searchbtn.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("search")
                 supportFragmentManager.beginTransaction()
@@ -131,11 +137,11 @@ class MainActivity : AppCompatActivity() {
         accbtn.setOnClickListener{
             accountpage()
         }
-        ntfybtn.setOnClickListener{
-            if (LastPage.getPage() !="ntfy"){
-                btnreset()
-                ntfybtn.imageTintList = ColorStateList.valueOf(col_act!!)
-                LastPage.setPage("ntfy")
+        ntfbtn.setOnClickListener{
+            if (LastPage.getPage() !="ntf"){
+                bottombar("ntf")
+                ntfbtn.imageTintList = ColorStateList.valueOf(col_act!!)
+                LastPage.setPage("ntf")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, NotificationPageFragment())
                     .commit()
@@ -144,19 +150,7 @@ class MainActivity : AppCompatActivity() {
 
         //enableEdgeToEdge()
 
-        //RIMUOVERE LGD -> SPOSTARE TUTTO IN UserID.getUID
     }
 
-    fun setBottomBar(page:String){
-        btnreset()
-        LastPage.setPage(page)
-        when(page){
-            "home"->homebtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "acc"->accbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "ntfy"->ntfybtn.imageTintList=ColorStateList.valueOf(col_act!!)
-        }
 
-    }
 }

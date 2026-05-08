@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat.recreate
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.PostCreationActivity
 import com.example.talks.R
@@ -52,24 +53,24 @@ class SettingsFragment:Fragment(R.layout.settings) {
             Log.e("AAA", "click", )
         }
         profilePicture.setOnClickListener {
-            Log.e("AAA", "click", )
+            val intent = Intent(requireContext(), EmptyActivity::class.java)
+                .putExtra("screen", "pps")
+            startActivity(intent)
         }
 
 
 
         var back = view.findViewById<ImageView>(R.id.close)
         back.setOnClickListener{
-            //ricreare activity -> intent = sett
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
             startActivity(intent)
             //requireActivity().finish()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            //ricreare activity -> intent = sett
-            //requireActivity().intent.putExtra("From", "user")
-            //requireActivity().recreate()
-            requireActivity().finish()
+            val intent = Intent(requireContext(), MainActivity::class.java)
+                .putExtra("From", "user")
+            startActivity(intent)
         }
 
         btnIt = view.findViewById(R.id.btnIt)

@@ -13,6 +13,7 @@ import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.ImageDatabase
 import com.example.talks.managers.ImageManager
+import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val change = arguments?.getBoolean("change")?:false
         val selectImage = view.findViewById<Button>(R.id.select)
         val continueBtn = view.findViewById<Button>(R.id.contbtn)
         val image = view.findViewById<ShapeableImageView>(R.id.image)
@@ -30,10 +32,20 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                 Imguri=it
             }
         }
+
+
+
         if (UserID.getUID()==null){
             //gestione errore
         }
+        //se parametro -> cambio immagine -> carica da cache
 
+        if (change){
+            lifecycleScope.launch {
+                image.setImageBitmap(ImageCache.get("profile${UserID.getUID()}"))
+
+            }
+        }
 
         continueBtn.setOnClickListener {
             //comprimo immagine

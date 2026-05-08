@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.talks.fragments.PostFSFragment
+import com.example.talks.fragments.ProfilePictureSelectFragment
 import com.example.talks.fragments.RegisterFragment
 import com.example.talks.fragments.YourPostsFragment
 import com.example.talks.fragments.SavedPostsFragment
@@ -37,7 +38,14 @@ class EmptyActivity:AppCompatActivity() {
                     }
                 }
             },
-            "register" to { RegisterFragment() }
+            "register" to { RegisterFragment() },
+            "pps" to {
+                ProfilePictureSelectFragment().apply {
+                    arguments= Bundle().apply {
+                        putBoolean("change",true)
+                    }
+                }
+            }
         )
 
         val fragment = map[screen]?.invoke()?:throw IllegalArgumentException()

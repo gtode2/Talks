@@ -36,11 +36,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         userid = arguments?.getString("id")
-
-        //capire se serve tenere applyLang()
-
-        //settingsManager = SettingsManager(requireContext())
-        //settingsManager.applyLang()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
