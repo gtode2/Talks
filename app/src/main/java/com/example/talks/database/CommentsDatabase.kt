@@ -6,10 +6,11 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 class CommentsDatabase {
     companion object{
-        fun getComments(post:String, onResult:(MutableList<CommentData>) -> Unit){
+        suspend fun getComments(post:String):MutableList<CommentData> = suspendCancellableCoroutine{cont->
             val comm = mutableListOf<CommentData>()
             FirebaseFirestore.getInstance()
                 .collection("Posts")
@@ -22,7 +23,7 @@ class CommentsDatabase {
                         var comment = document.toObject(CommentData::class.java)
                         comm.add(comment)
                     }
-                    onResult(comm)
+                    cont.resume(comm){}
                 }
         }
         fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){

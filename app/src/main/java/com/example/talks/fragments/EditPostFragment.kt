@@ -1,6 +1,7 @@
 package com.example.talks.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -9,10 +10,15 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
+import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class EditPostFragment:Fragment(R.layout.postcreation) {
     //con postcreation definitivo decidere se modificare testo aggiunta o se duplicare e creare nuova pagina con label diverse
@@ -41,16 +47,29 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             //gestisci errore
         }
 
-        PostDatabase.getPost(postId!!){ res->
-            if (res.isEmpty()){
+
+        lifecycleScope.launch{
+            val p = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
+            if (p.isEmpty()){
                 //gestione errore
             }
-            post = res[0]
+            post = p[0]
             title.setText(post!!.title)
             text.setText(post!!.post)
             remch.setText("${500-post!!.post.length}/500")
             srctext.setText(post!!.source)
+
+            val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
+            if (img==null){
+                Log.e("AAA", "nada", )
+                imgprev.visibility=View.GONE
+            }else{
+                imgprev.setImageBitmap(img)
+            }
         }
+
+
+
         // popolare pagina
 
         // binding edit

@@ -112,7 +112,7 @@ class PostDatabase {
                 }
             }
         }
-        fun getPost(search: String,  onResult: (List<PostData>) -> Unit){
+        suspend fun getPost(search: String):List<PostData> = suspendCancellableCoroutine { cont->
             val pl = mutableListOf<PostData>()
             FirebaseFirestore.getInstance()
                 .collection("Posts")
@@ -124,7 +124,10 @@ class PostDatabase {
                         post.id = document.id
                         pl.add(post)
                     }
-                    onResult(pl)
+                    cont.resume(pl){}
+                }
+                .addOnFailureListener {
+                    //gestire errori
                 }
         }
         private fun getSaved(uid:String, onResult: (List<String>) -> Unit){

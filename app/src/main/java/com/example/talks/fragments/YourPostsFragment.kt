@@ -104,12 +104,14 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
 
 
 
-
+/*
     fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
         CommentsDatabase.getComments(id){
                 comments->onResult(comments)
         }
     }
+    */
+
 
     fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
         CommentsDatabase.addComment(uid, text, post){ res->

@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 class PostAdapter(
     private val post:PostData,
     private val cm: MutableList<CommentData>,
-    private val comdata: Comment,
+    //private val comdata: Comment,
     var pch:PostCardHomepage?=null,
     private val context: Context
 

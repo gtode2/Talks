@@ -61,5 +61,16 @@ class SourceManager {
                 false
             }
         }
+        fun getTitle(u:String):String? {
+            try {
+                val doc = Jsoup.connect(u).get()
+                return doc.title()
+            }catch (e: Exception){
+                //gestione errore
+                return null
+            }
+
+        }
+
     }
 }

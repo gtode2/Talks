@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import coil.load
+import kotlinx.coroutines.Job
 import okhttp3.Dispatcher
 
 
@@ -57,13 +58,89 @@ class PostViewHolder(
     private val srcTitle = view.findViewById<TextView>(R.id.sourceTitle)
 
 
+    private val scope = CoroutineScope(Dispatchers.Main.immediate)
+    private var job: Job?=null
+
+
+    private var postId:String?=null
+    private var userId:String?=null
+
 
     fun bind(el: PostData) {
+        job?.cancel()
+
+        postId=el.id
+        userId=el.uid
+
         usertag.text = "@${el.uid}"
         posttitle.text = el.title
         posttext.text = el.post
         postLikes.text = el.likes.toString()
 
+
+        job = scope.launch {
+            //immagine
+            if (!el.image) {
+                postImg.visibility = View.GONE
+            }else{
+                postImg.visibility = View.VISIBLE
+
+
+                val bmp = withContext(Dispatchers.IO){ImageCache.get("image${el.id}")}
+                if (el.id==postId){
+                    if (bmp!=null){
+                        postImg.setImageBitmap(bmp)
+                    }else{
+                        //in caso di errore, se non trova immagine rimuove blocco
+                        postImg.visibility = View.GONE
+                    }
+                }
+            }
+
+            //profile picture
+
+            val bmp = withContext(Dispatchers.IO){ImageCache.get("profile${el.uid}")}
+            if (el.uid==userId){
+                if (bmp!=null){
+                    userImg.setImageBitmap(bmp)
+                }else{
+                    Log.e("AAA", "profile picture non presente ${userId} ", )
+                    userImg.setImageDrawable(null)
+                }
+            }
+
+
+            //source
+            if (el.source==""){
+                src.visibility = View.GONE
+            }else{
+                //verifica url
+                val img = withContext(Dispatchers.IO){SourceManager.getFavicon(el.source)}
+
+                if (img.startsWith("/")){
+                    //gestione errore
+                }else{
+                    srcImg.load(img)
+                }
+                srcUrl.text=el.source
+                val title = withContext(Dispatchers.IO){SourceManager.getTitle(el.source)}
+                if (title!=null){
+                    srcTitle.text=title
+                }else{
+                    srcTitle.text=""
+                }
+            }
+                    //aggiungere titolo
+        }
+
+
+
+
+
+
+
+
+        /*
         // gestione immagini
         if (!el.image) {
             postImg.visibility = View.GONE
@@ -85,9 +162,10 @@ class PostViewHolder(
                     }
                 }
             }
-        }
+        }*/
 
         //gestione profile picture
+        /*
         CoroutineScope(Dispatchers.IO).launch {
             val bmp = ImageCache.get("profile${el.uid}")
             val currentPostId = el.id
@@ -101,6 +179,9 @@ class PostViewHolder(
             }
         }
 
+
+
+
         if (el.source==""){
             src.visibility = View.GONE
         }else{
@@ -113,6 +194,7 @@ class PostViewHolder(
                         //gestione errore
                     }else{
                         srcImg.load(img)
+
                     }
                     srcUrl.text=el.source
                 }
@@ -121,6 +203,8 @@ class PostViewHolder(
             }
         }
 
+
+         */
         likeIcon.imageTintList = ColorStateList.valueOf(
             ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.desel)
         )

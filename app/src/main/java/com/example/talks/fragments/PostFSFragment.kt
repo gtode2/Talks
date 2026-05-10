@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.EmptyActivity
@@ -14,6 +15,7 @@ import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostAdapter
 import com.example.talks.data.CommentData
+import com.example.talks.data.PostData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.interfaces.Comment
@@ -21,6 +23,9 @@ import com.example.talks.interfaces.PostCard
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
 
@@ -51,47 +56,46 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
         }
 
         rvPost.layoutManager = LinearLayoutManager(requireContext())
-        PostDatabase.getPost(postId!!){ postList->
+
+        lifecycleScope.launch{
+            val postList = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
+
             if (postList.isEmpty()){
                 //gestione errore - pagina xml DA CREARE
             }else{
-                //carico info
                 val post = postList[0]
 
-                getComments(postId!!){comments->
+                val comments = withContext(Dispatchers.IO){CommentsDatabase.getComments(postId!!)}
 
-                    var liked = LikeRepository.getLikes()
-                    if (liked.isNotEmpty()){
-                        if (liked.containsKey(post.id)){
-                            post.isLiked=true
-                        }
+                var liked = LikeRepository.getLikes()
+                if (liked.isNotEmpty()){
+                    if (liked.containsKey(post.id)){
+                        post.isLiked=true
                     }
-                    val saved = BookmarkRepository.getSaved()
-                    if (saved.isNotEmpty()){
-                        if (saved.containsKey(post.id)){
-                            post.isSaved=true
-                        }
-                    }
-                    adapter = PostAdapter(
-                        post,
-                        comments,
-                        this,
-                        null,
-                        requireContext()
-                    )
-                    val handler = PostCardHandler(
-                        contextProvider = {requireContext()},
-                        adapter=adapter,
-                        null,
-                        openUser = {userid->openUser(userid)}
-
-                    )
-                    adapter!!.pch = handler
-                    rvPost.adapter = adapter
-
                 }
-            }
+                val saved = BookmarkRepository.getSaved()
+                if (saved.isNotEmpty()){
+                    if (saved.containsKey(post.id)){
+                        post.isSaved=true
+                    }
+                }
+                adapter = PostAdapter(
+                    post,
+                    comments,
+                    null,
+                    requireContext()
+                )
 
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter,
+                    null,
+                    openUser = {userid->openUser(userid)}
+                )
+
+                adapter!!.pch = handler
+                rvPost.adapter = adapter
+                }
 
         }
 
@@ -125,11 +129,11 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
             onResult(res)
         }
     }
-    fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
+    /*fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
         CommentsDatabase.getComments(id){
                 comments->onResult(comments)
         }
-    }
+    }*/
 
     override fun openPost(postId: String) {
         TODO("Not yet implemented")
