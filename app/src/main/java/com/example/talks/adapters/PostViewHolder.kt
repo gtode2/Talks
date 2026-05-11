@@ -34,6 +34,7 @@ class PostViewHolder(
 ) : RecyclerView.ViewHolder(view) {
 
     private val usertag = view.findViewById<TextView>(R.id.userTag)
+    private val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
     private val userImg = view.findViewById<ImageView>(R.id.userImg)
 
     private val posttitle = view.findViewById<TextView>(R.id.postTitle)
@@ -214,7 +215,7 @@ class PostViewHolder(
 
 
         // click listener
-        usertag.setOnClickListener { pch?.openUser(el.uid) }
+        userblock.setOnClickListener { pch?.openUser(el.uid) }
         itemView.setOnClickListener { pch?.openPost(el.id) }
         likeBtn.setOnClickListener { pch?.addLike(el.id) }
         commBtn.setOnClickListener { pch?.openComments(el.id) }

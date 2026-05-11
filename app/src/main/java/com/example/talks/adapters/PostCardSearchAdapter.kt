@@ -1,20 +1,24 @@
 package com.example.talks.adapters
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.interfaces.PostCardHomepage
 import com.example.talks.data.PostData
 import com.example.talks.data.UserData
 import com.example.talks.interfaces.PostHandlerInterface
-import com.example.talks.adapters.PostViewHolder
+import com.example.talks.singleton.ImageCache
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PostCardSearchAdapter(
     var posts:MutableList<PostData>?=null,
@@ -33,7 +37,7 @@ class PostCardSearchAdapter(
         return when(viewType){
             VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch, posts!!)
             VIEW_TYPE_USER->UserVH(view.inflate(R.layout.usercard, parent,false))
-            VIEW_TYPE_EMPTY->EmptyVH(view.inflate(R.layout.searchnoitemfound, parent,false))
+            VIEW_TYPE_EMPTY->EmptyVH(view.inflate(R.layout.errorpage, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
         }
     }
@@ -78,11 +82,31 @@ class PostCardSearchAdapter(
     inner class UserVH(view: View):RecyclerView.ViewHolder(view){
         val usertag = view.findViewById<TextView>(R.id.searchUserTag)
         val followers = view.findViewById<TextView>(R.id.searchFw)
+        val userImg = view.findViewById<ImageView>(R.id.userImg)
+
+        val userBlock = view.findViewById<ConstraintLayout>(R.id.userll)
+
+        private val scope = CoroutineScope(Dispatchers.Main.immediate)
+        private var job: Job?=null
+
 
         fun bind(){
-            usertag.text=user!!.Uid
-            followers.text=user!!.followers.toString()
+            job?.cancel()
+            usertag.text="@${user!!.Uid}"
+            followers.text="${user!!.followers} followers"
+            job = scope.launch {
+                val bmp = withContext(Dispatchers.IO){ ImageCache.get("profile${user!!.Uid}")}
+                if (bmp!=null){
+                    userImg.setImageBitmap(bmp)
+                }else{
+                    userImg.setImageDrawable(null)
+                }
 
+            }
+
+            userBlock.setOnClickListener {
+                pch?.openUser(user!!.Uid)
+            }
         }
     }
 

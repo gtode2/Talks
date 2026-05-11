@@ -1,5 +1,6 @@
 package com.example.talks.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,8 +10,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.EmptyActivity
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
@@ -103,6 +106,15 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 //errore
             }
         }
-        // back()
+        backbtn.setOnClickListener {
+            val intent = Intent(requireContext(),EmptyActivity::class.java)
+                .putExtra("screen","your")
+            startActivity(intent)
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
+            val intent = Intent(requireContext(),EmptyActivity::class.java)
+                .putExtra("screen","your")
+            startActivity(intent)
+        }
     }
 }

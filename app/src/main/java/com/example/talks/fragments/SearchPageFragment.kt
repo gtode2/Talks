@@ -1,5 +1,6 @@
 package com.example.talks.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.EmptyActivity
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
@@ -53,7 +55,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     val postList = PostDatabase.getPosts("search", string)
                     withContext(Dispatchers.Main){
                         val ctx = requireContext()
-                        Log.e("AAA", "Posts", )
                         //racchiudere in handler?
                         var liked = LikeRepository.getLikes()
                         if (!liked.isEmpty()){
@@ -85,7 +86,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                             contextProvider = {requireContext()},
                             adapter=adapter,
                             null,
-                            null
+                            openUser = {userid->openUser(userid)}
                         )
                         adapter!!.pch=handler
                         rv.adapter = adapter
@@ -94,5 +95,11 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
             }
         }
 
+    }
+    fun openUser(userId:String){
+        val intent = Intent(requireContext(), EmptyActivity::class.java)
+            .putExtra("screen","user")
+            .putExtra("id",userId)
+        startActivity(intent)
     }
 }
