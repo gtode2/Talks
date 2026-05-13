@@ -44,22 +44,21 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         }
         tag.text = "@${UID}"
 
-        var user:MutableMap<String, String>
-        lifecycleScope.launch(Dispatchers.IO) {
-            user = UserDatabase.getUser(UID!!)
+        lifecycleScope.launch {
+            val user = withContext(Dispatchers.IO){UserDatabase.getUser(UID!!)}
             //verifico correttezza info ottenute
-            withContext(Dispatchers.Main){
-                name.text = "${user.getValue("name")} ${user.getValue("surname")}".trim()
-                //trim -> se no cognome -> centra stringa
-                fw.text = user.getValue("fw")
-                fd.text = user.getValue("fd")
 
-            }
-            val img = ImageCache.get("profile${UserID.getUID()}")
+            name.text = "${user.name} ${user.surname}".trim()
+            fw.text = user.followers.toString()
+            fd.text = user.followed.toString()
+
+            val img = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
             if(img!=null){
                 withContext(Dispatchers.Main){
                     profilepicture.setImageBitmap(img)
                 }
+            }else{
+                profilepicture.setImageDrawable(null)
             }
         }
 

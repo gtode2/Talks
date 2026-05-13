@@ -10,36 +10,36 @@ class UserDatabase {
     //ottenere numero followed
     //eventualmente altre informazioni
     companion object{
-        suspend fun getUser(uid:String):MutableMap<String,String> = suspendCancellableCoroutine{cont->
+        suspend fun getUser(uid:String):UserData = suspendCancellableCoroutine{cont->
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(uid)
                 .get()
                 .addOnSuccessListener { res ->
-
                     if (res.exists()) {
                         //0 = utente trovato
-                        val map = mutableMapOf<String, String>()
+
                         val fws:Long = res.get("followers") as Long
-                        map["fw"] = fws.toString()
                         val fwd = res.get("followed") as Map<String, Boolean>
-                        map["fd"] = fwd.size.toString()
-                        map["name"] = res.get("name").toString()
-                        map["surname"] = res.get("surname").toString()
-                        cont.resume(map){}
+                        val user = UserData(
+                            uid,
+                            fws.toInt(),
+                            fwd.size,
+                            res.get("name").toString(),
+                            res.get("surname").toString()
+                        )
+                        cont.resume(user){}
                     } else {
-                        //1 = utente non trovato
-                        val map = mutableMapOf<String, String>()
-                        map["fw"] = "-1"
-                        cont.resume(map){}
+                        //-1 = utente non trovato
+                        val user = UserData(uid, -1, 0)
+                        cont.resume(user){}
                     }
 
                 }
                 .addOnFailureListener {
-                    //-1 = errore
-                    val map = mutableMapOf<String, String>()
-                    map["fw"] = "-2"
-                    cont.resume(map){}
+                    //-2 = errore
+                    val user = UserData(uid, -2, 0)
+                    cont.resume(user){}
                 }
         }
         suspend fun follow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->

@@ -115,6 +115,7 @@ class PostViewHolder(
             if (el.source==""){
                 src.visibility = View.GONE
             }else{
+                src.visibility = View.VISIBLE
                 //verifica url
                 val img = withContext(Dispatchers.IO){SourceManager.getFavicon(el.source)}
 
