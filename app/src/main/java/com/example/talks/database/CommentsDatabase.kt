@@ -28,12 +28,10 @@ class CommentsDatabase {
         }
         fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
             val comment = hashMapOf(
-
                 "date" to FieldValue.serverTimestamp(),
                 //"postid" to post, capire se serve
                 "text" to text,
                 "uid" to uid
-
             )
             FirebaseFirestore.getInstance()
                 .collection("Posts")
@@ -41,6 +39,7 @@ class CommentsDatabase {
                 .collection("comments")
                 .add(comment)
                 .addOnSuccessListener{
+                    //aggiungi notifica -> type = 1
                     onResult(0)
                 }.addOnFailureListener {
                     onResult(-1)

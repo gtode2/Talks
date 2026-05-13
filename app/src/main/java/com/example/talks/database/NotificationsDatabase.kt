@@ -30,24 +30,13 @@ class NotificationsDatabase {
                 val map = hashMapOf(
                     "type" to type,
                     "author" to uid, //utente taggato
-                    "post" to p2, //id del post
+                    "src" to p2, //id del post
                     "createdAt" to FieldValue.serverTimestamp(),
                 )
 
                 val res = add(map,p1)
 
-
             }
-
-
-
-
-
-
-
-
-
-
 
 
             return true

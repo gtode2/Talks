@@ -2,43 +2,66 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/notifblock"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/background">
 
-    <ImageView
-        android:id="@+id/profileimg"
-        android:layout_width="60dp"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/profileimgBlock"
+        android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/background"/>
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileimg"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@drawable/circle"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            android:scaleType="centerCrop"/>
 
-    <TextView
-        android:id="@+id/notiftxt"
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/typeimg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/circle"
+            android:src="@drawable/tag"
+            app:tint="@color/blue"
+            app:shapeAppearanceOverlay="@style/circleImageView"
+            android:scaleType="centerCrop"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Utente x ti ha taggato in un commento"
-        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/profileimg"
+        app:layout_constraintStart_toEndOf="@id/profileimgBlock"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/background"
-        android:textColor="@color/text"/>
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#888888"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/profileimg"
-        tools:layout_editor_absoluteX="33dp" />
+        <TextView
+            android:id="@+id/notiftxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Utente x ti ha taggato in un commento"
+            android:textSize="15sp"
+            android:background="@color/background"
+            android:textColor="@color/text"/>
+
+    </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

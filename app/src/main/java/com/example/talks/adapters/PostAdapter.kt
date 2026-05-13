@@ -79,7 +79,7 @@ class PostAdapter(
 
 
     inner class CommentVH(view: View):RecyclerView.ViewHolder(view){
-        val usertag = view.findViewById<TextView>(R.id.commentUserTag)
+        val usertag = view .findViewById<TextView>(R.id.commentUserTag)
         val commenttext = view.findViewById<TextView>(R.id.commentTxt)
         val userImg = view.findViewById<ShapeableImageView>(R.id.userImg)
 

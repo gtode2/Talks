@@ -3,6 +3,8 @@ package com.example.talks.fragments
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,18 +21,25 @@ class NotificationPageFragment:Fragment(R.layout.notificationpage) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
+
         if (!UserID.getUID().isNullOrBlank()){
             val rv = view.findViewById<RecyclerView>(R.id.notifrv)
             rv.layoutManager= LinearLayoutManager(context)
             lifecycleScope.launch {
                 val list = NotificationsDatabase.get()
-                Log.e("AAA", list.toString())
 
-                adapter=NotificationsAdapter(list.toMutableList())
-                rv.adapter=adapter
+                if (list.isEmpty()){
+                    val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                    view.findViewById<TextView>(R.id.text).text=getString(R.string.nonotif)
+                }else{
+                    adapter=NotificationsAdapter(list.toMutableList(), requireContext())
+                    rv.adapter=adapter
+                }
             }
         }else{
-            //mostrare messaggio errore
+            val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+            view.findViewById<TextView>(R.id.text).text=getString(R.string.notifnotlogged)
         }
     }
     //crea rv

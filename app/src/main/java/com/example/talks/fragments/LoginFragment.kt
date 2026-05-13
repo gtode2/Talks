@@ -25,8 +25,7 @@ class LoginFragment: Fragment(R.layout.login) {
         var mail = view.findViewById<EditText>(R.id.emailET)
         var password = view.findViewById<EditText>(R.id.pwET)
         var settingsBtn = view.findViewById<ImageView>(R.id.settingsBtn)
-        var googleBtn = view.findViewById<LinearLayout>(R.id.google)
-        var register = view.findViewById<Button>(R.id.register)
+        var register = view.findViewById<LinearLayout>(R.id.register)
 
 
 

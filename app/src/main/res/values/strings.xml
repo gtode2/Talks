@@ -68,4 +68,14 @@
     <!-- Settings -->
     <string name="language">Language</string>
     <string name="theme">Theme</string>
+
+    <!-- Notifications -->
+    <string name="notifications">Notifications</string>
+    <string name="nonotif">No notifications</string>
+    <string name="notifnotlogged">Log in to see your notifications</string>
+    <string name="notifcomment"><b>%1$s</b>  commented on your post</string>
+    <string name="notiffw"><b>%1$s</b>  started following you</string>
+    <string name="notiftag"><b>%1$s</b> mentioned you</string>
+
+
 </resources>

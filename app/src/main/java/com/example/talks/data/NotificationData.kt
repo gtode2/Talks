@@ -6,6 +6,6 @@ data class NotificationData (
     val err:Boolean = false,
     val author:String="",
     val timestamp: Timestamp=Timestamp.now(),
-    val post:String="",
+    val src:String="",
     val type:Int=-1
 )
