@@ -56,7 +56,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                     adapter=adapter,
                     openEdit = {postId->editPost(postId)}
                 )
-                adapter!!.pch=handler
+                adapter!!.pc=handler
                 rv.adapter=adapter
             }
         }

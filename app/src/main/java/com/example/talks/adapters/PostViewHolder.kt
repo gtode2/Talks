@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.ImageDatabase
-import com.example.talks.interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCard
 import com.example.talks.singleton.ImageCache
 import com.example.talks.managers.ImageManager
 import com.example.talks.managers.SourceManager
@@ -26,16 +26,14 @@ import kotlinx.coroutines.Job
 import okhttp3.Dispatcher
 
 
-class PostViewHolder(
+open class PostViewHolder(
     private val view: View,
     private val context: Context,
-    private val pch: PostCardHomepage?,
+    private val pch: PostCard?,
     private val posts: MutableList<PostData>
 ) : RecyclerView.ViewHolder(view) {
 
-    private val usertag = view.findViewById<TextView>(R.id.userTag)
-    private val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
-    private val userImg = view.findViewById<ImageView>(R.id.userImg)
+
 
     private val posttitle = view.findViewById<TextView>(R.id.postTitle)
     private val posttext = view.findViewById<TextView>(R.id.postText)
@@ -45,13 +43,9 @@ class PostViewHolder(
     private val likeIcon = view.findViewById<ImageView>(R.id.likeIcon)
     private val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-    private val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
-    private val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
-    private val commentCtr = view.findViewById<TextView>(R.id.commCtr)
 
-    private val saveBtn = view.findViewById<LinearLayout>(R.id.saveBtn)
-    private val saveIcon = view.findViewById<ImageView>(R.id.saveIcon)
-    private val saveTxt = view.findViewById<TextView>(R.id.saveTxt)
+
+
 
     private val src = view.findViewById<ConstraintLayout>(R.id.sourceBlock)
     private val srcImg = view.findViewById<ImageView>(R.id.sourcePreview)
@@ -67,13 +61,38 @@ class PostViewHolder(
     private var userId:String?=null
 
 
-    fun bind(el: PostData) {
+    open fun bind(el: PostData, isyour:Boolean=false) {
         job?.cancel()
 
         postId=el.id
         userId=el.uid
 
-        usertag.text = "@${el.uid}"
+
+        //variabile
+
+        //solo altri
+
+
+
+
+
+
+        val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
+        val commentCtr = view.findViewById<TextView>(R.id.commCtr)
+
+
+
+
+
+        //solo tuoi
+
+
+
+        if (!isyour){
+            val usertag = view.findViewById<TextView>(R.id.userTag)
+            usertag.text = "@${el.uid}"
+        }
+
         posttitle.text = el.title
         posttext.text = el.post
         postLikes.text = el.likes.toString()
@@ -100,15 +119,22 @@ class PostViewHolder(
 
             //profile picture
 
-            val bmp = withContext(Dispatchers.IO){ImageCache.get("profile${el.uid}")}
-            if (el.uid==userId){
-                if (bmp!=null){
-                    userImg.setImageBitmap(bmp)
-                }else{
-                    Log.e("AAA", "profile picture non presente ${userId} ", )
-                    userImg.setImageDrawable(null)
+
+            if (!isyour){
+                val userImg = view.findViewById<ImageView>(R.id.userImg)
+                val bmp = withContext(Dispatchers.IO){ImageCache.get("profile${el.uid}")}
+                if (el.uid==userId){
+                    if (bmp!=null){
+                        userImg.setImageBitmap(bmp)
+                    }else{
+                        Log.e("AAA", "profile picture non presente ${userId} ", )
+                        userImg.setImageDrawable(null)
+                    }
                 }
             }
+
+
+
 
 
             //source
@@ -132,95 +158,48 @@ class PostViewHolder(
                     srcTitle.text=""
                 }
             }
-                    //aggiungere titolo
         }
 
+        if (!isyour){
+            val saveIcon = view.findViewById<ImageView>(R.id.saveIcon)
+            val saveTxt = view.findViewById<TextView>(R.id.saveTxt)
 
+            val saveBtn = view.findViewById<LinearLayout>(R.id.saveBtn)
+            val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
 
+            val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
 
-
-
-
-
-        /*
-        // gestione immagini
-        if (!el.image) {
-            postImg.visibility = View.GONE
-        } else {
-            postImg.visibility = View.VISIBLE
-
-            CoroutineScope(Dispatchers.IO).launch {
-                val bmp = ImageCache.get("image${el.id}")
-                val currentPostId = el.id
-                withContext(Dispatchers.Main) {
-                    if (adapterPosition != RecyclerView.NO_POSITION && posts[adapterPosition].id == currentPostId) {
-                        if (bmp!=null){
-                            postImg.setImageBitmap(bmp)
-                        }else{
-                            //in caso di errore, se non trova immagine rimuove blocco
-                            postImg.visibility = View.GONE
-                        }
-
-                    }
-                }
+            likeIcon.imageTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.desel)
+            )
+            saveIcon.imageTintList = ColorStateList.valueOf(
+                ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
+            )
+            if (el.isSaved){
+                saveTxt.text = "Unsave"
+            }else{
+                saveTxt.text = "Save"
             }
-        }*/
 
-        //gestione profile picture
-        /*
-        CoroutineScope(Dispatchers.IO).launch {
-            val bmp = ImageCache.get("profile${el.uid}")
-            val currentPostId = el.id
-            withContext(Dispatchers.Main) {
-                if (adapterPosition != RecyclerView.NO_POSITION && posts[adapterPosition].id == currentPostId) {
-                    if (bmp!=null){
-                        userImg.setImageBitmap(bmp)
-                    }
-                    //se non esiste immagine -> lascia default
-                }
-            }
-        }
+            userblock.setOnClickListener { pch?.openUser(el.uid) }
+            commBtn.setOnClickListener {}
+            saveBtn.setOnClickListener { pch?.savePost(el.id) }
+            likeBtn.setOnClickListener { pch?.addLike(el.id) }
 
-
-
-
-        if (el.source==""){
-            src.visibility = View.GONE
         }else{
-            //check anti recycle?
-            CoroutineScope(Dispatchers.IO).launch {
-                //verifica url
-                val img = SourceManager.getFavicon(el.source)
-                withContext(Dispatchers.Main) {
-                    if (img.startsWith("/")){
-                        //gestione errore
-                    }else{
-                        srcImg.load(img)
+            val editbtn = view.findViewById<LinearLayout>(R.id.editBtn)
+            val delbtn = view.findViewById<LinearLayout>(R.id.delBtn)
 
-                    }
-                    srcUrl.text=el.source
-                }
-
-                //aggiungere titolo
-            }
+            editbtn.setOnClickListener { pch?.editPost(el.id) }
+            delbtn.setOnClickListener { pch?.deletePost(el.id) }
         }
 
 
-         */
-        likeIcon.imageTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.desel)
-        )
-        saveIcon.imageTintList = ColorStateList.valueOf(
-            ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
-        )
 
 
         // click listener
-        userblock.setOnClickListener { pch?.openUser(el.uid) }
+
         itemView.setOnClickListener { pch?.openPost(el.id) }
-        likeBtn.setOnClickListener { pch?.addLike(el.id) }
-        commBtn.setOnClickListener { pch?.openComments(el.id) }
-        saveBtn.setOnClickListener { pch?.savePost(el.id) }
         src.setOnClickListener { pch?.openSource(el.source) }
     }
 }

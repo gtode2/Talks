@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
-import com.example.talks.interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
 import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostHandlerInterface
@@ -23,9 +23,8 @@ import kotlinx.coroutines.withContext
 
 class PostCardAdapter(
     private val posts:MutableList<PostData>,
-    var pch:PostCardHomepage?,
+    var pc:PostCard?,
     private val context: Context,
-    private val type: String = "all"
 ):RecyclerView.Adapter<PostViewHolder>(), PostHandlerInterface{
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
@@ -35,7 +34,7 @@ class PostCardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.postcard, parent, false)
-        return PostViewHolder(view, context, pch, posts)
+        return PostViewHolder(view, context, pc, posts)
     }
 
 

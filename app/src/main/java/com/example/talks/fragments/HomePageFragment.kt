@@ -75,7 +75,7 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                     null,
                     openUser = {userid->openUser(userid)}
                 )
-                adapter!!.pch=handler
+                adapter!!.pc=handler
 
                 recyclerViewHomepage.adapter = adapter
 

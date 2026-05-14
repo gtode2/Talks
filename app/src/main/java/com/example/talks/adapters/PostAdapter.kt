@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.CommentData
-import com.example.talks.interfaces.PostCardHomepage
+import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostHandlerInterface
@@ -28,7 +28,7 @@ class PostAdapter(
     private val post:PostData,
     private val cm: MutableList<CommentData>,
     //private val comdata: Comment,
-    var pch:PostCardHomepage?=null,
+    var pch:PostCard?=null,
     private val context: Context
 
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{

@@ -6,8 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import com.example.talks.database.PostDatabase
-import com.example.talks.interfaces.PostCardHomepage
-import com.example.talks.interfaces.PostCardYourPosts
+import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
@@ -19,7 +18,7 @@ class PostCardHandler(
     private val adapter:PostHandlerInterface?=null,
     private val openEdit:((String)->Unit)?=null,
     private val openUser:((String)->Unit)?=null
-):PostCardHomepage, PostCardYourPosts{
+):PostCard{
 
     override fun openPost(postId: String) {
         val intent = Intent(contextProvider(), EmptyActivity::class.java)
@@ -30,9 +29,6 @@ class PostCardHandler(
 
     }
 
-    override fun openComments(postId: String) {
-
-    }
 
     override fun openUser(userId: String) {
         openUser?.invoke(userId)

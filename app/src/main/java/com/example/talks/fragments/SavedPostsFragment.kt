@@ -72,7 +72,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                     contextProvider = {requireContext()},
                     adapter=adapter
                 )
-                adapter!!.pch=handler
+                adapter!!.pc=handler
                 rv.adapter=adapter
 
             }

@@ -27,7 +27,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
+class PostFSFragment:Fragment(R.layout.postfullscreen) {
 
     var postId:String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,43 +118,25 @@ class PostFSFragment:Fragment(R.layout.postfullscreen), PostCard, Comment {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        //
-    }
 
 
+
+    //spostare addcomment
     fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
         CommentsDatabase.addComment(uid, text, post){res->
             onResult(res)
         }
     }
-    /*fun getComments(id:String, onResult: (MutableList<CommentData>)->Unit){
-        CommentsDatabase.getComments(id){
-                comments->onResult(comments)
-        }
-    }*/
-
-    override fun openPost(postId: String) {
-        TODO("Not yet implemented")
-    }
 
 
-    override fun openUser(uid:String) {
+
+
+
+    fun openUser(uid:String) {
         val intent = Intent(requireContext(), EmptyActivity::class.java)
             .putExtra("screen","user")
             .putExtra("id",uid)
         startActivity(intent)    }
 
-    override fun addLike(postId: String) {
-        TODO("Not yet implemented")
-    }
 
-    override fun savePost(postId: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun openUser() {
-        TODO("Not yet implemented")
-    }
 }
