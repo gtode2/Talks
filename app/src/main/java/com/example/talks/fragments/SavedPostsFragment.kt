@@ -2,6 +2,7 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,11 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
         }
         val rv=Fragview!!.findViewById<RecyclerView>(R.id.savedRV)
         rv.layoutManager = LinearLayoutManager(context)
+
+        val back = Fragview!!.findViewById<ImageView>(R.id.backbtn)
+        back.setOnClickListener {
+            requireActivity().finish()
+        }
 
         lifecycleScope.launch(Dispatchers.IO) {
             val postList = PostDatabase.getPosts("saved", uid!!)

@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         val act = LastPage.getPage()
         if (act!="acc"){
             bottombar("acc")
-            //accbtn.imageTintList = ColorStateList.valueOf(col_act!!)
             LastPage.setPage("acc")
             val uid = UserID.getUID()
             if (uid!=null){
@@ -84,27 +83,47 @@ class MainActivity : AppCompatActivity() {
         col_act = ContextCompat.getColor(this, R.color.lime)
         col_nact = ContextCompat.getColor(this, R.color.desel)
 
-        val intent = intent
 
-        val from = intent.getStringExtra("From")?:0
-        when (from){
-            "user"->{
-                //caricamento fragment utente
-                LastPage.setPage("sett")
-                accountpage()
+        //refresh bottombar
+        bottombar(LastPage.getPage())
+
+
+        if (savedInstanceState == null){
+            //activity appena creata
+            val from = intent.getStringExtra("From")?:0
+            when(from){
+                "user"->{
+                    //caricamento fragment utente
+                    LastPage.setPage("sett")
+                    accountpage()
+                }
+                "sett"->{
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
+                        .commit()
+                }
+                else->{
+                    when(LastPage.getPage()){
+                        "home"->supportFragmentManager.beginTransaction()
+                            .replace(R.id.frame, HomePageFragment())
+                            .commit()
+                        "search"->supportFragmentManager.beginTransaction()
+                            .replace(R.id.frame, SearchPageFragment())
+                            .commit()
+                        "acc" -> {
+                            accountpage()
+                        }
+
+                        "ntf" -> {
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.frame, NotificationPageFragment())
+                                .commit()
+                        }
+                    }
+
+                }
+
             }
-            "sett"->{
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
-                    .commit()
-            }
-        }
-
-
-        if (LastPage.getPage() =="home"){
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.frame, HomePageFragment())
-                .commit()
         }
 
 
