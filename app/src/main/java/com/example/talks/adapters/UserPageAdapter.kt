@@ -114,14 +114,17 @@ class UserPageAdapter(
                     val res = withContext(Dispatchers.IO){ FollowRepository.addFollow(user.Uid) }
                     if (res>=0){
                         //modifico stato
-                        if (FollowRepository.isFollowed(user.Uid)){
+                        if (res<2){
                             followTxt.text="Following"
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
+                            //aggiungere verifica
+                            if(res==0) fw.text = (fw.text.toString().toInt()+1).toString()
                         }else{
                             followTxt.text="Follow"
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
+                            if(res==3) fw.text = (fw.text.toString().toInt()-1).toString()
                         }
                     }else{
                         Toast.makeText(itemView.context, "Si è verificato un errore", Toast.LENGTH_SHORT).show()

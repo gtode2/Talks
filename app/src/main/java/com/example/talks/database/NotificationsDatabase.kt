@@ -13,8 +13,9 @@ class NotificationsDatabase {
             //crea map notifica in base al tipo
 
             //type
-            //1 -> tag in commento
-            //2 -> commento a post
+            //0 -> tag in post
+            //1 -> commento
+            //2 -> follow
 
             val uid = UserID.getUID()
             if (uid.isNullOrBlank()){
@@ -25,21 +26,34 @@ class NotificationsDatabase {
 
             //VERIFICARE COME VIENE PASSATO TAG, SE CON O SENZA @
 
-            if(type==0){
-                //tag in post
-                val map = hashMapOf(
-                    "type" to type,
-                    "author" to uid, //utente taggato
-                    "src" to p2, //id del post
-                    "createdAt" to FieldValue.serverTimestamp(),
-                )
+            when(type) {
+                0 -> {
+                    val map = hashMapOf(
+                        "type" to type,
+                        "author" to uid, //utente che ha taggato
+                        "src" to p2, //id del post
+                        "createdAt" to FieldValue.serverTimestamp(),
+                    )
 
-                val res = add(map,p1)
+                    val res = add(map, p1)
+                    return res
+                }
 
+                1 -> {return true}
+                2 -> {
+                    val map = hashMapOf(
+                        "type" to type,
+                        "author" to uid, //utente che ha seguito
+                        "src" to uid, //uguale a author
+                        "createdAt" to FieldValue.serverTimestamp(),
+                    )
+
+                    val res = add(map, p1)
+                    return res
+                }
+
+                else -> return false //type errato
             }
-
-
-            return true
         }
 
         private suspend fun add(map: Map<*,*>,user:String):Boolean {

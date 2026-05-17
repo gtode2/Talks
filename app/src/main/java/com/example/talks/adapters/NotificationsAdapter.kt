@@ -2,6 +2,7 @@ package com.example.talks.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.example.talks.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.data.NotificationData
+import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.singleton.ImageCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +24,8 @@ import kotlinx.coroutines.withContext
 
 class NotificationsAdapter(
     private val notif: MutableList<NotificationData>,
-    private val context: Context
+    private val context: Context,
+    private val fragment: NotificationPageFragment
 ): RecyclerView.Adapter<NotificationsAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
@@ -80,7 +84,18 @@ class NotificationsAdapter(
 
 
             notifblock.setOnClickListener {
-                //gestione tipo notifica
+                when(el.type){
+                    0->{
+                        fragment.openPost(el.src)
+                    }
+                    1->{
+                        fragment.openPost(el.src)
+                    }
+                    2->{
+                        fragment.openUser(el.src)
+
+                    }
+                }
             }
 
         }

@@ -1,5 +1,6 @@
 package com.example.talks.repository
 
+import com.example.talks.database.NotificationsDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.singleton.UserID
 
@@ -16,8 +17,8 @@ object FollowRepository {
     suspend fun addFollow(userid:String):Int {
         //-1 -> errore
         //-2 -> uid non trovato -> manda a homepage
-        //0 -> aggiunto
-        //1 -> rimosso
+        //0 / 1 -> aggiunto (incrementa / non incrementare)
+        //2 / 3 -> rimosso (decrementa / non decrementare)
 
         if (UserID.getUID() == null) {
             return -2
@@ -28,10 +29,15 @@ object FollowRepository {
             val res = UserDatabase.follow(UserID.getUID()!!, userid)
             if (res!=-1){
                 followedAccounts.put(userid, true)
-                return 0
+                when(res){
+                    0-> {
+                        NotificationsDatabase.create(2, userid)
+                        return 0
+                    }
+                    1-> return 1
+                }
             }else{
                 return -1
-                TODO("gestione errore")
             }
         }else {
             //rimuovi follow
@@ -39,12 +45,15 @@ object FollowRepository {
             val res = UserDatabase.unfollow(UserID.getUID()!!, userid)
             if (res != -1) {
                 followedAccounts.remove(userid)
-                return 1
+                when (res) {
+                    0 -> return 3
+                    1 -> return 4
+                }
             } else {
                 return -1
-                TODO("gestione errore")
             }
         }
+        return -1 //irraggiungibile | solo per evitare errore
     }
     fun clear(){
         followedAccounts.clear()

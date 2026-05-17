@@ -2,6 +2,7 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -61,6 +62,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
             val postList = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
 
             if (postList.isEmpty()){
+                Log.e("AAA", "nada, id = ${postId}", )
                 //gestione errore - pagina xml DA CREARE
             }else{
                 val post = postList[0]
