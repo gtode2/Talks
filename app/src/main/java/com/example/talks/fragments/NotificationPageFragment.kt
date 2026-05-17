@@ -35,7 +35,7 @@ class NotificationPageFragment:Fragment(R.layout.notificationpage) {
                     val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                     view.findViewById<TextView>(R.id.text).text=getString(R.string.nonotif)
                 }else{
-                    adapter=NotificationsAdapter(list.toMutableList(), requireContext(), this@NotificationPageFragment)
+                    adapter=NotificationsAdapter(list.asReversed().toMutableList(), requireContext(), this@NotificationPageFragment)
                     rv.adapter=adapter
                 }
             }

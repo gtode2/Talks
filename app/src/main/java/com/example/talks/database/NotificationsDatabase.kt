@@ -27,10 +27,10 @@ class NotificationsDatabase {
             //VERIFICARE COME VIENE PASSATO TAG, SE CON O SENZA @
 
             when(type) {
-                0 -> {
+                0,1 -> {
                     val map = hashMapOf(
                         "type" to type,
-                        "author" to uid, //utente che ha taggato
+                        "author" to uid, //utente che ha taggato / commentato
                         "src" to p2, //id del post
                         "createdAt" to FieldValue.serverTimestamp(),
                     )
@@ -39,7 +39,6 @@ class NotificationsDatabase {
                     return res
                 }
 
-                1 -> {return true}
                 2 -> {
                     val map = hashMapOf(
                         "type" to type,

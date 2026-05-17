@@ -58,6 +58,8 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
 
         rvPost.layoutManager = LinearLayoutManager(requireContext())
 
+        var post: PostData?=null
+
         lifecycleScope.launch{
             val postList = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
 
@@ -65,7 +67,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                 Log.e("AAA", "nada, id = ${postId}", )
                 //gestione errore - pagina xml DA CREARE
             }else{
-                val post = postList[0]
+                post = postList[0]
 
                 val comments = withContext(Dispatchers.IO){CommentsDatabase.getComments(postId!!)}
 
@@ -103,15 +105,15 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
 
         addCombutton.setOnClickListener {
             val commenttext = addComTxt.text.toString()
-            if (!commenttext.isNullOrBlank()){
-                addComment(UID!!, commenttext, postId!!){res->
+            if (commenttext.isNotBlank()){
+                lifecycleScope.launch {
+                    val res = CommentsDatabase.addComment(commenttext, postId!!, post!!.uid)
                     if (res==0){
                         addComTxt.text.clear()
-                        adapter!!.addComment(commenttext, UID)
+                        adapter!!.addComment(commenttext, UserID.getUID()!!)
                     }else{
                         Toast.makeText(requireContext(), "errore", Toast.LENGTH_SHORT).show()
                     }
-
                 }
             }else{
                 Toast.makeText(requireContext(), "inserire un testo", Toast.LENGTH_SHORT).show()
@@ -119,20 +121,6 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
         }
 
     }
-
-
-
-
-    //spostare addcomment
-    fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
-        CommentsDatabase.addComment(uid, text, post){res->
-            onResult(res)
-        }
-    }
-
-
-
-
 
     fun openUser(uid:String) {
         val intent = Intent(requireContext(), EmptyActivity::class.java)

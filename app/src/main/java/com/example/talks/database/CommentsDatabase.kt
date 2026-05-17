@@ -2,10 +2,14 @@ package com.example.talks.database
 
 import com.example.talks.data.CommentData
 import com.example.talks.interfaces.Comment
+import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class CommentsDatabase {
@@ -26,7 +30,8 @@ class CommentsDatabase {
                     cont.resume(comm){}
                 }
         }
-        fun addComment(uid:String, text:String, post:String, onResult: (Int) -> Unit){
+        suspend fun addComment(text:String, post:String, postOwner:String):Int = suspendCancellableCoroutine{cont->
+            val uid = UserID.getUID()
             val comment = hashMapOf(
                 "date" to FieldValue.serverTimestamp(),
                 //"postid" to post, capire se serve
@@ -39,10 +44,14 @@ class CommentsDatabase {
                 .collection("comments")
                 .add(comment)
                 .addOnSuccessListener{
-                    //aggiungi notifica -> type = 1
-                    onResult(0)
+                    CoroutineScope(Dispatchers.IO).launch{
+                        NotificationsDatabase.create(1, postOwner,post)
+                    }
+
+
+                    cont.resume(0){}
                 }.addOnFailureListener {
-                    onResult(-1)
+                    cont.resume(-1){}
                 }
         }
     }
