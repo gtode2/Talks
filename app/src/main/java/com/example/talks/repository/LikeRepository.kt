@@ -7,7 +7,7 @@ object LikeRepository {
 
     suspend fun loadLikes(uid:String){
         //chiamata a LikeDatabase e poi memorizza
-        val likesMap = LikeDatabase.init(uid)
+        val likesMap = LikeDatabase.userInit(uid)
         likedPosts = likesMap
     }
 

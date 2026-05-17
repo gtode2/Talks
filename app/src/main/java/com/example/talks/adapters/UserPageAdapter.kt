@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.data.UserData
 import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostHandlerInterface
+import com.example.talks.repository.FollowRepository
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
@@ -25,7 +28,7 @@ import kotlinx.coroutines.withContext
 class UserPageAdapter(
     private val posts:MutableList<PostData>,
     var pch: PostCard?,
-    private val context: Context,
+    val context: Context,
     private val user: UserData
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     companion object{
@@ -51,7 +54,7 @@ class UserPageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
-            VIEW_TYPE_USER-> UserVH(view.inflate(R.layout.userblock, parent, false))
+            VIEW_TYPE_USER-> UserVH(view.inflate(R.layout.userblock, parent, false), context)
             VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent, false), context, pch, posts)
             else-> throw IllegalArgumentException("tipo non valido")
         }
@@ -66,7 +69,7 @@ class UserPageAdapter(
         }
     }
 
-    class UserVH(view: View):RecyclerView.ViewHolder(view){
+    class UserVH(view: View, context:Context):RecyclerView.ViewHolder(view){
         val userns = view.findViewById<TextView>(R.id.userns)
         val fw = view.findViewById<TextView>(R.id.followers)
         val fwd = view.findViewById<TextView>(R.id.followed)
@@ -84,6 +87,14 @@ class UserPageAdapter(
 
             if (UserID.getUID().isNullOrBlank()){
                 followBtn.visibility=View.GONE
+            }else if (FollowRepository.isFollowed(user.Uid)){
+                followTxt.text="Following"
+                followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
+                followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
+            }else{
+                followTxt.text="Follow"
+                followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
+                followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
             }
 
             job = scope.launch {
@@ -99,7 +110,24 @@ class UserPageAdapter(
             userns.text = "${user.name} ${user.surname}"
 
             followBtn.setOnClickListener {
-                //gestione bottone
+                scope.launch {
+                    val res = withContext(Dispatchers.IO){ FollowRepository.addFollow(user.Uid) }
+                    if (res>=0){
+                        //modifico stato
+                        if (FollowRepository.isFollowed(user.Uid)){
+                            followTxt.text="Following"
+                            followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
+                            followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
+                        }else{
+                            followTxt.text="Follow"
+                            followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
+                            followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
+                        }
+                    }else{
+                        Toast.makeText(itemView.context, "Si è verificato un errore", Toast.LENGTH_SHORT).show()
+                    }
+
+                }
             }
         }
     }

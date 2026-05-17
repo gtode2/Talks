@@ -23,6 +23,7 @@ class AccountDatabase {
                             for (doc in it) {
                                 userTag = doc.id
                             }
+                            //FollowRepository
                             cont.resume(userTag) {}
                         }
                         .addOnFailureListener {
@@ -62,10 +63,5 @@ class AccountDatabase {
                 .addOnFailureListener { cont.resume(false){} }
 
         }
-
-        suspend fun followers():String = suspendCancellableCoroutine { cont ->
-
-        }
-
     }
 }
