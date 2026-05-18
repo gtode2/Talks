@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.EmptyActivity
@@ -34,6 +35,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val pagetitle = view.findViewById<TextView>(R.id.title)
         val title = view.findViewById<EditText>(R.id.postTitle)
         val text = view.findViewById<EditText>(R.id.postText)
         val remch = view.findViewById<TextView>(R.id.remchcount) //remaining characters count
@@ -43,6 +45,8 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val backbtn = view.findViewById<ImageView>(R.id.close)
         val contbtn = view.findViewById<Button>(R.id.postBtn)
 
+
+        pagetitle.text= ContextCompat.getString(requireContext(), R.string.editpost)
         //estraggo uid
         uid = UserID.getUID()
 

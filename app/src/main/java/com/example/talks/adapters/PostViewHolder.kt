@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import coil.load
+import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Job
 import okhttp3.Dispatcher
 
@@ -61,7 +62,7 @@ open class PostViewHolder(
     private var userId:String?=null
 
 
-    open fun bind(el: PostData, isyour:Boolean=false) {
+    open fun bind(el: PostData, isyour:Boolean=false, isFullScreen:Boolean=false) {
         job?.cancel()
 
         postId=el.id
@@ -73,18 +74,8 @@ open class PostViewHolder(
         //solo altri
 
 
-
-
-
-
         val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
         val commentCtr = view.findViewById<TextView>(R.id.commCtr)
-
-
-
-
-
-        //solo tuoi
 
 
 
@@ -169,22 +160,37 @@ open class PostViewHolder(
 
             val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
 
-            likeIcon.imageTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.desel)
-            )
-            saveIcon.imageTintList = ColorStateList.valueOf(
-                ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
-            )
-            if (el.isSaved){
-                saveTxt.text = "Unsave"
+
+            if (el.uid!=UserID.getUID()){
+                likeIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.desel)
+                )
+                saveIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
+                )
+                if (el.isSaved){
+                    saveTxt.text = "Unsave"
+                }else{
+                    saveTxt.text = "Save"
+                }
+
+                saveBtn.setOnClickListener { pch?.savePost(el.id) }
+                likeBtn.setOnClickListener { pch?.addLike(el.id) }
+                //save e like solo per post altrui
+
             }else{
-                saveTxt.text = "Save"
+                //"blocco" visivamente bottoni per post utente
+                likeIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.btnlocked)
+                )
+                saveIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.btnlocked)
+                )
             }
 
             userblock.setOnClickListener { pch?.openUser(el.uid) }
             commBtn.setOnClickListener {}
-            saveBtn.setOnClickListener { pch?.savePost(el.id) }
-            likeBtn.setOnClickListener { pch?.addLike(el.id) }
+
 
         }else{
             val editbtn = view.findViewById<LinearLayout>(R.id.editBtn)
@@ -199,7 +205,16 @@ open class PostViewHolder(
 
         // click listener
 
-        itemView.setOnClickListener { pch?.openPost(el.id) }
+        if (!isFullScreen){
+            itemView.setOnClickListener { pch?.openPost(el.id) }
+            if (el.uid==UserID.getUID()){
+                //"blocco" anche in "your posts"
+                likeIcon.imageTintList = ColorStateList.valueOf(
+                    ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.btnlocked)
+                )
+            }
+        }
+
         src.setOnClickListener { pch?.openSource(el.source) }
     }
 }

@@ -32,6 +32,7 @@ class PostAdapter(
     private val context: Context
 
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
+    //Post Full Screen
     companion object {
         private const val VIEW_TYPE_POST=0
         private const val VIEW_TYPE_COMM=1
@@ -49,7 +50,7 @@ class PostAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is PostViewHolder ->{
-                holder.bind(post)
+                holder.bind(post, false, true)
             }
 
             is CommentVH->{

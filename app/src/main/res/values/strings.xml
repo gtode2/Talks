@@ -61,6 +61,9 @@
     <string name="uploadPost">Post</string>
     <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
 
+    <!-- Edit Post-->
+    <string name="editpost">Edit Post</string>
+
     <!-- Comments -->
 
     <string name="addcomment">Add a reply</string>

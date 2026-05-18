@@ -3,6 +3,7 @@ package com.example.talks.database
 import android.util.Log
 import android.widget.Toast
 import com.example.talks.data.PostData
+import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.Filter
@@ -16,7 +17,6 @@ class PostDatabase {
         suspend fun getPosts(type:String="all", search: String="-1"):List<PostData> = suspendCancellableCoroutine{cont->
             val pl = mutableListOf<PostData>()
             //all
-            //followed accounts
             //your posts
             //search
             when (type) {
@@ -28,8 +28,10 @@ class PostDatabase {
                         .addOnSuccessListener { res ->
                             for (document in res) {
                                 var post = document.toObject(PostData::class.java)
-                                post.id = document.id
-                                pl.add(post)
+                                if (post.uid!=UserID.getUID()){
+                                    post.id = document.id
+                                    pl.add(post)
+                                }
                             }
                             cont.resume(pl){}
                         }
@@ -100,8 +102,10 @@ class PostDatabase {
                         .addOnSuccessListener {res->
                             for (document in res){
                                 var post=document.toObject(PostData::class.java)
-                                post.id=document.id
-                                pl.add(post)
+                                if (post.uid!=UserID.getUID()){
+                                    post.id = document.id
+                                    pl.add(post)
+                                }
                             }
 
                             cont.resume(pl){}
