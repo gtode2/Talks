@@ -17,15 +17,12 @@ object ImageCache {
     suspend fun get(s:String):Bitmap?{
         // se non esiste -> carica da ImageDatabase
         if (cache[s]!=null){
-            Log.e("AAA", "cache hit ${s} ", )
             if (cache[s]!!.height==1 &&cache[s]!!.width==1){
-                Log.e("AAA", "no img ${s} ", )
                 return null
             }else{
                 return cache[s]
             }
         }else{
-            Log.e("AAA", "cache miss ${s} ", )
             //cerca da firebase
             var id: String
             var pr:Boolean = false
@@ -39,17 +36,27 @@ object ImageCache {
             val b64 = ImageDatabase.get(id, pr)
 
             if (b64==null){
-                Log.e("AAA", "db miss ${s} ", )
                 //bmp placeholder -> evita chiamata inutile a db
                 cache.put(s, createBitmap(1, 1))
                 return null
             }else{
-                Log.e("AAA", "db hit ${s} ", )
                 val bmp = ImageManager.decode(b64)
                 cache.put(s,bmp)
                 return bmp
             }
 
         }
+    }
+
+    suspend fun add(id:String, bmp:Bitmap, isProfile: Boolean, isEdit:Boolean):Boolean{
+        //isprofile -> gestisco
+
+        //aggiunta immagine profilo o post
+        //aggiunge img a repository
+        return true
+    }
+    fun remove(id:String){
+        //rimuove da cache
+
     }
 }

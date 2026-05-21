@@ -133,8 +133,8 @@
                 android:textColor="@color/text"
                 android:textColorHint="@color/hint"/>
 
-            <ImageView
-                android:id="@+id/imgprev"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/imgprevblock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -142,9 +142,31 @@
                 app:layout_constraintTop_toBottomOf="@id/srcPC"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:background="@color/background" />
+                android:visibility="gone">
+                <ImageView
+                    android:id="@+id/imgprev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="100dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:background="@color/background" />
+
+                <ImageView
+                    android:id="@+id/imgrembtn"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginEnd="15dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/close"
+                    app:tint="@color/text"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:id="@+id/selectImage"
@@ -160,12 +182,13 @@
                 android:layout_marginBottom="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/imgprev">
+                app:layout_constraintTop_toBottomOf="@id/imgprevblock">
                 <TextView
+                    android:id="@+id/imgtxt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/text"
-                    android:text="Add Image"
+                    android:text="@string/addImg"
                     android:textAlignment="center"
                     android:textSize="20sp"
                     />

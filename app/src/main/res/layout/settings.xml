@@ -71,42 +71,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold"
                     />
-                <LinearLayout
-                    android:id="@+id/accountSettings"
-                    android:layout_width="320dp"
-                    android:layout_height="70dp"
-                    android:layout_marginTop="20dp"
-                    android:background="@drawable/switchbg"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/accounttext">
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/pencil"
-                        app:tint="@color/text"/>
-                    <TextView
-                        android:id="@+id/accountTv"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Account"
-                        android:textSize="20sp"
-                        android:textColor="@color/text"
-                        android:paddingStart="16dp"/>
-                    <ImageView
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginRight="10dp"
-                        android:src="@drawable/right"
-                        app:tint="@color/white"/>
-                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/profilePicture"
                     android:layout_width="320dp"
@@ -118,7 +83,7 @@
                     android:paddingHorizontal="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/accountSettings">
+                    app:layout_constraintTop_toBottomOf="@id/accounttext">
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"

@@ -60,6 +60,8 @@
     <string name="loadImage">Load image</string>
     <string name="uploadPost">Post</string>
     <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
+    <string name="addImg">Add image</string>
+    <string name="changeImg">Change image</string>
 
     <!-- Edit Post-->
     <string name="editpost">Edit Post</string>

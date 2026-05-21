@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -14,6 +15,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.database.ImageDatabase
@@ -37,12 +39,18 @@ class PostCreationActivity: AppCompatActivity() {
         val backBtn = findViewById<ImageView>(R.id.close)
         val rem = findViewById<TextView>(R.id.remchcount)
         val imgbtn = findViewById<LinearLayout>(R.id.selectImage)
+        val imgblock = findViewById<ConstraintLayout>(R.id.imgprevblock)
+        val imgrembtn = findViewById<ImageView>(R.id.imgrembtn)
+        val imgtxt = findViewById<TextView>(R.id.imgtxt)
         val prev = findViewById<ImageView>(R.id.imgprev)
         val createPost = findViewById<Button>(R.id.postBtn)
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            //se seleziono immagine -> rendo visible
             uri?.let {
                 prev.setImageURI(it)
+                imgblock.visibility= View.VISIBLE
+                imgtxt.text = ContextCompat.getString(this, R.string.changeImg)
                 Imguri=it
             }
         }
@@ -55,6 +63,13 @@ class PostCreationActivity: AppCompatActivity() {
         imgbtn.setOnClickListener{
             pickImageLauncher.launch("image/*")
         }
+
+        imgrembtn.setOnClickListener {
+            Imguri=null
+            imgblock.visibility= View.GONE
+            imgtxt.text = ContextCompat.getString(this, R.string.addImg)
+        }
+
         nchar = 0
         post.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -90,10 +105,10 @@ class PostCreationActivity: AppCompatActivity() {
 
             lifecycleScope.launch {
                 //verifica immagine
-                Log.e("AAA", Imguri.toString() )
+                val uri = Imguri
                 var img = ""
-                if (Imguri!=null){
-                     img = ImageManager.compressor(this@PostCreationActivity, Imguri)
+                if (uri!=null){
+                     img = ImageManager.compressor(this@PostCreationActivity, uri)
                     if (img==""){
                         //gestione errore
                         Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
@@ -129,18 +144,6 @@ class PostCreationActivity: AppCompatActivity() {
                 finish()
             }
 
-
-
-
-
-
-            //esegue verifica e compressione immagine
-            //invia info a DB
-
-
-
-            //gestione eventuali tag nel testo del post
-            //riceve conferma e reindirizza a homepage
 
         }
     }

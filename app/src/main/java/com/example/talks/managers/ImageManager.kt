@@ -15,11 +15,10 @@ import java.io.ByteArrayOutputStream
 class ImageManager {
     companion object{
         fun compressor(ctx:Context, uri:Uri):String{
-            Log.e("AAA", "tentativo compressione")
             var tl = false
             var size=800
             var bitmap: Bitmap = toBitmap(ctx, uri)
-            var b64Str: String=""
+            var b64Str=""
             do {
                 tl=false
                 var redbitmap = reduce(bitmap, size)
@@ -28,7 +27,6 @@ class ImageManager {
                     if (size<600){
                         //impossible scalare
                         tl=false
-                        Log.e("AAA", "errore->impossibile comprimere")
                         return ""
                         //errore->impossibile comprimere
 
@@ -39,8 +37,6 @@ class ImageManager {
                 }
                 b64Str= Base64.encodeToString(c, Base64.NO_WRAP)
             }while (tl)
-            Log.e("AAA", "Compressione completata")
-            Log.e("AAA", "size= "+b64Str.length)
             return b64Str
         }
         private fun toBitmap(ctx: Context,uri: Uri): Bitmap{
@@ -82,5 +78,6 @@ class ImageManager {
             val img = Base64.decode(str, Base64.NO_WRAP)
             return BitmapFactory.decodeByteArray(img, 0, img.size)
         }
+
     }
 }

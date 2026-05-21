@@ -60,6 +60,8 @@
     <string name="loadImage">Carica immagine</string>
     <string name="uploadPost">Pubblica</string>
     <string name="errMissingTitleOrText">Titolo o testo del post non possono essere vuoti</string>
+    <string name="addImg">Inserisci immagine</string>
+    <string name="changeImg">Modifica immagine</string>
 
     <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
