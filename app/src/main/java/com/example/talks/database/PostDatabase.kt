@@ -250,7 +250,7 @@ class PostDatabase {
             //0 -> eseguito correttamente
             //-1-> errore
         }
-        fun editPost(uid:String, postid: String,data:PostData, onResult: (Int) -> Unit){
+        suspend fun editPost(uid:String, postid: String,data:PostData):Int = suspendCancellableCoroutine{cont->
             val db = FirebaseFirestore.getInstance()
             val post = db.collection("Posts").document(postid)
 
@@ -284,12 +284,12 @@ class PostDatabase {
                     //edit image
                 }
             }.addOnSuccessListener {
-                onResult(0)
+                cont.resume(0){}
             }.addOnFailureListener {
                 if (ex){
-                    onResult(-1)
+                    cont.resume(-1){}
                 }else{
-                    onResult(1)
+                    cont.resume(1){}
                 }
             }
 

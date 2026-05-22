@@ -28,6 +28,7 @@
 
     <!-- Register -->
 
+    <string name="createAccount">Crea un account</string>
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
     <string name="username">Username</string>
@@ -81,5 +82,9 @@
     <string name="notifcomment"><b>%1$s</b>  ha commentato un tuo post</string>
     <string name="notiffw"><b>%1$s</b>  ti ha iniziato a seguire</string>
     <string name="notiftag"><b>%1$s</b>  ha taggato</string>
+
+    <!--PostFS-->
+    <string name="sendcommdesc">Bottone per inviare il commento</string>
+
 
 </resources>

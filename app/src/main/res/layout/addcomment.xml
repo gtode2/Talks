@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:background="@color/background">
 
     <EditText
         android:id="@+id/textcomment"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/background"
+        android:hint="@string/addcomment"
+        android:textColor="@color/text"
+        android:textColorHint="@color/hint"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sendcommbtn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="@string/addcomment"
-        android:background="@color/background"
-        android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
+        android:inputType="text"/>
 
     <ImageView
         android:id="@+id/sendcommbtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/send"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:background="@color/background"
-        app:tint="@color/desel"/>
+        app:tint="@color/desel"
+        android:contentDescription="@string/sendcommdesc"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

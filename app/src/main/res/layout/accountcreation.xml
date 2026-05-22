@@ -14,14 +14,14 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="55dp"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginLeft="15dp">
+        android:layout_marginStart="15dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textColor="@color/text"
             android:layout_marginTop="15dp"
-            android:text="Crea un account"/>
+            android:text="@string/createAccount"/>
     </LinearLayout>
 
     <EditText
@@ -32,11 +32,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title"
-        android:inputType="textEmailAddress"
         android:hint="@string/name"
         android:background="@color/background"
         android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
+        android:textColorHint="@color/hint"
+        android:inputType="text" />
     <EditText
         android:id="@+id/surname"
         android:layout_width="250dp"
@@ -48,7 +48,8 @@
         android:hint="@string/surname"
         android:background="@color/background"
         android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
+        android:textColorHint="@color/hint"
+        android:inputType="text"/>
     <EditText
         android:id="@+id/username"
         android:layout_width="250dp"
@@ -60,7 +61,8 @@
         android:hint="@string/username"
         android:background="@color/background"
         android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
+        android:textColorHint="@color/hint"
+        android:inputType="text" />
     <EditText
         android:id="@+id/dob"
         android:layout_width="250dp"

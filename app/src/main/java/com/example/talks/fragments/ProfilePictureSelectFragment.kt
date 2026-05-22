@@ -48,24 +48,14 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
         }
 
         continueBtn.setOnClickListener {
-            //comprimo immagine
-            var img=""
             if (Imguri!=null){
-                img = ImageManager.compressor(requireContext(), Imguri)
-                if (img==""){
-                    //gestione errore
-                }
-            }
-            //carico immagine
+                lifecycleScope.launch {
+                    val res = ImageCache.add(requireContext(), UserID.getUID()!!, Imguri!!, true)
 
-            lifecycleScope.launch {
-                if (img!=""){
-                    val res = ImageDatabase.add(img, UserID.getUID()!!, true)
                     if (res){
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
-
                     }else{
                         //gestione errore
                     }

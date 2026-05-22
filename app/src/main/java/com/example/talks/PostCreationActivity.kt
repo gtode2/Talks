@@ -23,6 +23,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.TagDatabase
 import com.example.talks.managers.ImageManager
 import com.example.talks.managers.TagManager
+import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
@@ -107,34 +108,25 @@ class PostCreationActivity: AppCompatActivity() {
                 //verifica immagine
                 val uri = Imguri
                 var img = ""
-                if (uri!=null){
-                     img = ImageManager.compressor(this@PostCreationActivity, uri)
-                    if (img==""){
-                        //gestione errore
-                        Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
-                        return@launch
-                    }
+                val imgBool = if (uri!=null) true else false
+
+                val PCres = PostDatabase.createPost(UID, post.text.toString(), source.text.toString(), title.text.toString(), imgBool)
+
+                if (uri!=null && PCres!="-1"){
+                    val ICres = ImageCache.add(this@PostCreationActivity, PCres, uri, false)
+                    //gestione risposta ICres -> se false -> modifico post -> rimuovo img
                 }
-                var imgbool = if (img!="") true else false
 
                 //verifica tag
                 val taglist = TagManager().validate(post.text.toString(), this@PostCreationActivity)
 
-                //crea post
-                //res = post id | -1
-
-                var res = PostDatabase.createPost(UID, post.text.toString(), source.text.toString(), title.text.toString(), imgbool)
 
                 //gestione post e errori upload
-                if (res!="-1"){
-                    //se upload post eseguito correttamente -> upload img e tag
+                if (PCres!="-1"){
+                    //se creazione post eseguito correttamente -> carico tag
                     if (taglist.isNotEmpty()){
-                        TagDatabase.addTag(taglist,res)
+                        TagDatabase.addTag(taglist,PCres)
                     }
-                    if (img!=""){
-                        ImageDatabase.add(img, res)
-                    }
-
 
                 }else{
                     Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()

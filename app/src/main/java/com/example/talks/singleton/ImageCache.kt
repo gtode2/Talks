@@ -1,11 +1,17 @@
 package com.example.talks.singleton
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import androidx.collection.LruCache
 import com.example.talks.database.ImageDatabase
 import com.example.talks.managers.ImageManager
 import androidx.core.graphics.createBitmap
+import com.example.talks.data.PostData
+import com.example.talks.database.PostDatabase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object ImageCache {
     val mem = (Runtime.getRuntime().maxMemory()/8).toInt()
@@ -48,15 +54,24 @@ object ImageCache {
         }
     }
 
-    suspend fun add(id:String, bmp:Bitmap, isProfile: Boolean, isEdit:Boolean):Boolean{
-        //isprofile -> gestisco
+    suspend fun add(ctx: Context, id:String, img: Uri, isProfile: Boolean):Boolean{
+        //gestire in dispatchers IO
 
-        //aggiunta immagine profilo o post
-        //aggiunge img a repository
-        return true
+        val imgStr = ImageManager.compressor(ctx, img)
+        var res = ImageDatabase.add(imgStr, id, isProfile)
+        if (res){
+            val bmp = ImageManager.decode(imgStr)
+            val imgid = if (isProfile) "profile$id" else "image$id"
+            cache.put(imgid, bmp)
+            return true
+        }else{
+            return false
+        }
     }
-    fun remove(id:String){
+
+    fun remove(id:String, isProfile:Boolean){
         //rimuove da cache
+        //se profilo -> rimuovi anche  da db
 
     }
 }

@@ -26,7 +26,6 @@ class ImageManager {
                 if (c.size>730_000){
                     if (size<600){
                         //impossible scalare
-                        tl=false
                         return ""
                         //errore->impossibile comprimere
 

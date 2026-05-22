@@ -39,19 +39,16 @@ class SettingsFragment:Fragment(R.layout.settings) {
         settingsManager = SettingsManager(requireContext())
         settingsManager.applyLang()
 
-        val accountSettings = view.findViewById<LinearLayout>(R.id.accountSettings)
+
         val profilePicture = view.findViewById<LinearLayout>(R.id.profilePicture)
 
         if (UserID.getUID()==null){
-            accountSettings.alpha=0.5f
-            accountSettings.isEnabled=false
+
             profilePicture.alpha=0.5f
             profilePicture.isEnabled=false
         }
 
-        accountSettings.setOnClickListener {
-            Log.e("AAA", "click", )
-        }
+
         profilePicture.setOnClickListener {
             val intent = Intent(requireContext(), EmptyActivity::class.java)
                 .putExtra("screen", "pps")

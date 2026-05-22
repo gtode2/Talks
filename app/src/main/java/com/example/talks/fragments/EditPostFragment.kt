@@ -141,20 +141,23 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             if(edit!=tmp || imgChanged){
                 //verifica imgchanged -> cambio foto -> non modifico flag in post
                 if (edit!=tmp){
-                    PostDatabase.editPost(uid!!, postId!!, edit){res->
-                        if (res==0){
-                            //chiudi schermata
-                            Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
-                        }else if (res==1){
-                            Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()
+                    //non modifico se cambio solo immagine -> boolean in post resta uguale
+                    lifecycleScope.launch {
+                        val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
+                        when(res){
+                            0 -> {
+                                Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
+                                //chiudi schermata
+                            }
+                            1-> {Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()}
+                            else-> {Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()}
                         }
                     }
                 }
                 if (imgChanged){
-                    lifecycleScope.launch {
-                        //ImageCache.edit()
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val res = ImageCache.add(requireContext(), postId!!, Imguri!!, false)
+                        //gestione res
                     }
                 }
 
