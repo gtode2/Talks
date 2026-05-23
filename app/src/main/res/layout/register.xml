@@ -35,43 +35,8 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:id="@+id/google"
-        android:layout_width="200dp"
-        android:layout_height="55dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/buttonbggrey"
-        android:gravity="center_vertical">
-        <ImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/googleg_standard_color_18"/>
-        <TextView
-            android:id="@+id/loginBtn2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Accedi con google"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8"
-            android:layout_marginLeft="15dp"
-            android:textColor="@color/white"/>
-    </LinearLayout>
-    <TextView
-        android:id="@+id/or"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/google"
-        android:layout_marginTop="25dp"
-        android:textColor="@color/text"
-        android:textSize="15sp"
-        android:text="oppure"/>
+
+
 
 
     <EditText
@@ -80,7 +45,7 @@
         android:layout_height="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/or"
+        app:layout_constraintTop_toBottomOf="@id/title"
         android:layout_marginTop="25dp"
         android:inputType="textEmailAddress"
 

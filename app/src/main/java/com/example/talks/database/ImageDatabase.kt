@@ -47,5 +47,29 @@ class ImageDatabase {
                     cont.resume("") {}
                 }
             }
+        suspend fun remove(profile:Boolean=false, postid:String=""):Boolean = suspendCancellableCoroutine { cont->
+            var id = ""
+            if (profile){
+                if (UserID.getUID()==null){
+                    //errore
+                }else{
+                    id = UserID.getUID()!!
+                }
+            }else{
+                id = postid
+            }
+            val coll = if (profile) "ProfilePictures" else "Images"
+
+            FirebaseFirestore.getInstance()
+                .collection(coll)
+                .document(id)
+                .delete()
+                .addOnSuccessListener {
+                    cont.resume(true){}
+                }
+                .addOnFailureListener {
+                    cont.resume(false){}
+                }
+        }
     }
 }

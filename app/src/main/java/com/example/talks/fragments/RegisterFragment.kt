@@ -19,7 +19,6 @@ class RegisterFragment:Fragment(R.layout.register) {
         super.onViewCreated(view, savedInstanceState)
 
         val back = view.findViewById<ImageView>(R.id.backbtn)
-        val googleBtn = view.findViewById<LinearLayout>(R.id.google)
         val mail = view.findViewById<EditText>(R.id.email)
         val pw = view.findViewById<EditText>(R.id.pw)
         val pwrep = view.findViewById<EditText>(R.id.pwrep)
@@ -78,12 +77,6 @@ class RegisterFragment:Fragment(R.layout.register) {
             //requireactivity homepage
             //tornare a userunlogged
             requireActivity().finish()
-        }
-        googleBtn.setOnClickListener {
-            //SOLO PER TEST UI
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.emptyframe, AccountCreationFragment())
-                .commit()
         }
     }
 }

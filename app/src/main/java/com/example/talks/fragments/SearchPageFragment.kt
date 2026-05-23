@@ -21,6 +21,7 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -45,53 +46,51 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
             lifecycleScope.launch {
                 val res = UserDatabase.searchUser(string)
-                if (res.followers!=-1){
+                if (res.followers!=-1 && res.Uid!=UserID.getUID()){
+                    //se uid = utente loggato -> ignora
                     ud=res
-                    Log.e("AAA", "User", )
                 }
 
+                val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("search", string)}
 
-                withContext(Dispatchers.IO){
-                    val postList = PostDatabase.getPosts("search", string)
-                    withContext(Dispatchers.Main){
-                        val ctx = requireContext()
-                        //racchiudere in handler?
-                        var liked = LikeRepository.getLikes()
-                        if (!liked.isEmpty()){
-                            postList.forEach{ el->
-                                if (liked.containsKey(el.id)){
-                                    el.isLiked=true
-                                }
-                            }
+                val ctx = requireContext()
+                //racchiudere in handler?
+                var liked = LikeRepository.getLikes()
+                if (!liked.isEmpty()){
+                    postList.forEach{ el->
+                        if (liked.containsKey(el.id)){
+                            el.isLiked=true
                         }
-                        val saved = BookmarkRepository.getSaved()
-                        if (!saved.isEmpty()){
-                            postList.forEach{el->
-                                if (saved.containsKey(el.id)){
-                                    el.isSaved=true
-                                }
-                            }
-                        }
-
-                        adapter = PostCardSearchAdapter(
-                            null,
-                            null,
-                            ctx,
-                            ud
-                        )
-                        if (postList.isNotEmpty()){
-                            adapter?.posts =postList.toMutableList()
-                        }
-                        val handler = PostCardHandler(
-                            contextProvider = {requireContext()},
-                            adapter=adapter,
-                            null,
-                            openUser = {userid->openUser(userid)}
-                        )
-                        adapter!!.pch=handler
-                        rv.adapter = adapter
                     }
                 }
+                val saved = BookmarkRepository.getSaved()
+                if (!saved.isEmpty()){
+                    postList.forEach{el->
+                        if (saved.containsKey(el.id)){
+                            el.isSaved=true
+                        }
+                    }
+                }
+
+                adapter = PostCardSearchAdapter(
+                    null,
+                    null,
+                    ctx,
+                    ud
+                )
+                if (postList.isNotEmpty()){
+                    adapter?.posts =postList.toMutableList()
+                }
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter,
+                    null,
+                    openUser = {userid->openUser(userid)}
+                )
+                adapter!!.pch=handler
+                rv.adapter = adapter
+
+
             }
         }
 

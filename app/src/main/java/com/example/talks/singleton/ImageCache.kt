@@ -10,6 +10,7 @@ import com.example.talks.managers.ImageManager
 import androidx.core.graphics.createBitmap
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
+import com.google.firebase.firestore.auth.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -69,9 +70,30 @@ object ImageCache {
         }
     }
 
-    fun remove(id:String, isProfile:Boolean){
-        //rimuove da cache
-        //se profilo -> rimuovi anche  da db
+    suspend fun remove(isProfile:Boolean, postid:String=""):Boolean{
+        if (isProfile){
+            //gestione profilo
+            if (UserID.getUID()==null){
+                return false
+            }else{
+                cache.remove("profile${UserID.getUID()}")
+                //rimuovo da db
+                val res = ImageDatabase.remove(true)
+                return res
+            }
+        }else{
+            //gestione post
+            cache.remove("image$postid")
+            val res = ImageDatabase.remove(false, postid)
+            if (res){
+                //rimuovo anche da post
+                //edit post -> image = false
+                val res = PostDatabase.editImgPost(postid, false)
+                return res
+            }else{
+                return false
+            }
+        }
 
     }
 }

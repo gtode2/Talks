@@ -71,6 +71,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                     putString("id", postId)
                 }
             })
+            .addToBackStack(null)
             .commit()
     }
 

@@ -85,7 +85,8 @@ class UserPageAdapter(
         fun bind(user:UserData){
             job?.cancel()
 
-            if (UserID.getUID().isNullOrBlank()){
+            if (UserID.getUID().isNullOrBlank() || UserID.getUID() == user.Uid){
+                //rimuovo bottone se sloggato o se stesso
                 followBtn.visibility=View.GONE
             }else if (FollowRepository.isFollowed(user.Uid)){
                 followTxt.text="Following"

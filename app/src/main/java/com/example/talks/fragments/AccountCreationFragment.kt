@@ -61,6 +61,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                         UserID.setUID(username)
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.emptyframe, ProfilePictureSelectFragment())
+                            .addToBackStack(null)
                             .commit()
                     }else{
                         //errore

@@ -92,7 +92,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
             val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
             if (img==null){
-                imgprev.visibility=View.GONE
+                imgblock.visibility=View.GONE
             }else{
                 imgprev.setImageBitmap(img)
                 imgblock.visibility= View.VISIBLE
@@ -130,51 +130,72 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             if (srctext.text.toString()!=post!!.source){
                 edit.source=srctext.text.toString()
             }
-            if(imgChanged){
-                //se aggiungo/rimuovo img -> modifica flag in post
-                edit.image=if(Imguri==null) false else true
+
+            //aggiungere verifica tag
+
+            val tmp = PostData()
+
+            //modifica post
+            if (tmp!= edit){
+                //ignoro immagine in questa fase -> gestite tutte dopo
+                lifecycleScope.launch {
+                    val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
+                    when(res){
+                        0 -> {
+                            Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
+                            //chiudi schermata
+                        }
+                        1-> {Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()}
+                        else-> {Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()}
+                    }
+                }
             }
 
-            //gestire img
 
-            val tmp=PostData()
-            if(edit!=tmp || imgChanged){
-                //verifica imgchanged -> cambio foto -> non modifico flag in post
-                if (edit!=tmp){
-                    //non modifico se cambio solo immagine -> boolean in post resta uguale
+            //gestione immagini
+            if (post!!.image){
+                if (imgChanged){
                     lifecycleScope.launch {
-                        val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
-                        when(res){
-                            0 -> {
-                                Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
-                                //chiudi schermata
+                        if (Imguri==null){
+                            //rimossa
+                            val res = withContext(Dispatchers.IO){ImageCache.remove(false, postId!!)}
+                            if (!res){
+                                Log.e("AAA", "img rem error", )
+                                //gestione errore
                             }
-                            1-> {Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()}
-                            else-> {Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()}
+                        }else{
+                            //modificata
+                            val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
+                            if (!res){
+                                Log.e("AAA", "img edit error", )
+                                //gestione errore
+                            }
                         }
                     }
                 }
-                if (imgChanged){
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        val res = ImageCache.add(requireContext(), postId!!, Imguri!!, false)
-                        //gestione res
+            }else if (Imguri!=null){
+                //aggiunta
+                lifecycleScope.launch {
+                    var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
+                    if (!res){
+                        //gestione errore
+                        Log.e("AAA", "img add cache error", )
+                    }else{
+                        res = withContext(Dispatchers.IO){PostDatabase.editImgPost(postId!!, true)}}
+                        if (!res){
+                            //gestione errore
+                            Log.e("AAA", "img add db error", )
+                        }
                     }
                 }
-
-            }else{
-                //errore
             }
-        }
+
+
+
         backbtn.setOnClickListener {
-            val intent = Intent(requireContext(),EmptyActivity::class.java)
-                .putExtra("screen","your")
-            startActivity(intent)
+            parentFragmentManager.popBackStack()
         }
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner){
-            val intent = Intent(requireContext(),EmptyActivity::class.java)
-                .putExtra("screen","your")
-            startActivity(intent)
-        }
+
         imgbtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }

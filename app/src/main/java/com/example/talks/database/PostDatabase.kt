@@ -280,9 +280,7 @@ class PostDatabase {
                 if(data.source!=""){
                     tr.update(post,"source", data.source)
                 }
-                if(!data.image){
-                    //edit image
-                }
+
             }.addOnSuccessListener {
                 cont.resume(0){}
             }.addOnFailureListener {
@@ -294,6 +292,14 @@ class PostDatabase {
             }
 
 
+        }
+        suspend fun editImgPost(id:String, img: Boolean):Boolean = suspendCancellableCoroutine{cont->
+            FirebaseFirestore.getInstance()
+                .collection("Posts")
+                .document(id)
+                .update("image", img)
+                .addOnSuccessListener { cont.resume(true){} }
+                .addOnFailureListener { cont.resume(false){} }
         }
     }
 }

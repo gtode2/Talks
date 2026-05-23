@@ -96,57 +96,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         backbtn.setOnClickListener {
             requireActivity().finish()
         }
-
-
-        //verifico se utente è seguito o no
-
-        /*
-        if(FollowRepository.isFollowed(userid!!)){
-            followbtn.text="unfollow"
-        }else{
-            followbtn.text="follow"
-        }*/
-
-
-        /*
-        followbtn.setOnClickListener {
-            lifecycleScope.launch {
-                val res = FollowRepository.addFollow(userid!!)
-                //gestire bottone
-                if (res==0){
-                    followbtn.text = "followed"
-                    followers.text = (followers.text.toString().toInt() + 1).toString()
-                    //NON CORRETTO -> SE ERA FOLLOWED -> NON MODIFICO
-                }else if(res==1){
-                    followbtn.text = "follow"
-                    followers.text = (followers.text.toString().toInt() - 1).toString()
-                    //NON CORRETTO -> SE ERA UNFOLLOWED -> NON MODIFICO
-                }
-            }*/
-            /*
-            if(FollowRepository.isFollowed(userid!!)) {
-                UserDatabase.unfollow(UID!!, userid!!) { res ->
-                    if (res != -1) {
-                        //rimozione eseguita
-                        //ridurre count
-                        followers.text = (followers.text.toString().toInt() - 1).toString()
-                        FollowRepository.removeFollowed(userid!!)
-                        //modifica bottone
-                        followbtn.text = "follow"
-                    }
-                }
-            }else{
-                UserDatabase.follow(UID!!, userid!!) { res ->
-                    if (res != -1) {
-                        //aggiunta eseguita
-                        //aumentare count
-                        followers.text = (followers.text.toString().toInt() + 1).toString()
-                        FollowRepository.addFollowed(userid!!)
-                        //modifica bottone
-                        followbtn.text = "unfollow"
-                    }
-                }
-            }}*/
-        }
+    }
 
 }

@@ -56,6 +56,7 @@ class LoginFragment: Fragment(R.layout.login) {
         settingsBtn.setOnClickListener{
             parentFragmentManager.beginTransaction()
                 .replace(R.id.frame, SettingsFragment())
+                .addToBackStack(null)
                 .commit()
         }
 

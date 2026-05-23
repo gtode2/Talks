@@ -110,9 +110,6 @@ class PostCardSearchAdapter(
         }
     }
 
-    /*
-
-     */
     inner class EmptyVH(view: View): RecyclerView.ViewHolder(view){
 
     }
