@@ -62,12 +62,13 @@ class SettingsFragment:Fragment(R.layout.settings) {
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
             startActivity(intent)
-            //requireActivity().finish()
+            requireActivity().finish()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
             startActivity(intent)
+            requireActivity().finish()
         }
 
         btnIt = view.findViewById(R.id.btnIt)

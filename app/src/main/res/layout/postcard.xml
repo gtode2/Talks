@@ -134,7 +134,7 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:orientation="horizontal"
-            android:background="@color/black">
+            android:background="@drawable/pcbuttonsbg">
 
             <LinearLayout
                 android:id="@+id/likeBtn"

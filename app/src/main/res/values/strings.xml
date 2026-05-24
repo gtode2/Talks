@@ -86,5 +86,7 @@
     <!--PostFS-->
     <string name="sendcommdesc">Button to send a comment</string>
 
+    <!--Saved Posts-->
+    <string name="savedposts">Saved posts</string>
 
 </resources>

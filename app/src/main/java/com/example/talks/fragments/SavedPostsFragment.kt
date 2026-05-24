@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostCardAdapter
+import com.example.talks.adapters.SavedPostsAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
@@ -20,7 +21,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
-    var adapter: PostCardAdapter?=null
+    var adapter: SavedPostsAdapter?=null
     private var uid:String?=null
     var Fragview:View?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,7 +70,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                     }
                 }
 
-                adapter = PostCardAdapter(
+                adapter = SavedPostsAdapter(
                     postList.toMutableList(),
                     null,
                     requireContext()

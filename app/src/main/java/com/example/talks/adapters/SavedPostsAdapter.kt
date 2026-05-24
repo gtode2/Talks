@@ -10,7 +10,7 @@ import com.example.talks.data.PostData
 import com.example.talks.interfaces.PostHandlerInterface
 
 
-class PostCardAdapter(
+class SavedPostsAdapter(
     private val posts:MutableList<PostData>,
     var pc:PostCard?,
     private val context: Context,
@@ -43,19 +43,19 @@ class PostCardAdapter(
         }
         notifyItemChanged(index)
     }
-
+    /*
     override fun savePost(postId: String) {
         val index = posts.indexOfFirst { it.id==postId}
         if (index!=-1){
             posts[index].isSaved=true
         }
         notifyItemChanged(index)
-    }
+    }*/
     override fun unsavePost(postId: String) {
-        val index = posts.indexOfFirst { it.id==postId}
-        if (index!=-1){
-            posts[index].isSaved=false
+        val index = posts.indexOfFirst { it.id == postId }
+        if (index != -1) {
+            posts.removeAt(index)
+            notifyItemRemoved(index)
         }
-        notifyItemChanged(index)
     }
 }

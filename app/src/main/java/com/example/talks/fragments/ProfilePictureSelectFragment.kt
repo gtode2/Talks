@@ -16,7 +16,9 @@ import com.example.talks.managers.ImageManager
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,6 +28,7 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
         val continueBtn = view.findViewById<Button>(R.id.contbtn)
         val image = view.findViewById<ShapeableImageView>(R.id.image)
         var Imguri:Uri?=null
+        var wasEmpty = false
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 image.setImageURI(it)
@@ -40,14 +43,26 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
         }
         //se parametro -> cambio immagine -> carica da cache
 
-        if (change){
-            lifecycleScope.launch {
-                image.setImageBitmap(ImageCache.get("profile${UserID.getUID()}"))
 
+        lifecycleScope.launch {
+            val oldImg = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
+            if (oldImg==null){
+                wasEmpty=true
+            }
+
+            if (change){
+                lifecycleScope.launch {
+                    image.setImageBitmap(oldImg)
+                }
             }
         }
 
+
+
+
         continueBtn.setOnClickListener {
+
+
             if (Imguri!=null){
                 lifecycleScope.launch {
                     val res = ImageCache.add(requireContext(), UserID.getUID()!!, Imguri!!, true)
@@ -58,6 +73,20 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                         requireActivity().finish()
                     }else{
                         //gestione errore
+                    }
+                }
+            }else{
+                if (!wasEmpty){
+                    //prima immagine c'era, adesso no
+                    lifecycleScope.launch {
+                        val res = withContext(Dispatchers.IO){ImageCache.remove(true)}
+                        if (res){
+                            val intent = Intent(requireContext(), MainActivity::class.java)
+                            startActivity(intent)
+                            requireActivity().finish()
+                        }else{
+                            //gestione errore
+                        }
                     }
                 }
             }

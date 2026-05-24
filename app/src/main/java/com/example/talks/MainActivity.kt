@@ -43,21 +43,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
     fun accountpage(){
-        val act = LastPage.getPage()
-        if (act!="acc"){
-            bottombar("acc")
-            LastPage.setPage("acc")
-            val uid = UserID.getUID()
-            if (uid!=null){
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, AccountPageFragment())
-                    .commit()
-            }else{
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame, LoginFragment())
-                    .commit()
-            }
+        bottombar("acc")
+        LastPage.setPage("acc")
+        val uid = UserID.getUID()
+        if (uid!=null){
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, AccountPageFragment())
+                .commit()
+        }else{
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.frame, LoginFragment())
+                .commit()
         }
+
     }
     fun logout(){
         LastPage.setPage("home")
@@ -67,6 +65,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("DEBUG", "onCreate")
+        Log.d("DEBUG", "savedInstanceState = $savedInstanceState")
+        Log.d("DEBUG", "LastPage = ${LastPage.getPage()}")
+        Log.d("DEBUG", "From = ${intent.getStringExtra("From")}")
+
         val settings = SettingsManager(this)
         settings.applyLang()
         settings.applyTheme()
@@ -93,8 +96,6 @@ class MainActivity : AppCompatActivity() {
             val from = intent.getStringExtra("From")?:0
             when(from){
                 "user"->{
-                    //caricamento fragment utente
-                    LastPage.setPage("sett")
                     accountpage()
                 }
                 "sett"->{
@@ -125,6 +126,7 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
+        Log.d("DEBUG", "FRAGMENT IN FRAME = ${supportFragmentManager.findFragmentById(R.id.frame)}")
 
 
         homebtn.setOnClickListener{
