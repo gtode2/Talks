@@ -9,6 +9,12 @@
     <string name="wrongcred">Invalid Email or Password</string>
     <string name="missingmail">Please enter your email address</string>
     <string name="missingpassword">Please enter your password</string>
+    <string name="welcome">Welcome back</string>
+    <string name="signIn">Sign in to join and share</string>
+    <string name="or">or</string>
+    <string name="login">Login</string>
+    <string name="register">Sign Up</string>
+
 
     <!-- UserPage Logged -->
 
@@ -17,14 +23,6 @@
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
 
-    <!-- UserPage Unlogged -->
-
-    <string name="notsignedin">You\'re not signed in</string>
-    <string name="login">Login</string>
-    <string name="register">Sign Up</string>
-    <string name="noaccount">Don\'t have an account yet?</string>
-    <string name="trouble">Having trouble signing in?</string>
-    <string name="pwrecov">Reset password</string>
 
     <!-- Register -->
 
@@ -78,7 +76,6 @@
     <!-- Notifications -->
     <string name="notifications">Notifications</string>
     <string name="nonotif">No notifications</string>
-    <string name="notifnotlogged">Log in to see your notifications</string>
     <string name="notifcomment"><b>%1$s</b>  commented on your post</string>
     <string name="notiffw"><b>%1$s</b>  started following you</string>
     <string name="notiftag"><b>%1$s</b> mentioned you</string>
@@ -88,5 +85,10 @@
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
+
+    <!--Errors-->
+    <string name="emptyhomepage">Nothing to see here yet.\nBe the first to post something!</string>
+    <string name="emptysearch">No results for this search</string>
+    <string name="notifnotlogged">Log in to see your notifications</string>
 
 </resources>

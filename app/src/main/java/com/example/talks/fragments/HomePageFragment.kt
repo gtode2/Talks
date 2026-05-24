@@ -2,7 +2,10 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,27 +28,17 @@ class HomePageFragment:Fragment(R.layout.homepage) {
     private var UID:String?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (UserID.getUID().isNullOrBlank()){
-            UID = UserID.getUID()
-        }
-
-
-        val colAct = requireContext().getColor(R.color.lime)
-        val colNact = requireContext().getColor(R.color.desel)
-
-
-
-
-        //////
-
-
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
+        UID = UserID.getUID()
 
 
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
-        lifecycleScope.launch(Dispatchers.IO) {
-            val postList = PostDatabase.getPosts()
-            withContext(Dispatchers.Main){
+        lifecycleScope.launch{
+            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts()}
+
+            if (postList.isNotEmpty()){
+                Log.e("AAA", "not empty", )
                 val ctx = requireContext()
                 var liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
@@ -78,8 +71,15 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 adapter!!.pc=handler
 
                 recyclerViewHomepage.adapter = adapter
-
+            }else{
+                //mostra errore
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text = getString(R.string.emptyhomepage)
             }
+
+
+
+
         }
     }
     override fun onResume() {

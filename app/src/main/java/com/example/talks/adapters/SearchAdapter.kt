@@ -20,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PostCardSearchAdapter(
+class SearchAdapter(
     var posts:MutableList<PostData>?=null,
     var pch:PostCard?,
     private val context: Context,
@@ -29,7 +29,6 @@ class PostCardSearchAdapter(
     companion object{
         private const val VIEW_TYPE_USER=0
         private const val VIEW_TYPE_POST=1
-        private const val VIEW_TYPE_EMPTY=2
     }
     override fun getItemCount(): Int = size()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -37,7 +36,6 @@ class PostCardSearchAdapter(
         return when(viewType){
             VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch, posts!!)
             VIEW_TYPE_USER->UserVH(view.inflate(R.layout.usercard, parent,false))
-            VIEW_TYPE_EMPTY->EmptyVH(view.inflate(R.layout.errorpage, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
         }
     }
@@ -54,9 +52,7 @@ class PostCardSearchAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (posts==null && user==null){
-            return VIEW_TYPE_EMPTY
-        }else if (user!=null){
+        if (user!=null){
             return when(position){
                 0-> VIEW_TYPE_USER
                 else-> VIEW_TYPE_POST
@@ -109,12 +105,5 @@ class PostCardSearchAdapter(
             }
         }
     }
-
-    inner class EmptyVH(view: View): RecyclerView.ViewHolder(view){
-
-    }
-
-
-
 
 }

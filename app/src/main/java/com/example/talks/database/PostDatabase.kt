@@ -107,7 +107,6 @@ class PostDatabase {
                                     pl.add(post)
                                 }
                             }
-
                             cont.resume(pl){}
                         }
                         .addOnFailureListener {e->

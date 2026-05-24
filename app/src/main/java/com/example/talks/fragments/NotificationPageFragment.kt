@@ -18,7 +18,6 @@ import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
 
 class NotificationPageFragment:Fragment(R.layout.notificationpage) {
-    //carica notifiche da firebase
     var adapter: NotificationsAdapter?=null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

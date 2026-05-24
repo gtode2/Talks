@@ -9,6 +9,12 @@
     <string name="wrongcred">Email o Password errata</string>
     <string name="missingmail">Indirizzo email mancante</string>
     <string name="missingpassword">Password mancante</string>
+    <string name="welcome">Bentornato</string>
+    <string name="signIn">Accedi per partecipare e condividere</string>
+    <string name="or">oppure</string>
+    <string name="login">Accedi</string>
+    <string name="register">Registrati</string>
+
 
     <!-- UserPage Logged -->
 
@@ -17,14 +23,6 @@
     <string name="logout">Logout</string>
     <string name="settings">Impostazioni</string>
 
-    <!-- UserPage Unlogged -->
-
-    <string name="notsignedin">Non hai eseguito l\'accesso</string>
-    <string name="login">Accedi</string>
-    <string name="register">Registrati</string>
-    <string name="noaccount">Non hai ancora un account?</string>
-    <string name="trouble">hai problemi ad accedere?</string>
-    <string name="pwrecov">Recupera password</string>
 
     <!-- Register -->
 
@@ -78,7 +76,6 @@
     <!-- Notifications -->
     <string name="notifications">Notifiche</string>
     <string name="nonotif">Nessuna notifica</string>
-    <string name="notifnotlogged">Accedi per visualizzare le notifiche</string>
     <string name="notifcomment"><b>%1$s</b>  ha commentato un tuo post</string>
     <string name="notiffw"><b>%1$s</b>  ti ha iniziato a seguire</string>
     <string name="notiftag"><b>%1$s</b>  ha taggato</string>
@@ -88,5 +85,10 @@
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
+
+    <!--Errors-->
+    <string name="emptyhomepage">Non c\'è ancora nulla qui.\nCrea tu il primo post</string>
+    <string name="emptysearch">Nessun risultato trovato</string>
+    <string name="notifnotlogged">Accedi per visualizzare le notifiche</string>
 
 </resources>
