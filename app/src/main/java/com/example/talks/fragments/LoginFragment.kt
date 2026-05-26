@@ -2,6 +2,7 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -41,14 +42,27 @@ class LoginFragment: Fragment(R.layout.login) {
             }else{
                 lifecycleScope.launch {
                     val id = AccountDatabase.login(mail.text.toString(), password.text.toString())
-                    //controllo id
-                    UserID.setUID(id)
-                    LikeRepository.loadLikes(id)
-                    LastPage.setPage("home")
-                    parentFragmentManager.beginTransaction()
-                        .replace(R.id.frame, HomePageFragment())
-                        .commit()
-                    (activity as MainActivity).bottombar("home")
+                    //verifica per mancata registrazione
+
+                    if(id!=""){
+                        //controllo id
+                        UserID.setUID(id)
+                        LikeRepository.loadLikes(id)
+                        LastPage.setPage("home")
+                        parentFragmentManager.beginTransaction()
+                            .replace(R.id.frame, HomePageFragment())
+                            .commit()
+                        (activity as MainActivity).bottombar("home")
+                    }else{
+                        //utente registrato ma senza account
+                        Log.e("AAA", "userid:${UserID.getUID()} ", )
+                        val intent = Intent(requireContext(), EmptyActivity::class.java)
+                            .putExtra("screen","acccreation")
+                        startActivity(intent)
+                    }
+
+
+
 
                 }
             }

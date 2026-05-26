@@ -3,6 +3,7 @@ package com.example.talks
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.talks.fragments.AccountCreationFragment
 import com.example.talks.fragments.PostFSFragment
 import com.example.talks.fragments.ProfilePictureSelectFragment
 import com.example.talks.fragments.RegisterFragment
@@ -45,6 +46,13 @@ class EmptyActivity:AppCompatActivity() {
                         putBoolean("change",true)
                     }
                 }
+            },
+            "acccreation" to { AccountCreationFragment().apply{
+                arguments= Bundle().apply {
+                    putString("uid",id)
+                }
+            }
+
             }
         )
 

@@ -1,6 +1,7 @@
 package com.example.talks.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -22,6 +23,17 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
         val surnameET = view.findViewById<EditText>(R.id.surname)
         val usernameET = view.findViewById<EditText>(R.id.username)
         val dobET = view.findViewById<EditText>(R.id.dob)
+        var uid = arguments?.getString("uid")?:""
+
+        if (uid==""){
+            if (UserID.getUID()==null){
+                //errore -> utente non loggato
+                //torna a home
+            }else{
+                //utente ha interrotto registrazione -> login salva uid firebase
+                uid = UserID.getUID()!!
+            }
+        }
 
         cont.setOnClickListener {
 
@@ -29,8 +41,6 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
             val surname = surnameET.text.toString()
             val username = usernameET.text.toString()
             val dob = dobET.text.toString()
-
-            val uid = arguments?.getString("uid")?:""
 
             //verifica dati
             var valid=true

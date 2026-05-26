@@ -55,7 +55,7 @@ class RegisterFragment:Fragment(R.layout.register) {
                 lifecycleScope.launch {
                     val res = AccountDatabase.register(mail.text.toString(), pw.text.toString())
                     if (res!=""){
-                        //procedo a creazione account
+                        //prcedo a creazione account
                         val fragment = AccountCreationFragment().apply{
                             arguments = Bundle().apply {
                                 putString("uid", res)

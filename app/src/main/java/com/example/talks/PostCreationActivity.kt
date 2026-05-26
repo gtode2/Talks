@@ -92,15 +92,18 @@ class PostCreationActivity: AppCompatActivity() {
             finish()
         }
         createPost.setOnClickListener{
+            createPost.isEnabled=false
             val UID = UserID.getUID()
             if (UID.isNullOrBlank()){
                 //gestione errore
+                createPost.isEnabled=true
                 return@setOnClickListener
             }
 
             //verifica elementi
             if (title.text.isBlank() || post.text.isBlank()){
                 Toast.makeText(this, R.string.errMissingTitleOrText, Toast.LENGTH_SHORT).show()
+                createPost.isEnabled=true
                 return@setOnClickListener
             }
 
@@ -130,6 +133,7 @@ class PostCreationActivity: AppCompatActivity() {
 
                 }else{
                     Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
+                    createPost.isEnabled=true
                     //gestire errore
                 }
 

@@ -1,6 +1,7 @@
 package com.example.talks.database
 
 import com.example.talks.data.UserData
+import com.example.talks.singleton.UserID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -22,6 +23,11 @@ class AccountDatabase {
                         .addOnSuccessListener {
                             for (doc in it) {
                                 userTag = doc.id
+                            }
+                            if (userTag==""){
+                                //account esiste ma non registrati
+                                //imposto temporaneamente UserID a id firebase
+                                UserID.setUID(uid)
                             }
                             //FollowRepository
                             cont.resume(userTag) {}

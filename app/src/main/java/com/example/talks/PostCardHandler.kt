@@ -98,7 +98,12 @@ class PostCardHandler(
     }
 
     override fun openSource(link: String) {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val uri = when {
+            link.startsWith("http://") || link.startsWith("https://") -> link
+            link.contains(".") -> "https://$link"
+            else -> "https://www.google.com/search?q=${Uri.encode(link)}"
+        }
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         contextProvider().startActivity(intent)
     }
 }
