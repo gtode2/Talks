@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.EmptyActivity
@@ -31,21 +32,22 @@ class LoginFragment: Fragment(R.layout.login) {
 
 
         loginBtn.setOnClickListener {
-
-            //GESTIRE UTENTE REGISTRATO MA SENZA PROFILO
-
+            loginBtn.isEnabled=false
             if (mail.text.isEmpty()){
                 mail.error=getString(R.string.missingmail)
+                loginBtn.isEnabled=true
             }
             else if (password.text.isEmpty()){
                 password.error=getString(R.string.missingpassword)
+                loginBtn.isEnabled=true
             }else{
                 lifecycleScope.launch {
                     val id = AccountDatabase.login(mail.text.toString(), password.text.toString())
-                    //verifica per mancata registrazione
 
-                    if(id!=""){
-                        //controllo id
+                    if (id==null){
+                        Toast.makeText(requireContext(), getString(R.string.errLogin), Toast.LENGTH_SHORT).show()
+                        loginBtn.isEnabled=true
+                    }else if(id!=""){
                         UserID.setUID(id)
                         LikeRepository.loadLikes(id)
                         LastPage.setPage("home")
@@ -55,7 +57,6 @@ class LoginFragment: Fragment(R.layout.login) {
                         (activity as MainActivity).bottombar("home")
                     }else{
                         //utente registrato ma senza account
-                        Log.e("AAA", "userid:${UserID.getUID()} ", )
                         val intent = Intent(requireContext(), EmptyActivity::class.java)
                             .putExtra("screen","acccreation")
                         startActivity(intent)

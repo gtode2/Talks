@@ -3,9 +3,9 @@ package com.example.talks.fragments
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -36,21 +36,30 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         var settings = view.findViewById<ConstraintLayout>(R.id.settingsBtn)
         var logout = view.findViewById<ConstraintLayout>(R.id.logoutBtn)
 
-        //getUid
+
         val UID = UserID.getUID()
         if (UID==null){
-            //gestione errore
-            //rimanda a homepage
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.emptyframe, LoginFragment())
+                .commit()
         }
         tag.text = "@${UID}"
 
         lifecycleScope.launch {
             val user = withContext(Dispatchers.IO){UserDatabase.getUser(UID!!)}
-            //verifico correttezza info ottenute
+            if (user.followers<0){
+                //gestione errore
+                Toast.makeText(requireContext(), getString(R.string.errLoading), Toast.LENGTH_SHORT).show()
+                name.text = ""
+                fw.text = "err"
+                fd.text = "err"
+            }else{
+                name.text = "${user.name} ${user.surname}".trim()
+                fw.text = user.followers.toString()
+                fd.text = user.followed.toString()
+            }
 
-            name.text = "${user.name} ${user.surname}".trim()
-            fw.text = user.followers.toString()
-            fd.text = user.followed.toString()
+
 
             val img = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
             if(img!=null){

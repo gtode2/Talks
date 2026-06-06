@@ -26,9 +26,9 @@
             app:tint="@color/text"/>
         <TextView
             android:id="@+id/userTag"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/back"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -36,6 +36,10 @@
             android:layout_marginRight="15dp"
             android:textSize="20sp"
             android:textStyle="bold"
+            android:textAlignment="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+
             android:textColor="@color/text"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

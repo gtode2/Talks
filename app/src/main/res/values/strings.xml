@@ -3,6 +3,7 @@
     <string name="all">All</string>
     <string name="followed">Followed</string>
     <string name="followers">Followers</string>
+    <string name="error">An error occurred. Try again later.</string>
 
     <!-- Login -->
 
@@ -14,6 +15,7 @@
     <string name="or">or</string>
     <string name="login">Login</string>
     <string name="register">Sign Up</string>
+    <string name="errLogin">Something went wrong. Please check your credentials and try again</string>
 
 
     <!-- UserPage Logged -->
@@ -22,6 +24,7 @@
     <string name="saved">Saved</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
+    <string name="errLoading">An error occurred while loading the information</string>
 
 
     <!-- Register -->
@@ -50,6 +53,10 @@
     <string name="succReg">A</string>
     <string name="errDBReg">A</string>
     <string name="errInvalidMail">A</string>
+    <string name="errExUsername">Username already taken</string>
+    <string name="errInvalidUsername">Username cannot contain @ or spaces</string>
+    <string name="datesel">Select date</string>
+    <string name="errinvalidDate">Selected date is not valid</string>
 
     <!-- Post Creation -->
 
@@ -85,6 +92,7 @@
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
+    <string name="noposts">No saved posts</string>
 
     <!--Errors-->
     <string name="emptyhomepage">Nothing to see here yet.\nBe the first to post something!</string>

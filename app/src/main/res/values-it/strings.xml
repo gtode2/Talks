@@ -3,6 +3,7 @@
     <string name="all">Tutti</string>
     <string name="followed">Seguiti</string>
     <string name="followers">Followers</string>
+    <string name="error">Si è verificato un errore\nriprovare più tardi</string>
 
     <!-- Login -->
 
@@ -14,6 +15,7 @@
     <string name="or">oppure</string>
     <string name="login">Accedi</string>
     <string name="register">Registrati</string>
+    <string name="errLogin">Si è verificato un errore\nverifica le credenziali e riprova</string>
 
 
     <!-- UserPage Logged -->
@@ -22,7 +24,7 @@
     <string name="saved">Salvati</string>
     <string name="logout">Logout</string>
     <string name="settings">Impostazioni</string>
-
+    <string name="errLoading">Si è verificato un errore nel caricamento delle informazioni</string>
 
     <!-- Register -->
 
@@ -50,6 +52,11 @@
     <string name="succReg">Registrazione completata</string>
     <string name="errDBReg">Indirizzo Email già in uso</string>
     <string name="errInvalidMail">Registrazione fallita</string>
+    <string name="errExUsername">Nome utente già in uso</string>
+    <string name="errInvalidUsername">Nome utente non può contenere @ o spazi</string>
+    <string name="datesel">Seleziona data</string>
+    <string name="errinvalidDate">Data selezionata non valida</string>
+
 
     <!-- Post Creation -->
 
@@ -85,6 +92,7 @@
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
+    <string name="noposts">Nessun post salvato</string>
 
     <!--Errors-->
     <string name="emptyhomepage">Non c\'è ancora nulla qui.\nCrea tu il primo post</string>

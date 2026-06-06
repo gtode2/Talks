@@ -17,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.97"
+        app:layout_constraintWidth_max="600dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/pcardbg"
         android:orientation="vertical"
@@ -46,7 +47,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:textColor="@color/text"/>
+                android:textColor="@color/text"
+                android:ellipsize="end"
+                android:maxLines="1"/>
 
         </LinearLayout>
         <!--LL POST-->
@@ -62,6 +65,8 @@
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/text"
                 android:textSize="20sp"
+                android:ellipsize="end"
+                android:maxLines="2"
                 android:textStyle="bold"/>
 
             <!--Post-->

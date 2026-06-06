@@ -52,8 +52,9 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                 }
 
                 val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("search", string)}
-
-                if (postList.isEmpty() && ud==null){
+                if (postList==null){
+                    //errore
+                }else if (postList.isEmpty() && ud==null){
                     //mostra errore
                     val view = layoutInflater.inflate(R.layout.errorpage, frame, true) //inserire base
                     view.findViewById<TextView>(R.id.text).text = getString(R.string.emptysearch)

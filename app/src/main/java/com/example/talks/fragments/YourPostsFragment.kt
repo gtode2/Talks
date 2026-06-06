@@ -2,7 +2,9 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -11,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.YourPostCardAdapter
-import com.example.talks.data.CommentData
-import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Dispatchers
@@ -22,32 +22,35 @@ import kotlinx.coroutines.withContext
 class YourPostsFragment:Fragment(R.layout.yourposts) {
     var adapter: YourPostCardAdapter?=null
     private var uid:String?=null
-    var Fragview:View?=null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Fragview=view
-        init()
-    }
 
-
-    fun init(){
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
         uid = UserID.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
-        val rv = Fragview!!.findViewById<RecyclerView>(R.id.yourRV)
+        val rv = view.findViewById<RecyclerView>(R.id.yourRV)
         rv.layoutManager = LinearLayoutManager(context)
 
-        val back = Fragview!!.findViewById<ImageView>(R.id.backbtn)
+        val back = view.findViewById<ImageView>(R.id.backbtn)
         back.setOnClickListener {
             requireActivity().finish()
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val postList = PostDatabase.getPosts("user", uid!!)
-            withContext(Dispatchers.Main){
+        lifecycleScope.launch{
+            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", uid!!)}
+            if (postList==null){
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.error)
+
+            }else if(postList.isEmpty()){
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.error)
+            }else{
+
                 Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
                 adapter = YourPostCardAdapter(
                     postList.toMutableList(),
@@ -63,7 +66,11 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                 rv.adapter=adapter
             }
         }
+
     }
+
+
+
     fun editPost(postId:String){
         parentFragmentManager.beginTransaction()
             .replace(R.id.emptyframe, EditPostFragment().apply {

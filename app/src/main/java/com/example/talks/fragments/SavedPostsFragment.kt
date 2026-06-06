@@ -52,36 +52,40 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
         lifecycleScope.launch(Dispatchers.IO) {
             val postList = PostDatabase.getPosts("saved", uid!!)
 
-            withContext(Dispatchers.Main){
-                var liked = LikeRepository.getLikes()
-                if (!liked.isEmpty()){
-                    postList.forEach{ el->
-                        if (liked.containsKey(el.id)){
-                            el.isLiked=true
+            if (postList==null){
+
+            }else{
+                withContext(Dispatchers.Main){
+                    var liked = LikeRepository.getLikes()
+                    if (!liked.isEmpty()){
+                        postList.forEach{ el->
+                            if (liked.containsKey(el.id)){
+                                el.isLiked=true
+                            }
                         }
                     }
-                }
-                val saved = BookmarkRepository.getSaved()
-                if (!saved.isEmpty()){
-                    postList.forEach{el->
-                        if (saved.containsKey(el.id)){
-                            el.isSaved=true
+                    val saved = BookmarkRepository.getSaved()
+                    if (!saved.isEmpty()){
+                        postList.forEach{el->
+                            if (saved.containsKey(el.id)){
+                                el.isSaved=true
+                            }
                         }
                     }
+
+                    adapter = SavedPostsAdapter(
+                        postList.toMutableList(),
+                        null,
+                        requireContext()
+                    )
+                    val handler = PostCardHandler(
+                        contextProvider = {requireContext()},
+                        adapter=adapter
+                    )
+                    adapter!!.pc=handler
+                    rv.adapter=adapter
+
                 }
-
-                adapter = SavedPostsAdapter(
-                    postList.toMutableList(),
-                    null,
-                    requireContext()
-                )
-                val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter
-                )
-                adapter!!.pc=handler
-                rv.adapter=adapter
-
             }
         }
     }

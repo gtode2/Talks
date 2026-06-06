@@ -14,7 +14,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class PostDatabase {
     companion object{
-        suspend fun getPosts(type:String="all", search: String="-1"):List<PostData> = suspendCancellableCoroutine{cont->
+        suspend fun getPosts(type:String="all", search: String="-1"):List<PostData>? = suspendCancellableCoroutine{cont->
             val pl = mutableListOf<PostData>()
             //all
             //your posts
@@ -50,13 +50,11 @@ class PostDatabase {
                                 pl.add(post)
                             }
                             cont.resume(pl){}
-                        }.addOnFailureListener {e->
-
+                        }.addOnFailureListener {
+                            cont.resume(null){}
                         }
                 }
                 "saved"->{
-                    //
-
                     FirebaseFirestore.getInstance()
                         .collection("Users")
                         .document(search)
@@ -78,7 +76,7 @@ class PostDatabase {
                                         }
                                         cont.resume(pl){}
                                     }.addOnFailureListener {
-                                        //gestire errore
+                                        cont.resume(null){}
                                     }
                             }else{
                                 val el = emptyList<PostData>()
@@ -109,8 +107,8 @@ class PostDatabase {
                             }
                             cont.resume(pl){}
                         }
-                        .addOnFailureListener {e->
-                            Log.e("A", "getPosts: ",e )
+                        .addOnFailureListener {
+                            cont.resume(null){}
                         }
                 }
             }

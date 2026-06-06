@@ -79,8 +79,7 @@ class NotificationsDatabase {
 
                 val uid = UserID.getUID()
                 if (uid.isNullOrBlank()){
-                    //gestione errore
-                    nl.add(NotificationData(true))
+                    nl.add(NotificationData(true, "nl"))
                     cont.resume(nl){}
                 }
 
@@ -96,7 +95,6 @@ class NotificationsDatabase {
                             var notif = n.toObject(NotificationData::class.java)
                             nl.add(notif)
                         }
-                        Log.e("AAA", nl.toString())
                         cont.resume(nl){}
 
                     }

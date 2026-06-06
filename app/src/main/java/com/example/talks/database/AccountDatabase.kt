@@ -8,10 +8,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class AccountDatabase {
     companion object{
-        suspend fun login(m:String, p:String):String = suspendCancellableCoroutine { cont ->
+        suspend fun login(m:String, p:String):String? = suspendCancellableCoroutine { cont ->
             val auth = FirebaseAuth.getInstance()
             auth.signInWithEmailAndPassword(m, p)
-                .addOnSuccessListener { res ->
+                .addOnSuccessListener {
                     val user = auth.currentUser
                     val uid = user!!.uid
                     var userTag = ""
@@ -25,19 +25,19 @@ class AccountDatabase {
                                 userTag = doc.id
                             }
                             if (userTag==""){
-                                //account esiste ma non registrati
+                                //account esiste ma non registrato
                                 //imposto temporaneamente UserID a id firebase
                                 UserID.setUID(uid)
                             }
-                            //FollowRepository
                             cont.resume(userTag) {}
                         }
                         .addOnFailureListener {
-
+                            //errpre ottenimento info utente
+                            cont.resume(null){}
                         }
                 }
                 .addOnFailureListener {
-                    //messaggio errore
+                    cont.resume(null){}
                 }
         }
 
@@ -49,7 +49,9 @@ class AccountDatabase {
                 .addOnFailureListener { cont.resume(""){} }
         }
 
-        suspend fun createAccount(name:String, surname:String, username:String, dob:String, uid:String):Boolean = suspendCancellableCoroutine{ cont->
+        suspend fun createAccount(name:String, surname:String, username:String, dob:String, uid:String):Int = suspendCancellableCoroutine{ cont->
+            val db = FirebaseFirestore.getInstance()
+            var ex = false
             val user = hashMapOf(
                 "authid" to uid,
                 "name" to name,
@@ -61,13 +63,27 @@ class AccountDatabase {
                 "followed" to mutableMapOf<String, Boolean>()
             )
 
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(username)
-                .set(user)
-                .addOnSuccessListener { cont.resume(true){} }
-                .addOnFailureListener { cont.resume(false){} }
 
+
+            db.runTransaction { tr->
+                val prevuser = tr.get(db.collection("Users").document(username))
+                if (!prevuser.exists()){
+                    ex=true
+                    throw Exception("Duplicated")
+
+                }else{
+                    tr.set(db.collection("Users").document(username), user)
+                    cont.resume(0){}
+                }
+            }.addOnSuccessListener {
+
+            }.addOnFailureListener {
+                if (ex){
+                    cont.resume(-2){}
+                }else{
+                    cont.resume(-1){}
+                }
+            }
         }
     }
 }

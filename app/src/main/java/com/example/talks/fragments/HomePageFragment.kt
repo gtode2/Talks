@@ -2,7 +2,6 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
@@ -37,8 +36,8 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         lifecycleScope.launch{
             val postList = withContext(Dispatchers.IO){PostDatabase.getPosts()}
 
-            if (postList.isNotEmpty()){
-                Log.e("AAA", "not empty", )
+            //null impossibile per PostDatabase(all)
+            if (postList!!.isNotEmpty()){
                 val ctx = requireContext()
                 var liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
@@ -72,7 +71,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
 
                 recyclerViewHomepage.adapter = adapter
             }else{
-                //mostra errore
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text = getString(R.string.emptyhomepage)
             }
@@ -116,46 +114,4 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             .putExtra("id",userId)
         startActivity(intent)
     }
-    /*
-    override fun openPost(postId: String) {
-        val intent = Intent(requireContext(), PostActivity::class.java)
-        intent.putExtra("id", postId)
-        startActivity(intent)
-
-    }
-
-    override fun openComments(postId: String) {
-
-    }
-
-    override fun openUser(userId: String) {
-
-    }
-
-    override fun addLike(postId: String) {
-        if (!UID.isNullOrBlank()){
-            LikeRepository.addLike(UID!!,postId){ res->
-                //0 = aggiunta eseguita
-                //1 = già presente - rimosso
-                //-1= errore
-
-                if (res==0){
-                    Toast.makeText(context, "like aggiunto", Toast.LENGTH_SHORT).show()
-                    adapter!!.incrLike(postId)
-                }else if(res==1){
-                    Toast.makeText(context, "like rimosso", Toast.LENGTH_SHORT).show()
-                    adapter!!.decrLike(postId)
-                }else if (res==-1){
-                    //errore
-                    Toast.makeText(context, "si è verificato un errore", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-    }
-
-    override fun savePost(postId: String) {
-
-    }
-
-     */
 }

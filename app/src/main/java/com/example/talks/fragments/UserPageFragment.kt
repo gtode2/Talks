@@ -59,38 +59,44 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", userid!!)}
 
             val liked = LikeRepository.getLikes()
-            if (!liked.isEmpty()){
-                postList.forEach { el->
-                    if (liked.containsKey(el.id)){
-                        el.isLiked=true
+
+            if (postList==null){
+                //gestione errore
+            }else{
+                if (!liked.isEmpty()){
+                    postList.forEach { el->
+                        if (liked.containsKey(el.id)){
+                            el.isLiked=true
+                        }
                     }
                 }
-            }
 
-            val saved = BookmarkRepository.getSaved()
-            if (!saved.isEmpty()){
-                postList.forEach{el->
-                    if (saved.containsKey(el.id)){
-                        el.isSaved=true
+                val saved = BookmarkRepository.getSaved()
+                if (!saved.isEmpty()){
+                    postList.forEach{el->
+                        if (saved.containsKey(el.id)){
+                            el.isSaved=true
+                        }
                     }
                 }
+
+                adapter = UserPageAdapter(
+                    postList.toMutableList(),
+                    null,
+                    requireContext(),
+                    user
+                )
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter = adapter,
+                    null,
+                    null,
+                )
+                adapter!!.pch=handler
+
+                rv.adapter=adapter
             }
 
-            adapter = UserPageAdapter(
-                postList.toMutableList(),
-                null,
-                requireContext(),
-                user
-            )
-            val handler = PostCardHandler(
-                contextProvider = {requireContext()},
-                adapter = adapter,
-                null,
-                null,
-            )
-            adapter!!.pch=handler
-
-            rv.adapter=adapter
         }
 
         backbtn.setOnClickListener {
