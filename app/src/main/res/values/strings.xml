@@ -37,29 +37,28 @@
     <string name="email">Email address</string>
     <string name="password">Password</string>
     <string name="back">Back</string>
-    <string name="errMissingName">A</string>
-    <string name="errMissingSurname">A</string>
-    <string name="errMissingUsername">A</string>
-    <string name="errMissingDOB">A</string>
-    <string name="errMissingMail">A</string>
-    <string name="errMissingPw">A</string>
-    <string name="errPWLEN">A</string>
-    <string name="errPWLC">A</string>
-    <string name="errPWUC">A</string>
-    <string name="errPWSYM">A</string>
-    <string name="errPWNUM">A</string>
-    <string name="errPWREP">A</string>
-    <string name="errMailNV">A</string>
-    <string name="errNameNL">A</string>
-    <string name="errSurnameNL">A</string>
-    <string name="succReg">A</string>
-    <string name="errDBReg">A</string>
-    <string name="errInvalidMail">A</string>
+    <string name="errMissingName">Missing name</string>
+    <string name="errMissingSurname">Missing surname</string>
+    <string name="errMissingUsername">Missing username</string>
+    <string name="errMissingDOB">Missing date of birth</string>
+    <string name="errMissingMail">Missing email address</string>
+    <string name="errMissingPw">Missing password</string>
+    <string name="errPWLEN">Password must be at least 8 characters long</string>
+    <string name="errPWLC">Password must contain at least one uppercase letter</string>
+    <string name="errPWUC">Password must contain at least one lowercase letter</string>
+    <string name="errPWSYM">Password must contain at least one special character</string>
+    <string name="errPWNUM">Password must contain at least one number</string>
+    <string name="errPWREP">Passwords do not match</string>
+    <string name="errMailNV">Invalid email address</string>
+    <string name="errNameNL">Name can only contain letters</string>
+    <string name="errSurnameNL">Surname can only contain letters</string>
+    <string name="succReg">Registration successful</string>
+    <string name="errDBReg">Email address already in use</string>
     <string name="errExUsername">Username already taken</string>
     <string name="errInvalidUsername">Username cannot contain @ or spaces</string>
     <string name="datesel">Select date</string>
     <string name="errinvalidDate">Selected date is not valid</string>
-    <string name="errReg">A</string>
+    <string name="errReg">An error occurred while creating the profile.\nPlease log in and try again</string>
 
 
     <!-- Post Creation -->
@@ -72,7 +71,7 @@
     <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
     <string name="addImg">Add image</string>
     <string name="changeImg">Change image</string>
-    <string name="postNF">A</string>
+    <string name="postNF">Post not found</string>
 
     <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
@@ -94,7 +93,7 @@
 
     <!--PostFS-->
     <string name="sendcommdesc">Button to send a comment</string>
-    <string name="errComm">A</string>
+    <string name="errComm">Please enter some text</string>
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
@@ -103,11 +102,12 @@
     <string name="emptyhomepage">Nothing to see here yet.\nBe the first to post something!</string>
     <string name="emptysearch">No results for this search</string>
     <string name="notifnotlogged">Log in to see your notifications</string>
-    <string name="errReLog">A</string>
-    <string name="errImg">A</string>
-    <string name="errImgRem">A</string>
-    <string name="errImgEdit">A</string>
-    <string name="errImgAdd">A</string>
+    <string name="errReLog">An error occurred, please log in and try again</string>
+    <string name="errImg">An error occurred while adding the image</string>
+    <string name="errImgRem">>An error occurred while removing the image</string>
+    <string name="errImgEdit">An error occurred while updating the image</string>
+    <string name="errImgAdd">An error occurred while adding the image</string>
+    <string name="errUserSearch">An error occurred while searching for the user</string>
 
 
 </resources>

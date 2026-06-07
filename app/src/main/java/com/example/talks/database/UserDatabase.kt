@@ -105,7 +105,7 @@ class UserDatabase {
             //se non seguito -> return 1
             //errore -> return -1
         }
-        suspend fun searchUser(string:String): UserData = suspendCancellableCoroutine{cont->
+        suspend fun searchUser(string:String): UserData? = suspendCancellableCoroutine{cont->
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(string)
@@ -119,7 +119,7 @@ class UserDatabase {
                         cont.resume(UserData("", -1, 0)){}
                     }
                 }
-                .addOnFailureListener {  }
+                .addOnFailureListener { cont.resume(null){} }
         }
 
 

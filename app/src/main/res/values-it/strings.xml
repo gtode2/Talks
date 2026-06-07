@@ -54,7 +54,6 @@
     <string name="errSurnameNL">Cognome può contenere solo lettere</string>
     <string name="succReg">Registrazione completata</string>
     <string name="errDBReg">Indirizzo Email già in uso</string>
-    <string name="errInvalidMail">Registrazione fallita</string>
     <string name="errExUsername">Nome utente già in uso</string>
     <string name="errInvalidUsername">Nome utente non può contenere @ o spazi</string>
     <string name="datesel">Seleziona data</string>
@@ -109,6 +108,7 @@
     <string name="errImgRem">Si è verificato un errore nella rimozione dell\'immagine</string>
     <string name="errImgEdit">Si è verificato un errore nella modifica dell\'immagine</string>
     <string name="errImgAdd">Si è verificato un errore nell\' aggiunta dell\'immagine</string>
+    <string name="errUserSearch">Si è verificato un errore durante la ricerca dell\'utente</string>
 
 
 </resources>

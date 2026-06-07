@@ -31,40 +31,40 @@ class RegisterFragment:Fragment(R.layout.register) {
             var valid = true
             if (mail.text.isEmpty()){
                 valid=false
-                mail.error = R.string.errMissingMail.toString()
+                mail.error =getString( R.string.errMissingMail)
             }else if (!mail.text.contains("@")){
                 valid=false
-                mail.error = R.string.errInvalidMail.toString() //
+                mail.error = getString(R.string.errMailNV)
             }
 
 
             if (pw.text.isEmpty()){
                 valid=false
-                pw.error = R.string.errMissingPw.toString()
+                pw.error = getString(R.string.errMissingPw)
             }else if(pw.text.length<8){
                 valid = false
-                pw.error = R.string.errPWLEN.toString()
+                pw.error = getString(R.string.errPWLEN)
             }else if (!pw.text.contains(Regex("[A-Z]"))){
                 valid = false
-                pw.error = R.string.errPWUC.toString()
+                pw.error = getString(R.string.errPWUC)
             }else if(!pw.text.contains(Regex("[a-z]"))){
                 valid = false
-                pw.error = R.string.errPWLC.toString()
+                pw.error = getString(R.string.errPWLC)
             }else if(!pw.text.contains(Regex("[0-9]"))){
                 valid = false
-                pw.error = R.string.errPWNUM.toString()
+                pw.error = getString(R.string.errPWNUM)
             }else if (!pw.text.contains(Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]"))){
                 valid = false
-                pw.error = R.string.errPWSYM.toString()
+                pw.error = getString(R.string.errPWSYM)
             }
 
 
             if (pwrep.text.isEmpty()){
                 valid=false
-                pwrep.error = R.string.errMissingPw.toString()
+                pwrep.error = getString(R.string.errMissingPw)
             }else if(pw.text.toString() != pwrep.text.toString()){
                 valid = false
-                pwrep.error = R.string.errPWREP.toString()
+                pwrep.error = getString(R.string.errPWREP)
             }
 
             if (valid){
@@ -72,10 +72,10 @@ class RegisterFragment:Fragment(R.layout.register) {
                     val res = AccountDatabase.register(mail.text.toString(), pw.text.toString())
 
                     if (res==null){
-                        Toast.makeText(requireContext(), R.string.errReg.toString(), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.errReg), Toast.LENGTH_SHORT).show()
                         requireActivity().finish()
                     }else if (res==""){
-                        mail.error = R.string.error.toString()
+                        mail.error = getString(R.string.error)
                         register.isEnabled=true
                     }else{
                         (activity as EmptyActivity).openScreen("acccreation", false, res)

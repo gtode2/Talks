@@ -2,11 +2,13 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,26 +41,48 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
 
         searchbtn.setOnClickListener {
-            val string = searchbar.text.toString()
+            searchbtn.isEnabled=false
+
+            val string = searchbar.text.toString().trim()
+            if (string==""){
+                searchbtn.isEnabled=true
+                return@setOnClickListener
+            }
             rv.layoutManager= LinearLayoutManager(context)
             var ud: UserData?=null
 
 
             lifecycleScope.launch {
                 val res = withContext(Dispatchers.IO){UserDatabase.searchUser(string)}
-                if (res.followers!=-1 && res.Uid!=UserID.getUID()){
-                    //se uid = utente loggato -> ignora
-                    ud=res
+                if (res!=null){
+                    if (res.followers!=-1 && res.Uid!=UserID.getUID()){
+                        //se uid = utente loggato -> ignora
+                        ud=res
+                    }
+                }else{
+                    Toast.makeText(requireContext(), getString(R.string.errUserSearch), Toast.LENGTH_SHORT).show()
                 }
 
                 val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("search", string)}
                 if (postList==null){
+                    frame.visibility=View.VISIBLE
+                    rv.visibility=View.GONE
+
                     val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                     view.findViewById<TextView>(R.id.text).text = getString(R.string.errLoading)
+                    searchbtn.isEnabled=true
                 }else if (postList.isEmpty() && ud==null){
+                    frame.visibility=View.VISIBLE
+                    rv.visibility=View.GONE
+
                     val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                     view.findViewById<TextView>(R.id.text).text = getString(R.string.emptysearch)
+                    searchbtn.isEnabled=true
                 }else{
+                    frame.visibility=View.GONE
+                    rv.visibility=View.VISIBLE
+
+
                     val ctx = requireContext()
                     var liked = LikeRepository.getLikes()
                     if (!liked.isEmpty()){
@@ -94,6 +118,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     )
                     adapter!!.pch=handler
                     rv.adapter = adapter
+                    searchbtn.isEnabled=true
                 }
 
 

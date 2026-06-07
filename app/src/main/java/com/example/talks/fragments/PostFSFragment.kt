@@ -130,11 +130,11 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                         addComTxt.text.clear()
                         adapter!!.addComment(commenttext, UserID.getUID()!!)
                     }else{
-                        Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
                     }
                 }
             }else{
-                Toast.makeText(requireContext(), R.string.errComm, Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.errComm), Toast.LENGTH_SHORT).show()
             }
         }
 

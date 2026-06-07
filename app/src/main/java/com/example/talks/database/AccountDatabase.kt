@@ -27,8 +27,8 @@ class AccountDatabase {
                             }
                             if (userTag==""){
                                 //account esiste ma non registrato
-                                //imposto temporaneamente UserID a id firebase
-                                UserID.setUID(uid)
+                                //imposto TempID a id firebase
+                                UserID.setTemp(uid)
                             }
                             cont.resume(userTag) {}
                         }
@@ -76,7 +76,7 @@ class AccountDatabase {
 
             db.runTransaction { tr->
                 val prevuser = tr.get(db.collection("Users").document(username))
-                if (!prevuser.exists()){
+                if (prevuser.exists()){
                     ex=true
                     throw Exception("Duplicated")
 

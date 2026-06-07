@@ -32,13 +32,13 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
         var uid = arguments?.getString("uid")?:""
 
         if (uid==""){
-            if (UserID.getUID()==null){
+            if (UserID.getTemp()==null){
                 parentFragmentManager.beginTransaction()
                     .replace(R.id.emptyframe, LoginFragment())
                     .commit()
             }else{
                 //utente ha interrotto registrazione -> login salva uid firebase
-                uid = UserID.getUID()!!
+                uid = UserID.getTemp()!!
             }
         }
 
@@ -48,8 +48,8 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 .build()
             picker.show(parentFragmentManager, "DATE_PICKER")
             picker.addOnPositiveButtonClickListener {sel ->
-                val date = Date(sel)
-                dobET.setText(date.toString())
+                val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                dobET.setText(formatter.format(Date(sel)))
             }
         }
 
@@ -62,48 +62,48 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
 
             var valid=true
             if (name.isEmpty()){
-                nameET.error= R.string.errMissingName.toString()
+                nameET.error= getString(R.string.errMissingName)
                 valid=false
             }else{
                 val lett = name.matches(Regex("^[\\p{L} ]+$"))
                 if (!lett){
-                    nameET.error=R.string.errNameNL.toString()
+                    nameET.error=getString(R.string.errNameNL)
                     valid=false
                 }
             }
 
 
             if (surname.isEmpty()){
-                surnameET.error= R.string.errMissingSurname.toString()
+                surnameET.error= getString(R.string.errMissingSurname)
                 valid=false
             }else{
                 val lett = surname.matches(Regex("^[\\p{L} ]+$"))
                 if (!lett){
-                    surnameET.error=R.string.errSurnameNL.toString()
+                    surnameET.error=getString(R.string.errSurnameNL)
                     valid=false
                 }
             }
 
             if (username.isEmpty()){
-                usernameET.error=R.string.errMissingUsername.toString()
+                usernameET.error=getString(R.string.errMissingUsername)
                 valid=false
             }else{
                 if (username.contains("@") || username.contains(" ")){
-                    usernameET.error=R.string.errInvalidUsername.toString()
+                    usernameET.error=getString(R.string.errInvalidUsername)
                     valid=false
                 }
             }
 
 
             if (dob.isEmpty()){
-                dobET.error=R.string.errMissingDOB.toString()
+                dobET.error=getString(R.string.errMissingDOB)
                 valid=false
             }else{
                 val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val date = formatter.parse(dobET.text.toString())
                 val today = Date()
                 if (date.after(today)){
-                    dobET.error=R.string.errinvalidDate.toString()
+                    dobET.error=getString(R.string.errinvalidDate)
                     valid=false
                 }
             }
@@ -114,7 +114,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                     val res = withContext(Dispatchers.IO) {AccountDatabase.createAccount(name, surname, username, dob, uid)}
                     if (res==0){
                         UserID.setUID(username)
-                        (activity as EmptyActivity).openScreen("acccreation", false)
+                        (activity as EmptyActivity).openScreen("pps", false)
                     }else{
                         if (res==-1){
                             Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()

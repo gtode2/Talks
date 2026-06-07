@@ -40,7 +40,7 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
 
 
         if (UserID.getUID()==null){
-            Toast.makeText(requireContext(), R.string.errReLog, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
         //se parametro -> cambio immagine -> carica da cache
@@ -72,7 +72,7 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                         startActivity(intent)
                         requireActivity().finish()
                     }else{
-                        Toast.makeText(requireContext(), R.string.errImg, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.errImg), Toast.LENGTH_SHORT).show()
                     }
                 }
             }else{
@@ -85,7 +85,7 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                             startActivity(intent)
                             requireActivity().finish()
                         }else{
-                            Toast.makeText(requireContext(), R.string.errImgRem, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

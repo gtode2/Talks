@@ -63,18 +63,18 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             uri?.let {
                 imgprev.setImageURI(it)
                 imgblock.visibility= View.VISIBLE
-                imgtxt.text = ContextCompat.getString(requireContext(), R.string.changeImg)
+                imgtxt.text = getString(R.string.changeImg)
                 imgChanged=true
                 Imguri=it
             }
         }
 
 
-        pagetitle.text= ContextCompat.getString(requireContext(), R.string.editpost)
+        pagetitle.text= getString( R.string.editpost)
         uid = UserID.getUID()
 
         if (postId.isNullOrBlank()){
-            Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
 
@@ -97,7 +97,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             }else{
                 imgprev.setImageBitmap(img)
                 imgblock.visibility= View.VISIBLE
-                imgtxt.text = ContextCompat.getString(requireContext(), R.string.changeImg)
+                imgtxt.text =getString(R.string.changeImg)
             }
         }
 
@@ -159,7 +159,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                             //rimossa
                             val res = withContext(Dispatchers.IO){ImageCache.remove(false, postId!!)}
                             if (!res){
-                                Toast.makeText(requireContext(), R.string.errImgRem, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
                                 contbtn.isEnabled=true
                             }else{
                                 parentFragmentManager.popBackStack()
@@ -168,7 +168,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                             //modificata
                             val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                             if (!res){
-                                Toast.makeText(requireContext(), R.string.errImgEdit, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
                                 contbtn.isEnabled=true
                             }else{
                                 parentFragmentManager.popBackStack()
@@ -181,7 +181,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 lifecycleScope.launch {
                     var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                     if (!res){
-                        Toast.makeText(requireContext(), R.string.errImgAdd, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                         contbtn.isEnabled=true
                     }else{
                         res = withContext(Dispatchers.IO){PostDatabase.editImgPost(postId!!, true)}}
@@ -189,7 +189,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                             //immagine aggiunta a cache ma non a db
                             //ripulisco cache
                             withContext(Dispatchers.IO){ImageCache.remove(false, postId!!, true)}
-                            Toast.makeText(requireContext(), R.string.errImgAdd, Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                             contbtn.isEnabled=true
                         }
                     }
@@ -208,7 +208,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             Imguri=null
             imgChanged=true
             imgblock.visibility= View.GONE
-            imgtxt.text = ContextCompat.getString(requireContext(), R.string.addImg)
+            imgtxt.text = getString(R.string.addImg)
         }
 
     }
