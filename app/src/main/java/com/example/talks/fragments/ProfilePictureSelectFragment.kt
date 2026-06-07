@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -39,7 +40,8 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
 
 
         if (UserID.getUID()==null){
-            //gestione errore
+            Toast.makeText(requireContext(), R.string.errReLog, Toast.LENGTH_SHORT).show()
+            requireActivity().finish()
         }
         //se parametro -> cambio immagine -> carica da cache
 
@@ -61,18 +63,16 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
 
 
         continueBtn.setOnClickListener {
-
-
             if (Imguri!=null){
                 lifecycleScope.launch {
-                    val res = ImageCache.add(requireContext(), UserID.getUID()!!, Imguri!!, true)
+                    val res = ImageCache.add(requireContext(), UserID.getUID()!!, Imguri, true)
 
                     if (res){
                         val intent = Intent(requireContext(), MainActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     }else{
-                        //gestione errore
+                        Toast.makeText(requireContext(), R.string.errImg, Toast.LENGTH_SHORT).show()
                     }
                 }
             }else{
@@ -85,7 +85,7 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                             startActivity(intent)
                             requireActivity().finish()
                         }else{
-                            //gestione errore
+                            Toast.makeText(requireContext(), R.string.errImgRem, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

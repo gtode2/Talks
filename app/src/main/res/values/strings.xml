@@ -18,14 +18,14 @@
     <string name="errLogin">Something went wrong. Please check your credentials and try again</string>
 
 
-    <!-- UserPage Logged -->
+    <!-- UserPage  -->
 
     <string name="yourposts">Your Posts</string>
     <string name="saved">Saved</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
     <string name="errLoading">An error occurred while loading the information</string>
-
+    <string name="errUserNF">Error loading user.\nThis account may no longer be available</string>
 
     <!-- Register -->
 
@@ -43,10 +43,12 @@
     <string name="errMissingDOB">A</string>
     <string name="errMissingMail">A</string>
     <string name="errMissingPw">A</string>
+    <string name="errPWLEN">A</string>
     <string name="errPWLC">A</string>
     <string name="errPWUC">A</string>
     <string name="errPWSYM">A</string>
     <string name="errPWNUM">A</string>
+    <string name="errPWREP">A</string>
     <string name="errMailNV">A</string>
     <string name="errNameNL">A</string>
     <string name="errSurnameNL">A</string>
@@ -57,6 +59,8 @@
     <string name="errInvalidUsername">Username cannot contain @ or spaces</string>
     <string name="datesel">Select date</string>
     <string name="errinvalidDate">Selected date is not valid</string>
+    <string name="errReg">A</string>
+
 
     <!-- Post Creation -->
 
@@ -68,6 +72,7 @@
     <string name="errMissingTitleOrText">Please enter a title and some content for your post</string>
     <string name="addImg">Add image</string>
     <string name="changeImg">Change image</string>
+    <string name="postNF">A</string>
 
     <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
@@ -89,14 +94,20 @@
 
     <!--PostFS-->
     <string name="sendcommdesc">Button to send a comment</string>
+    <string name="errComm">A</string>
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
     <string name="noposts">No saved posts</string>
-
     <!--Errors-->
     <string name="emptyhomepage">Nothing to see here yet.\nBe the first to post something!</string>
     <string name="emptysearch">No results for this search</string>
     <string name="notifnotlogged">Log in to see your notifications</string>
+    <string name="errReLog">A</string>
+    <string name="errImg">A</string>
+    <string name="errImgRem">A</string>
+    <string name="errImgEdit">A</string>
+    <string name="errImgAdd">A</string>
+
 
 </resources>

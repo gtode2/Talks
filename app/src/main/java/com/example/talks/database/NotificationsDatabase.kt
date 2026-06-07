@@ -73,7 +73,7 @@ class NotificationsDatabase {
             }
         }
 
-        suspend fun get(): List<NotificationData>{//cambiare tipo return
+        suspend fun get(): List<NotificationData>{
             return suspendCancellableCoroutine { cont ->
                 var nl = mutableListOf<NotificationData>()
 

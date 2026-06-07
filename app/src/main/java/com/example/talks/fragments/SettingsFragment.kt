@@ -52,6 +52,7 @@ class SettingsFragment:Fragment(R.layout.settings) {
         profilePicture.setOnClickListener {
             val intent = Intent(requireContext(), EmptyActivity::class.java)
                 .putExtra("screen", "pps")
+                .putExtra("prpicChange", true)
             startActivity(intent)
         }
 

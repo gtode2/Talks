@@ -70,8 +70,13 @@ object ImageCache {
         }
     }
 
-    suspend fun remove(isProfile:Boolean, postid:String=""):Boolean{
-        if (isProfile){
+    suspend fun remove(isProfile:Boolean, postid:String="", cacheonly:Boolean=false):Boolean{
+        if (cacheonly){
+            //rimozione senza db->in caso di aggiunta fallita in db
+            val imgid = if (isProfile) "profile$postid" else "image$postid"
+            cache.remove(imgid)
+            return true
+        }else if (isProfile){
             //gestione profilo
             if (UserID.getUID()==null){
                 return false

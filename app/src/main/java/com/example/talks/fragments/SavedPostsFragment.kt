@@ -2,7 +2,9 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -23,71 +25,63 @@ import kotlinx.coroutines.withContext
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: SavedPostsAdapter?=null
     private var uid:String?=null
-    var Fragview:View?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Fragview=view
-        init()
-    }
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
 
-    override fun onResume() {
-        super.onResume()
-        init()
-    }
-
-    fun init(){
         uid = UserID.getUID()
         if (uid.isNullOrBlank()){
             Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
-        val rv=Fragview!!.findViewById<RecyclerView>(R.id.savedRV)
+        val rv=view.findViewById<RecyclerView>(R.id.savedRV)
         rv.layoutManager = LinearLayoutManager(context)
 
-        val back = Fragview!!.findViewById<ImageView>(R.id.backbtn)
+        val back = view.findViewById<ImageView>(R.id.backbtn)
         back.setOnClickListener {
             requireActivity().finish()
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val postList = PostDatabase.getPosts("saved", uid!!)
+        lifecycleScope.launch{
+            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("saved", uid!!)}
 
             if (postList==null){
-
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.errLoading)
+            }else if(postList.isEmpty()){
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.noposts)
             }else{
-                withContext(Dispatchers.Main){
-                    var liked = LikeRepository.getLikes()
-                    if (!liked.isEmpty()){
-                        postList.forEach{ el->
-                            if (liked.containsKey(el.id)){
-                                el.isLiked=true
-                            }
+                var liked = LikeRepository.getLikes()
+                if (!liked.isEmpty()){
+                    postList.forEach{ el->
+                        if (liked.containsKey(el.id)){
+                            el.isLiked=true
                         }
                     }
-                    val saved = BookmarkRepository.getSaved()
-                    if (!saved.isEmpty()){
-                        postList.forEach{el->
-                            if (saved.containsKey(el.id)){
-                                el.isSaved=true
-                            }
-                        }
-                    }
-
-                    adapter = SavedPostsAdapter(
-                        postList.toMutableList(),
-                        null,
-                        requireContext()
-                    )
-                    val handler = PostCardHandler(
-                        contextProvider = {requireContext()},
-                        adapter=adapter
-                    )
-                    adapter!!.pc=handler
-                    rv.adapter=adapter
-
                 }
+                val saved = BookmarkRepository.getSaved()
+                if (!saved.isEmpty()){
+                    postList.forEach{el->
+                        if (saved.containsKey(el.id)){
+                            el.isSaved=true
+                        }
+                    }
+                }
+
+                adapter = SavedPostsAdapter(
+                    postList.toMutableList(),
+                    null,
+                    requireContext()
+                )
+                val handler = PostCardHandler(
+                    contextProvider = {requireContext()},
+                    adapter=adapter
+                )
+                adapter!!.pc=handler
+                rv.adapter=adapter
+
             }
         }
     }
-
 }

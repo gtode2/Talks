@@ -18,13 +18,14 @@
     <string name="errLogin">Si è verificato un errore\nverifica le credenziali e riprova</string>
 
 
-    <!-- UserPage Logged -->
+    <!-- UserPage -->
 
     <string name="yourposts">I tuoi Post</string>
     <string name="saved">Salvati</string>
     <string name="logout">Logout</string>
     <string name="settings">Impostazioni</string>
     <string name="errLoading">Si è verificato un errore nel caricamento delle informazioni</string>
+    <string name="errUserNF">Si è verificato un errore nel caricamento dell\'utente\nL\'account potrebbe non essere più disponibile</string>
 
     <!-- Register -->
 
@@ -42,10 +43,12 @@
     <string name="errMissingDOB">Data di nascita mancante</string>
     <string name="errMissingMail">Indirizzo Email mancante</string>
     <string name="errMissingPw">Password mancante</string>
+    <string name="errPWLEN">Password deve essere di almeno 8 caratteri</string>
     <string name="errPWLC">Password deve contenere almeno una lettera maiuscola</string>
     <string name="errPWUC">Password deve contenere almeno una lettera minuscola</string>
     <string name="errPWSYM">Password deve contenere almeno un simbolo speciale</string>
     <string name="errPWNUM">Password deve contenere almeno un carattere numerico</string>
+    <string name="errPWREP">Le due password non corrispondono</string>
     <string name="errMailNV">Indirizzo Email non valido</string>
     <string name="errNameNL">Nome può contenere solo lettere</string>
     <string name="errSurnameNL">Cognome può contenere solo lettere</string>
@@ -56,7 +59,7 @@
     <string name="errInvalidUsername">Nome utente non può contenere @ o spazi</string>
     <string name="datesel">Seleziona data</string>
     <string name="errinvalidDate">Data selezionata non valida</string>
-
+    <string name="errReg">Si è verificato un errore nella creazione del profilo/n Accedi e riprova</string>
 
     <!-- Post Creation -->
 
@@ -68,6 +71,7 @@
     <string name="errMissingTitleOrText">Titolo o testo del post non possono essere vuoti</string>
     <string name="addImg">Inserisci immagine</string>
     <string name="changeImg">Modifica immagine</string>
+    <string name="postNF">Impossibile trovare il post</string>
 
     <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
@@ -89,14 +93,22 @@
 
     <!--PostFS-->
     <string name="sendcommdesc">Bottone per inviare il commento</string>
+    <string name="errComm">Inserire un testo</string>
 
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
     <string name="noposts">Nessun post salvato</string>
 
+
     <!--Errors-->
     <string name="emptyhomepage">Non c\'è ancora nulla qui.\nCrea tu il primo post</string>
     <string name="emptysearch">Nessun risultato trovato</string>
     <string name="notifnotlogged">Accedi per visualizzare le notifiche</string>
+    <string name="errReLog">Si è verificato un problema, accedi e riprova</string>
+    <string name="errImg">Si è verificato un errore nell\'aggiunta dell\'immagine</string>
+    <string name="errImgRem">Si è verificato un errore nella rimozione dell\'immagine</string>
+    <string name="errImgEdit">Si è verificato un errore nella modifica dell\'immagine</string>
+    <string name="errImgAdd">Si è verificato un errore nell\' aggiunta dell\'immagine</string>
+
 
 </resources>

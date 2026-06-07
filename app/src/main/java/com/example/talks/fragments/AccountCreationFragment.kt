@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.EmptyActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
 import com.example.talks.singleton.UserID
@@ -113,10 +114,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                     val res = withContext(Dispatchers.IO) {AccountDatabase.createAccount(name, surname, username, dob, uid)}
                     if (res==0){
                         UserID.setUID(username)
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.emptyframe, ProfilePictureSelectFragment())
-                            .addToBackStack(null)
-                            .commit()
+                        (activity as EmptyActivity).openScreen("acccreation", false)
                     }else{
                         if (res==-1){
                             Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()

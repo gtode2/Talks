@@ -3,6 +3,7 @@ package com.example.talks.database
 import com.example.talks.data.UserData
 import com.example.talks.singleton.UserID
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
 
@@ -41,12 +42,20 @@ class AccountDatabase {
                 }
         }
 
-        suspend fun register(m:String, p:String):String = suspendCancellableCoroutine { cont->
+        suspend fun register(m:String, p:String):String? = suspendCancellableCoroutine { cont->
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(m,p)
                 .addOnSuccessListener {
                     val uid = FirebaseAuth.getInstance().currentUser!!.uid
                     cont.resume(uid){} }
-                .addOnFailureListener { cont.resume(""){} }
+                .addOnFailureListener {e->
+                    if (e is FirebaseAuthUserCollisionException){
+                        cont.resume(""){}
+                    }else{
+                        cont.resume(null){}
+                    }
+
+
+                }
         }
 
         suspend fun createAccount(name:String, surname:String, username:String, dob:String, uid:String):Int = suspendCancellableCoroutine{ cont->

@@ -7,9 +7,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.Toast
 import com.example.talks.R
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.example.talks.EmptyActivity
 import com.example.talks.database.AccountDatabase
 import kotlinx.coroutines.launch
 
@@ -25,57 +27,68 @@ class RegisterFragment:Fragment(R.layout.register) {
         val register = view.findViewById<Button>(R.id.contbtn)
 
         register.setOnClickListener {
+            register.isEnabled=false
             var valid = true
             if (mail.text.isEmpty()){
                 valid=false
                 mail.error = R.string.errMissingMail.toString()
+            }else if (!mail.text.contains("@")){
+                valid=false
+                mail.error = R.string.errInvalidMail.toString() //
             }
+
+
             if (pw.text.isEmpty()){
                 valid=false
                 pw.error = R.string.errMissingPw.toString()
+            }else if(pw.text.length<8){
+                valid = false
+                pw.error = R.string.errPWLEN.toString()
+            }else if (!pw.text.contains(Regex("[A-Z]"))){
+                valid = false
+                pw.error = R.string.errPWUC.toString()
+            }else if(!pw.text.contains(Regex("[a-z]"))){
+                valid = false
+                pw.error = R.string.errPWLC.toString()
+            }else if(!pw.text.contains(Regex("[0-9]"))){
+                valid = false
+                pw.error = R.string.errPWNUM.toString()
+            }else if (!pw.text.contains(Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]"))){
+                valid = false
+                pw.error = R.string.errPWSYM.toString()
             }
+
+
             if (pwrep.text.isEmpty()){
                 valid=false
-                //mail.error = R.string.errMissingMail.toString()
-            }
-
-            //aggiungere verifica password e mail
-
-            if (pw.text.toString() != pwrep.text.toString()) {
-                Log.e("AAA", "pw diverse" )
+                pwrep.error = R.string.errMissingPw.toString()
+            }else if(pw.text.toString() != pwrep.text.toString()){
                 valid = false
-                //errore password
+                pwrep.error = R.string.errPWREP.toString()
             }
-
-            Log.e("AAA", valid.toString() )
-
 
             if (valid){
-                //registro utente
                 lifecycleScope.launch {
                     val res = AccountDatabase.register(mail.text.toString(), pw.text.toString())
-                    if (res!=""){
-                        //prcedo a creazione account
-                        val fragment = AccountCreationFragment().apply{
-                            arguments = Bundle().apply {
-                                putString("uid", res)
-                            }
-                        }
-                        parentFragmentManager.beginTransaction()
-                            .replace(R.id.emptyframe, fragment)
-                            .commit()
+
+                    if (res==null){
+                        Toast.makeText(requireContext(), R.string.errReg.toString(), Toast.LENGTH_SHORT).show()
+                        requireActivity().finish()
+                    }else if (res==""){
+                        mail.error = R.string.error.toString()
+                        register.isEnabled=true
                     }else{
-                        //errore
+                        (activity as EmptyActivity).openScreen("acccreation", false, res)
                     }
                 }
 
+            }else{
+                register.isEnabled=true
             }
 
         }
 
         back.setOnClickListener {
-            //requireactivity homepage
-            //tornare a userunlogged
             requireActivity().finish()
         }
     }

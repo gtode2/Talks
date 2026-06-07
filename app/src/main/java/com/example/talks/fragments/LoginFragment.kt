@@ -61,10 +61,6 @@ class LoginFragment: Fragment(R.layout.login) {
                             .putExtra("screen","acccreation")
                         startActivity(intent)
                     }
-
-
-
-
                 }
             }
         }

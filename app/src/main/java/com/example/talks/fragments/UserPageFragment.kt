@@ -4,6 +4,7 @@ package com.example.talks.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -38,6 +39,8 @@ class UserPageFragment:Fragment(R.layout.userpage) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
+
 
         val usertag = view.findViewById<TextView>(R.id.userTag)
         usertag.text = userid
@@ -53,49 +56,49 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             val user = withContext(Dispatchers.IO){UserDatabase.getUser(userid!!)}
 
             if (user.followers<0) {
-               //gestione errore -> inesistente o errore di caricamento
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.errUserNF)
             }
 
-            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", userid!!)}
+            var postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", userid!!)}
 
             val liked = LikeRepository.getLikes()
 
             if (postList==null){
-                //gestione errore
-            }else{
-                if (!liked.isEmpty()){
-                    postList.forEach { el->
-                        if (liked.containsKey(el.id)){
-                            el.isLiked=true
-                        }
-                    }
-                }
-
-                val saved = BookmarkRepository.getSaved()
-                if (!saved.isEmpty()){
-                    postList.forEach{el->
-                        if (saved.containsKey(el.id)){
-                            el.isSaved=true
-                        }
-                    }
-                }
-
-                adapter = UserPageAdapter(
-                    postList.toMutableList(),
-                    null,
-                    requireContext(),
-                    user
-                )
-                val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter = adapter,
-                    null,
-                    null,
-                )
-                adapter!!.pch=handler
-
-                rv.adapter=adapter
+                postList= emptyList()
             }
+            if (!liked.isEmpty()){
+                postList.forEach { el->
+                    if (liked.containsKey(el.id)){
+                        el.isLiked=true
+                    }
+                }
+            }
+
+            val saved = BookmarkRepository.getSaved()
+            if (!saved.isEmpty()){
+                postList.forEach{el->
+                    if (saved.containsKey(el.id)){
+                        el.isSaved=true
+                    }
+                }
+            }
+
+            adapter = UserPageAdapter(
+                postList.toMutableList(),
+                null,
+                requireContext(),
+                user
+            )
+            val handler = PostCardHandler(
+                contextProvider = {requireContext()},
+                adapter = adapter,
+                null,
+                null,
+            )
+            adapter!!.pch=handler
+
+            rv.adapter=adapter
 
         }
 

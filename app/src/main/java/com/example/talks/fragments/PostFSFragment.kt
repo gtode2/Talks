@@ -4,8 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -45,9 +48,18 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
         val addComTxt = view.findViewById<EditText>(R.id.textcomment)
         var rvPost = view.findViewById<RecyclerView>(R.id.postrv)
 
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
+
 
         if (postId.isNullOrBlank()){
-            //gestisci errore
+            val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+            view.findViewById<TextView>(R.id.text).text=getString(R.string.errLoading)
+            val btn = view.findViewById<Button>(R.id.btn)
+            btn.visibility=View.VISIBLE
+            btn.text=getString(R.string.back)
+            btn.setOnClickListener {
+                requireActivity().finish()
+            }
         }
 
         var adapter:PostAdapter?=null
@@ -64,8 +76,14 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
             val postList = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
 
             if (postList.isEmpty()){
-                Log.e("AAA", "nada, id = ${postId}", )
-                //gestione errore - pagina xml DA CREARE
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.errLoading)
+                val btn = view.findViewById<Button>(R.id.btn)
+                btn.visibility=View.VISIBLE
+                btn.text=getString(R.string.back)
+                btn.setOnClickListener {
+                    requireActivity().finish()
+                }
             }else{
                 post = postList[0]
 
@@ -112,11 +130,11 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                         addComTxt.text.clear()
                         adapter!!.addComment(commenttext, UserID.getUID()!!)
                     }else{
-                        Toast.makeText(requireContext(), "errore", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
                     }
                 }
             }else{
-                Toast.makeText(requireContext(), "inserire un testo", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), R.string.errComm, Toast.LENGTH_SHORT).show()
             }
         }
 

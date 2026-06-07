@@ -16,13 +16,15 @@ class EmptyActivity:AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.emptylayout)
 
-        var id:String? = null
-        val screen = intent.getStringExtra("screen")
-        if (screen == "fs" || screen == "user"){
-            id=intent.getStringExtra("id")
+        if (savedInstanceState==null){
+            val screen = intent.getStringExtra("screen")
+            val id = intent.getStringExtra("id")
+            val imgchg = intent.getBooleanExtra("prpicChange", false)
+
+            openScreen(screen?: throw java.lang.IllegalArgumentException(), imgchg, id)
         }
-
-
+    }
+    fun openScreen(screen:String, imgchg:Boolean, id:String?=null){
         val map: Map<String, () -> Fragment> = mapOf(
             "fs" to {
                 PostFSFragment().apply {
@@ -43,7 +45,7 @@ class EmptyActivity:AppCompatActivity() {
             "pps" to {
                 ProfilePictureSelectFragment().apply {
                     arguments= Bundle().apply {
-                        putBoolean("change",true)
+                        putBoolean("change", imgchg)
                     }
                 }
             },

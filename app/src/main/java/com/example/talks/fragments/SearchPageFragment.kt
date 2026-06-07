@@ -53,14 +53,13 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
                 val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("search", string)}
                 if (postList==null){
-                    //errore
+                    val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                    view.findViewById<TextView>(R.id.text).text = getString(R.string.errLoading)
                 }else if (postList.isEmpty() && ud==null){
-                    //mostra errore
-                    val view = layoutInflater.inflate(R.layout.errorpage, frame, true) //inserire base
+                    val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                     view.findViewById<TextView>(R.id.text).text = getString(R.string.emptysearch)
                 }else{
                     val ctx = requireContext()
-                    //racchiudere in handler?
                     var liked = LikeRepository.getLikes()
                     if (!liked.isEmpty()){
                         postList.forEach{ el->

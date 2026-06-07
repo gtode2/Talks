@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -53,8 +54,8 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val imgprev = view.findViewById<ImageView>(R.id.imgprev)
         val backbtn = view.findViewById<ImageView>(R.id.close)
         val contbtn = view.findViewById<Button>(R.id.postBtn)
-
-        var imgChanged:Boolean=false
+        val frame = view.findViewById<FrameLayout>(R.id.frame)
+        var imgChanged=false
 
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -70,19 +71,19 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
 
         pagetitle.text= ContextCompat.getString(requireContext(), R.string.editpost)
-        //estraggo uid
         uid = UserID.getUID()
 
         if (postId.isNullOrBlank()){
-            //gestisci errore
+            Toast.makeText(requireContext(), R.string.error, Toast.LENGTH_SHORT).show()
+            requireActivity().finish()
         }
 
 
-        // popolare pagina
         lifecycleScope.launch{
             val p = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
             if (p.isEmpty()){
-                //gestione errore
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.notifnotlogged)
             }
             post = p[0]
             title.setText(post!!.title)
@@ -118,7 +119,6 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        // binding edit
         contbtn.setOnClickListener{
             var edit=PostData()
             if (title.text.toString()!=post!!.title){
@@ -137,13 +137,12 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
             //modifica post
             if (tmp!= edit){
-                //ignoro immagine in questa fase -> gestite tutte dopo
                 lifecycleScope.launch {
                     val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
                     when(res){
                         0 -> {
                             Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
-                            //chiudi schermata
+                            parentFragmentManager.popBackStack()
                         }
                         1-> {Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()}
                         else-> {Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()}
@@ -160,15 +159,19 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                             //rimossa
                             val res = withContext(Dispatchers.IO){ImageCache.remove(false, postId!!)}
                             if (!res){
-                                Log.e("AAA", "img rem error", )
-                                //gestione errore
+                                Toast.makeText(requireContext(), R.string.errImgRem, Toast.LENGTH_SHORT).show()
+                                contbtn.isEnabled=true
+                            }else{
+                                parentFragmentManager.popBackStack()
                             }
                         }else{
                             //modificata
                             val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                             if (!res){
-                                Log.e("AAA", "img edit error", )
-                                //gestione errore
+                                Toast.makeText(requireContext(), R.string.errImgEdit, Toast.LENGTH_SHORT).show()
+                                contbtn.isEnabled=true
+                            }else{
+                                parentFragmentManager.popBackStack()
                             }
                         }
                     }
@@ -178,13 +181,16 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 lifecycleScope.launch {
                     var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                     if (!res){
-                        //gestione errore
-                        Log.e("AAA", "img add cache error", )
+                        Toast.makeText(requireContext(), R.string.errImgAdd, Toast.LENGTH_SHORT).show()
+                        contbtn.isEnabled=true
                     }else{
                         res = withContext(Dispatchers.IO){PostDatabase.editImgPost(postId!!, true)}}
                         if (!res){
-                            //gestione errore
-                            Log.e("AAA", "img add db error", )
+                            //immagine aggiunta a cache ma non a db
+                            //ripulisco cache
+                            withContext(Dispatchers.IO){ImageCache.remove(false, postId!!, true)}
+                            Toast.makeText(requireContext(), R.string.errImgAdd, Toast.LENGTH_SHORT).show()
+                            contbtn.isEnabled=true
                         }
                     }
                 }
@@ -195,7 +201,6 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         backbtn.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-
         imgbtn.setOnClickListener {
             pickImageLauncher.launch("image/*")
         }
