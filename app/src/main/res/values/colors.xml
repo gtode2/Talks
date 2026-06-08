@@ -3,16 +3,21 @@
     <color name="background">@color/white</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="lime">#ccff00</color>
+    <color name="lime">#B8E600</color>
     <color name="desel">@color/black</color>
     <color name="error">#e1002d</color>
     <color name="text">@color/black</color>
+    <color name="textOpposite">@color/white</color>
     <color name="hint">#43454a</color>
-    <color name="logoutbg">#1d1313</color>
-    <color name="logout">#f87171</color>
+    <color name="logoutbg">#ffdad6</color>
+    <color name="logout">#cc3b3b</color>
     <color name="blue">#60a5fa</color>
     <color name="red">#ef4444</color>
     <color name="green">#36e014</color>
     <color name="btnlocked">#43454a</color>
+    <color name="blockbg">#ededed</color>
+    <color name="blockborder">#c5c5c7</color>
+    <color name="pcbuttonsbg">#d6d6d6</color>
+    <color name="switchbg">#e8e8e9</color>
 
 </resources>

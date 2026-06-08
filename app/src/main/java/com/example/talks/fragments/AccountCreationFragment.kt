@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +25,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val cont = view.findViewById<Button>(R.id.cont)
+        val cont = view.findViewById<LinearLayout>(R.id.cont)
         val nameET = view.findViewById<EditText>(R.id.name)
         val surnameET = view.findViewById<EditText>(R.id.surname)
         val usernameET = view.findViewById<EditText>(R.id.username)

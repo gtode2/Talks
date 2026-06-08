@@ -37,10 +37,10 @@
                 android:layout_marginRight="15dp"
                 android:ems="10"
                 android:inputType="text"
-                android:hint="Cerca"
+                android:hint="@string/search"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:backgroundTint="#1a1a1a"
+                android:backgroundTint="@color/blockbg"
 
                 android:textColor="@color/text"
                 android:textColorHint="@color/hint"/>
@@ -50,7 +50,7 @@
                 android:layout_height="30dp"
                 android:layout_marginRight="15dp"
                 android:src="@drawable/searchtemp"
-                app:tint="@color/white"/>
+                app:tint="@color/text"/>
 
 
 

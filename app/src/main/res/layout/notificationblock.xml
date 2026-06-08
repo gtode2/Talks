@@ -37,8 +37,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:background="@drawable/circle"
-            android:src="@drawable/tag"
-            app:tint="@color/blue"
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:scaleType="centerCrop"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

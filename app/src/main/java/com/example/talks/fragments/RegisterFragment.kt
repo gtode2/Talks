@@ -24,7 +24,7 @@ class RegisterFragment:Fragment(R.layout.register) {
         val mail = view.findViewById<EditText>(R.id.email)
         val pw = view.findViewById<EditText>(R.id.pw)
         val pwrep = view.findViewById<EditText>(R.id.pwrep)
-        val register = view.findViewById<Button>(R.id.contbtn)
+        val register = view.findViewById<LinearLayout>(R.id.contbtn)
 
         register.setOnClickListener {
             register.isEnabled=false

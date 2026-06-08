@@ -48,7 +48,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
 
             }else if(postList.isEmpty()){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
-                view.findViewById<TextView>(R.id.text).text=getString(R.string.error)
+                view.findViewById<TextView>(R.id.text).text=getString(R.string.noYourPosts)
             }else{
 
                 Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()

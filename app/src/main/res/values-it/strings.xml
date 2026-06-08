@@ -16,7 +16,8 @@
     <string name="login">Accedi</string>
     <string name="register">Registrati</string>
     <string name="errLogin">Si è verificato un errore\nverifica le credenziali e riprova</string>
-
+    <string name="insmail">Inserisci l\'indizitto email</string>
+    <string name="inspw">Inserisci la password</string>
 
     <!-- UserPage -->
 
@@ -58,7 +59,7 @@
     <string name="errInvalidUsername">Nome utente non può contenere @ o spazi</string>
     <string name="datesel">Seleziona data</string>
     <string name="errinvalidDate">Data selezionata non valida</string>
-    <string name="errReg">Si è verificato un errore nella creazione del profilo/n Accedi e riprova</string>
+    <string name="errReg">Si è verificato un errore nella creazione del profilo\n Accedi e riprova</string>
 
     <!-- Post Creation -->
 
@@ -98,6 +99,8 @@
     <string name="savedposts">Saved posts</string>
     <string name="noposts">Nessun post salvato</string>
 
+    <!--Your Posts-->
+    <string name="noYourPosts">Nessun post</string>
 
     <!--Errors-->
     <string name="emptyhomepage">Non c\'è ancora nulla qui.\nCrea tu il primo post</string>
@@ -109,6 +112,13 @@
     <string name="errImgEdit">Si è verificato un errore nella modifica dell\'immagine</string>
     <string name="errImgAdd">Si è verificato un errore nell\' aggiunta dell\'immagine</string>
     <string name="errUserSearch">Si è verificato un errore durante la ricerca dell\'utente</string>
-
+    <string name="search">Cerca</string>
+    <string name="select">Seleziona</string>
+    <string name="cont">Continua</string>
+    <string name="selimg">Seleziona un\'immagine</string>
+    <string name="prpic">Immagine di profilo</string>
+    <string name="pref">Personalizzazione</string>
+    <string name="newpost">Nuovo Post</string>
+    <string name="cp">Posta</string>
 
 </resources>

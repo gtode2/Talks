@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class LoginFragment: Fragment(R.layout.login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var loginBtn = view.findViewById<Button>(R.id.loginBtn)
+        var loginBtn = view.findViewById<LinearLayout>(R.id.loginBtn)
         var mail = view.findViewById<EditText>(R.id.emailET)
         var password = view.findViewById<EditText>(R.id.pwET)
         var settingsBtn = view.findViewById<ImageView>(R.id.settingsBtn)

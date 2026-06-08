@@ -69,18 +69,32 @@
 
 
 
-            <Button
+
+            <LinearLayout
                 android:id="@+id/loginBtn"
                 android:layout_width="200dp"
                 android:layout_height="55dp"
                 android:layout_marginTop="45dp"
-                android:text="@string/login"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:background="@drawable/buttonbgyellow"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/pwLL" />
+                android:background="@drawable/buttonbgyellow"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/pwLL"
+                >
+                <TextView
+                    android:id="@+id/loginBtn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView8"
+                    android:textSize="20sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/register"
@@ -95,7 +109,6 @@
                 android:gravity="center"
                 >
                 <TextView
-                    android:id="@+id/loginBtn2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/register"
@@ -120,8 +133,8 @@
                     android:layout_width="320dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
-                    android:backgroundTint="#1a1a1a"
-                    android:hint="Inserisci l'indirizzo email"
+                    android:backgroundTint="@color/blockbg"
+                    android:hint="@string/insmail"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/text"
                     android:textColorHint="@color/hint" />
@@ -142,8 +155,8 @@
                     android:layout_width="320dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
-                    android:backgroundTint="#1a1a1a"
-                    android:hint="Inserisci la password"
+                    android:backgroundTint="@color/blockbg"
+                    android:hint="@string/inspw"
                     android:inputType="textPassword"
                     android:textColor="@color/text"
                     android:textColorHint="@color/hint" />

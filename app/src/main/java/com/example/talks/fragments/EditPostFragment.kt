@@ -53,7 +53,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val imgtxt = view.findViewById<TextView>(R.id.imgtxt)
         val imgprev = view.findViewById<ImageView>(R.id.imgprev)
         val backbtn = view.findViewById<ImageView>(R.id.close)
-        val contbtn = view.findViewById<Button>(R.id.postBtn)
+        val contbtn = view.findViewById<LinearLayout>(R.id.postBtn)
         val frame = view.findViewById<FrameLayout>(R.id.frame)
         var imgChanged=false
 

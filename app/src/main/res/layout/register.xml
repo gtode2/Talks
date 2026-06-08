@@ -30,7 +30,7 @@
             android:textSize="30sp"
             android:textColor="@color/text"
             android:layout_marginTop="15dp"
-            android:text="Registrati"/>
+            android:text="@string/register"/>
         <!--Bottom text?-->
     </LinearLayout>
 
@@ -82,21 +82,28 @@
         android:textColorHint="@color/hint"/>
 
 
-    <Button
+
+
+    <LinearLayout
         android:id="@+id/contbtn"
         android:layout_width="220dp"
         android:layout_height="55dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/pwrep"
         android:layout_marginTop="30dp"
-        android:textSize="20sp"
-        android:hint="@string/register"
         android:gravity="center"
-        android:background="@drawable/buttonbgyellow"/>
-
-
-
+        android:background="@drawable/buttonbgyellow">
+        <TextView
+            android:id="@+id/register"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="@color/text"
+            android:text="Registrati"
+            android:gravity="center"
+            />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

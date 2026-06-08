@@ -16,6 +16,8 @@
     <string name="login">Login</string>
     <string name="register">Sign Up</string>
     <string name="errLogin">Something went wrong. Please check your credentials and try again</string>
+    <string name="insmail">Enter your email address</string>
+    <string name="inspw">Enter your password</string>
 
 
     <!-- UserPage  -->
@@ -95,6 +97,13 @@
     <string name="sendcommdesc">Button to send a comment</string>
     <string name="errComm">Please enter some text</string>
 
+
+
+
+    <!--Your Posts-->
+    <string name="noYourPosts">No posts</string>
+
+
     <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
     <string name="noposts">No saved posts</string>
@@ -104,10 +113,18 @@
     <string name="notifnotlogged">Log in to see your notifications</string>
     <string name="errReLog">An error occurred, please log in and try again</string>
     <string name="errImg">An error occurred while adding the image</string>
-    <string name="errImgRem">>An error occurred while removing the image</string>
+    <string name="errImgRem">An error occurred while removing the image</string>
     <string name="errImgEdit">An error occurred while updating the image</string>
     <string name="errImgAdd">An error occurred while adding the image</string>
     <string name="errUserSearch">An error occurred while searching for the user</string>
+    <string name="search">Search</string>
+    <string name="select">Select</string>
+    <string name="cont">Continue</string>
+    <string name="selimg">Select a profile picture</string>
+    <string name="prpic">Profile picture</string>
+    <string name="pref">Preferences</string>
+    <string name="newpost">New post</string>
+    <string name="cp">Post</string>
 
 
 </resources>

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -25,8 +26,8 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val change = arguments?.getBoolean("change")?:false
-        val selectImage = view.findViewById<Button>(R.id.select)
-        val continueBtn = view.findViewById<Button>(R.id.contbtn)
+        val selectImage = view.findViewById<LinearLayout>(R.id.select)
+        val continueBtn = view.findViewById<LinearLayout>(R.id.contbtn)
         val image = view.findViewById<ShapeableImageView>(R.id.image)
         var Imguri:Uri?=null
         var wasEmpty = false

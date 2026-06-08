@@ -81,12 +81,10 @@ class PostAdapter(
 
     inner class CommentVH(view: View):RecyclerView.ViewHolder(view){
         val usertag = view .findViewById<TextView>(R.id.commentUserTag)
-        val commenttext = view.findViewById<TextView>(R.id.commentTxt)
         val userImg = view.findViewById<ShapeableImageView>(R.id.userImg)
 
         fun bind(comment:CommentData){
             usertag.text = "@${comment.uid}"
-            commenttext.text = comment.text
             CoroutineScope(Dispatchers.IO).launch {
                 val bmp = ImageCache.get("profile${comment.uid}")
                 withContext(Dispatchers.Main){

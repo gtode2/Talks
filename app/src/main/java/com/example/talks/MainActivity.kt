@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.talks.fragments.HomePageFragment
@@ -18,28 +19,31 @@ import com.example.talks.singleton.UserID
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var homebtn:ImageView
-    lateinit var searchbtn:ImageView
-    lateinit var cpstbtn:ImageView
-    lateinit var accbtn:ImageView
-    lateinit var ntfbtn:ImageView
+    lateinit var homebtn:LinearLayout
+    lateinit var searchbtn:LinearLayout
+    lateinit var cpstbtn:LinearLayout
+    lateinit var accbtn:LinearLayout
+    lateinit var ntfbtn: LinearLayout
+
+    lateinit var homeicon: ImageView
+    lateinit var searchicon: ImageView
+    lateinit var accicon: ImageView
+    lateinit var ntficon: ImageView
     var col_act:Int?=null
     var col_nact:Int?=null
 
 
     fun bottombar(p:String){
-        homebtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-        searchbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-        cpstbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-        accbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
-        ntfbtn.imageTintList=ColorStateList.valueOf(col_nact!!)
+        homeicon.imageTintList=ColorStateList.valueOf(col_nact!!)
+        searchicon.imageTintList=ColorStateList.valueOf(col_nact!!)
+        accicon.imageTintList=ColorStateList.valueOf(col_nact!!)
+        ntficon.imageTintList=ColorStateList.valueOf(col_nact!!)
 
         when(p){
-            "home"->homebtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "search"->searchbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "cpst"->cpstbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "acc"->accbtn.imageTintList=ColorStateList.valueOf(col_act!!)
-            "ntf"->ntfbtn.imageTintList=ColorStateList.valueOf(col_act!!)
+            "home"->homeicon.imageTintList=ColorStateList.valueOf(col_act!!)
+            "search"->searchicon.imageTintList=ColorStateList.valueOf(col_act!!)
+            "acc"->accicon.imageTintList=ColorStateList.valueOf(col_act!!)
+            "ntf"->ntficon.imageTintList=ColorStateList.valueOf(col_act!!)
         }
     }
     fun accountpage(){
@@ -65,11 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("DEBUG", "onCreate")
-        Log.d("DEBUG", "savedInstanceState = $savedInstanceState")
-        Log.d("DEBUG", "LastPage = ${LastPage.getPage()}")
-        Log.d("DEBUG", "From = ${intent.getStringExtra("From")}")
-
+        Log.d("LIFECYCLE", "onCreate MainActivity")
         val settings = SettingsManager(this)
         settings.applyLang()
         settings.applyTheme()
@@ -85,6 +85,12 @@ class MainActivity : AppCompatActivity() {
         ntfbtn = findViewById(R.id.ntfbtn)
         col_act = ContextCompat.getColor(this, R.color.lime)
         col_nact = ContextCompat.getColor(this, R.color.desel)
+
+        homeicon = findViewById(R.id.homeicon)
+        searchicon = findViewById(R.id.searchicon)
+        accicon = findViewById(R.id.accicon)
+        ntficon = findViewById(R.id.ntficon)
+
 
 
         //refresh bottombar
@@ -130,6 +136,7 @@ class MainActivity : AppCompatActivity() {
 
 
         homebtn.setOnClickListener{
+            Log.d("CLICK", "Home clicked")
             if (LastPage.getPage() !="home"){
                 bottombar("home")
                 //homebtn.imageTintList = ColorStateList.valueOf(col_act!!)
@@ -142,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         searchbtn.setOnClickListener{
             if (LastPage.getPage() !="search"){
                 bottombar("search")
-                searchbtn.imageTintList = ColorStateList.valueOf(col_act!!)
+                //searchicon.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("search")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, SearchPageFragment())
@@ -161,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         ntfbtn.setOnClickListener{
             if (LastPage.getPage() !="ntf"){
                 bottombar("ntf")
-                ntfbtn.imageTintList = ColorStateList.valueOf(col_act!!)
+                //ntficon.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("ntf")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, NotificationPageFragment())
@@ -171,6 +178,10 @@ class MainActivity : AppCompatActivity() {
 
         //enableEdgeToEdge()
 
+    }
+    override fun onResume() {
+        super.onResume()
+        Log.d("LIFECYCLE", "onResume MainActivity")
     }
 
 

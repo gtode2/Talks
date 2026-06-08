@@ -55,7 +55,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textAlignment="textStart"
-                android:background="@color/background"
+                android:background="@color/blockbg"
                 android:textColor="@color/text"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -69,7 +69,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:textAlignment="textStart"
-                android:background="@color/background"
+                android:background="@color/blockbg"
                 android:textColor="@color/text"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

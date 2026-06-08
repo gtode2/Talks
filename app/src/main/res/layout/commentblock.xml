@@ -22,7 +22,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/userImg"
                 android:layout_width="40dp"
@@ -38,17 +39,7 @@
                 android:textColor="@color/text"
                 android:layout_gravity="center_vertical"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp">
-            <TextView
-                android:id="@+id/commentTxt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text"
-                android:layout_marginBottom="15dp"/>
-        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

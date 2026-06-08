@@ -36,8 +36,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:textColor="@color/text"
-            android:textSize="20sp"
-            android:text="Nome Cognome"/>
+            android:textSize="20sp"/>
 
         <LinearLayout
             android:id="@+id/fwfwd"

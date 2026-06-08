@@ -3,52 +3,87 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:background="@color/background"
     android:gravity="center_vertical">
 
-    <ImageView
+    <LinearLayout
         android:id="@+id/homebtn"
         android:layout_width="0dp"
-        android:layout_height="27dp"
+        android:layout_height="30dp"
         android:layout_weight="1"
-        android:src="@drawable/hometempicon"
-        android:scaleType="fitCenter"
-        app:tint="@color/lime"/>
-
-    <ImageView
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/homeicon"
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:src="@drawable/home"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:tint="@color/lime"/>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/searchbtn"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="30dp"
         android:layout_weight="1"
-        android:src="@drawable/searchtemp"
-        android:scaleType="fitCenter"
-        app:tint="@color/desel"/>
+        android:gravity="center">
 
-    <ImageView
+        <ImageView
+            android:id="@+id/searchicon"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/search"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:tint="@color/desel"/>
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/cpstbtn"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_weight="1"
-        android:src="@drawable/addtemp"
-        android:scaleType="fitCenter"
-        app:tint="@color/desel"/>
+        android:layout_height="30dp"
+        android:layout_weight="1">
 
-    <ImageView
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:src="@drawable/addtemp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:tint="@color/desel"/>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/accbtn"
         android:layout_width="0dp"
-        android:layout_height="20dp"
-        android:layout_weight="1"
-        android:src="@drawable/usertemp"
-        android:scaleType="fitCenter"
-        app:tint="@color/desel" />
-    <ImageView
+        android:layout_height="30dp"
+        android:layout_weight="1">
+        <ImageView
+            android:id="@+id/accicon"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:src="@drawable/user"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            app:tint="@color/desel" />
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/ntfbtn"
         android:layout_width="0dp"
-        android:layout_height="25dp"
+        android:layout_height="30dp"
         android:layout_weight="1"
-        android:src="@drawable/notiftemp"
-        android:scaleType="fitCenter"
-        app:tint="@color/desel"/>
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/ntficon"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:src="@drawable/notif"
+            android:layout_gravity="center"
+
+            android:scaleType="fitCenter"
+            app:tint="@color/desel"/>
+    </LinearLayout>
 
 </LinearLayout>

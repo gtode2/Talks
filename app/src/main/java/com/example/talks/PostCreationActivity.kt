@@ -44,7 +44,7 @@ class PostCreationActivity: AppCompatActivity() {
         val imgrembtn = findViewById<ImageView>(R.id.imgrembtn)
         val imgtxt = findViewById<TextView>(R.id.imgtxt)
         val prev = findViewById<ImageView>(R.id.imgprev)
-        val createPost = findViewById<Button>(R.id.postBtn)
+        val createPost = findViewById<LinearLayout>(R.id.postBtn)
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             //se seleziono immagine -> rendo visible
