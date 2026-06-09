@@ -167,4 +167,9 @@ class UserPageAdapter(
         }
         notifyItemChanged(index+1)
     }
+
+    fun commCount(postId: String){
+        val index = posts.indexOfFirst { it.id==postId}
+        notifyItemChanged(index+1)
+    }
 }

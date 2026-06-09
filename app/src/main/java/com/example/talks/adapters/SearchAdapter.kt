@@ -105,5 +105,43 @@ class SearchAdapter(
             }
         }
     }
+    fun commCount(postId: String){
+        val postIndex = posts?.indexOfFirst { it.id == postId } ?: return
+        val adapterIndex = if (user != null) postIndex + 1 else postIndex
+        notifyItemChanged(adapterIndex)
+    }
+
+    ///////////////////////
+
+
+    override fun incrLike(postId:String){
+        var index = posts?.indexOfFirst{it.id==postId} ?: return
+        posts!![index].likes+=1
+        posts!![index].isLiked=true
+        if (user!= null) index++
+        notifyItemChanged(index)
+    }
+
+    override fun decrLike(postId:String){
+        var index = posts?.indexOfFirst {it.id==postId} ?: return
+        posts!![index].likes-=1
+        posts!![index].isLiked=false
+        if (user!= null) index++
+        notifyItemChanged(index)
+    }
+
+    override fun savePost(postId: String) {
+        var index = posts?.indexOfFirst { it.id==postId} ?:return
+        posts!![index].isSaved=true
+        if (user!= null) index++
+        notifyItemChanged(index)
+    }
+
+    override fun unsavePost(postId: String) {
+        var index = posts?.indexOfFirst { it.id==postId} ?:return
+        posts!![index].isSaved=false
+        if (user!= null) index++
+        notifyItemChanged(index)
+    }
 
 }

@@ -190,7 +190,7 @@ class TagManager {
                 } //cancel
                 .show()
         }
-        else if (nList.isEmpty()){
+        else{
             confirm = true
         }
 

@@ -3,9 +3,11 @@ package com.example.talks.database
 import com.example.talks.data.CommentData
 import com.example.talks.interfaces.Comment
 import com.example.talks.singleton.UserID
+import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.pipeline.AggregateStage
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +55,17 @@ class CommentsDatabase {
                 }.addOnFailureListener {
                     cont.resume(-1){}
                 }
+        }
+        suspend fun count(post:String):Int = suspendCancellableCoroutine { cont->
+            FirebaseFirestore.getInstance()
+                .collection("Posts")
+                .document(post)
+                .collection("comments")
+                .count()
+                .get(AggregateSource.SERVER)
+                .addOnSuccessListener { res->
+                    cont.resume(res.count.toInt()){}
+                }.addOnFailureListener { cont.resume(0){} }
         }
     }
 }

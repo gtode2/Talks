@@ -11,6 +11,7 @@ object LastPost {
 
     private var liked: Boolean=false
     private var saved: Boolean=false
+    private var commentCount:Int=0
     fun addPost(id:String){
         lastPost=id
         saved=BookmarkRepository.isSaved(id)
@@ -23,5 +24,14 @@ object LastPost {
         }else{
             return PrPostData("-1", false, false)
         }
+    }
+
+    fun incrCC(){
+        commentCount++
+    }
+    fun getCC():Int{
+        val cc = commentCount
+        commentCount=0
+        return cc
     }
 }

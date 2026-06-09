@@ -1,6 +1,7 @@
 package com.example.talks.fragments
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.getColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,6 +83,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                 val btn = view.findViewById<Button>(R.id.btn)
                 btn.visibility=View.VISIBLE
                 btn.text=getString(R.string.back)
+                btn.backgroundTintList = ColorStateList.valueOf(getColor(requireContext(),R.color.lime))
                 btn.setOnClickListener {
                     requireActivity().finish()
                 }
@@ -105,7 +108,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                     post,
                     comments,
                     null,
-                    requireContext()
+                    requireContext(),
                 )
 
                 val handler = PostCardHandler(

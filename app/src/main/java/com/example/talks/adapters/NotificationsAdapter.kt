@@ -93,7 +93,6 @@ class NotificationsAdapter(
                     }
                     2->{
                         fragment.openUser(el.src)
-
                     }
                 }
             }

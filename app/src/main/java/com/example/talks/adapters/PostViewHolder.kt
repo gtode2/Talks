@@ -12,19 +12,17 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.PostData
-import com.example.talks.database.ImageDatabase
 import com.example.talks.interfaces.PostCard
 import com.example.talks.singleton.ImageCache
-import com.example.talks.managers.ImageManager
 import com.example.talks.managers.SourceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import coil.load
+import com.example.talks.database.CommentsDatabase
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Job
-import okhttp3.Dispatcher
 
 
 open class PostViewHolder(
@@ -69,13 +67,7 @@ open class PostViewHolder(
         userId=el.uid
 
 
-        //variabile
 
-        //solo altri
-
-
-        val commentIcon = view.findViewById<ImageView>(R.id.commIcon)
-        val commentCtr = view.findViewById<TextView>(R.id.commCtr)
 
 
 
@@ -118,7 +110,6 @@ open class PostViewHolder(
                     if (bmp!=null){
                         userImg.setImageBitmap(bmp)
                     }else{
-                        Log.e("AAA", "profile picture non presente ${userId} ", )
                         userImg.setImageDrawable(null)
                     }
                 }
@@ -149,6 +140,15 @@ open class PostViewHolder(
                     srcTitle.text=""
                 }
             }
+
+
+            //comments
+            if (!isyour){
+                val commentCtr = view.findViewById<TextView>(R.id.commCtr)
+                val cc = with(Dispatchers.IO){ CommentsDatabase.count(el.id)}
+                commentCtr.text = cc.toString()
+            }
+
         }
 
         if (!isyour){
@@ -159,6 +159,8 @@ open class PostViewHolder(
             val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
 
             val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
+
+
 
 
             if (el.uid!=UserID.getUID()){
@@ -176,10 +178,9 @@ open class PostViewHolder(
 
                 saveBtn.setOnClickListener { pch?.savePost(el.id) }
                 likeBtn.setOnClickListener { pch?.addLike(el.id) }
-                //save e like solo per post altrui
 
+                //ottengo count commenti
             }else{
-                //"blocco" visivamente bottoni per post utente
                 likeIcon.imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.btnlocked)
                 )
@@ -217,4 +218,5 @@ open class PostViewHolder(
 
         src.setOnClickListener { pch?.openSource(el.source) }
     }
+
 }

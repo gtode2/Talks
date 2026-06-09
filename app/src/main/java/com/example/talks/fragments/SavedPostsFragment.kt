@@ -17,6 +17,7 @@ import com.example.talks.adapters.SavedPostsAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
+import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -81,6 +82,37 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                 adapter!!.pc=handler
                 rv.adapter=adapter
 
+            }
+        }
+    }
+    override fun onResume() {
+        super.onResume()
+        var lp = LastPost.getPost()
+        if (lp.id!="-1"){
+            //verifica elemento
+            if (lp.liked!= LikeRepository.isLiked(lp.id)){
+                //like prec != like attuale
+                //se precedente è liked -> attuale no
+                if (lp.liked){
+                    adapter?.decrLike(lp.id)
+                }else{
+                    adapter?.incrLike(lp.id)
+                }
+            }
+
+            if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
+                //save prec != save attuale
+                //se precedente è saved -> attuale no
+                if (lp.saved){
+                    adapter?.unsavePost(lp.id)
+                }else{
+                    adapter?.savePost(lp.id)
+                }
+            }
+
+            if (LastPost.getCC()!=0){
+                //eseguo update
+                adapter?.commCount(lp.id)
             }
         }
     }

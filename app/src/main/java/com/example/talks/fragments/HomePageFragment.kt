@@ -56,10 +56,11 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                     }
                 }
 
+
                 adapter = PostCardAdapter(
                     postList.toMutableList(),
                     null,
-                    ctx
+                    ctx,
                 )
                 val handler = PostCardHandler(
                     contextProvider = {requireContext()},
@@ -103,6 +104,11 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 }else{
                     adapter?.savePost(lp.id)
                 }
+            }
+
+            if (LastPost.getCC()!=0){
+                //eseguo update
+                adapter?.commCount(lp.id)
             }
         }
     }

@@ -1,23 +1,19 @@
 package com.example.talks.adapters
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.CommentData
 import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
-import com.example.talks.interfaces.Comment
 import com.example.talks.interfaces.PostHandlerInterface
-import com.example.talks.adapters.PostViewHolder
 import com.example.talks.singleton.ImageCache
+import com.example.talks.singleton.LastPost
 import com.google.android.material.imageview.ShapeableImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,9 +23,8 @@ import kotlinx.coroutines.withContext
 class PostAdapter(
     private val post:PostData,
     private val cm: MutableList<CommentData>,
-    //private val comdata: Comment,
     var pch:PostCard?=null,
-    private val context: Context
+    private val context: Context,
 
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     //Post Full Screen
@@ -68,28 +63,30 @@ class PostAdapter(
     }
 
     fun addComment(commtext:String, user:String){
-
         val newComm = CommentData(
             text = commtext,
             uid = user
         )
         cm.add(0,newComm)
+        LastPost.incrCC()
+        //devo incrementare counter
         notifyItemInserted(1)
+        notifyItemChanged(0)
 
     }
 
 
-    inner class CommentVH(view: View):RecyclerView.ViewHolder(view){
+    class CommentVH(view: View):RecyclerView.ViewHolder(view){
         val usertag = view .findViewById<TextView>(R.id.commentUserTag)
+        val commenttext = view.findViewById<TextView>(R.id.commentTxt)
         val userImg = view.findViewById<ShapeableImageView>(R.id.userImg)
 
         fun bind(comment:CommentData){
             usertag.text = "@${comment.uid}"
+            commenttext.text = comment.text
             CoroutineScope(Dispatchers.IO).launch {
                 val bmp = ImageCache.get("profile${comment.uid}")
                 withContext(Dispatchers.Main){
-                    //manca controllo utente corretto (evitare problemi in scroll)
-                    Log.e("AAA", bmp.toString())
                     if (bmp!=null){
                         userImg.setImageBitmap(bmp)
                     }
@@ -120,7 +117,6 @@ class PostAdapter(
         notifyItemChanged(0)
     }
 
-    override fun openSource(src: String) {
-        super.openSource(src)
-    }
+
+
 }

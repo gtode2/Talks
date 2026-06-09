@@ -16,6 +16,7 @@ class PostCardAdapter(
     private val context: Context,
 ):RecyclerView.Adapter<PostViewHolder>(), PostHandlerInterface{
 
+
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(posts[position])
     }
@@ -56,6 +57,11 @@ class PostCardAdapter(
         if (index!=-1){
             posts[index].isSaved=false
         }
+        notifyItemChanged(index)
+    }
+
+    fun commCount(postId: String){
+        val index = posts.indexOfFirst { it.id==postId}
         notifyItemChanged(index)
     }
 }

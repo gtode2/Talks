@@ -43,19 +43,17 @@ class SavedPostsAdapter(
         }
         notifyItemChanged(index)
     }
-    /*
-    override fun savePost(postId: String) {
-        val index = posts.indexOfFirst { it.id==postId}
-        if (index!=-1){
-            posts[index].isSaved=true
-        }
-        notifyItemChanged(index)
-    }*/
+
     override fun unsavePost(postId: String) {
         val index = posts.indexOfFirst { it.id == postId }
         if (index != -1) {
             posts.removeAt(index)
             notifyItemRemoved(index)
         }
+    }
+
+    fun commCount(postId: String){
+        val index = posts.indexOfFirst { it.id==postId}
+        notifyItemChanged(index)
     }
 }

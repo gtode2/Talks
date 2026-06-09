@@ -21,6 +21,9 @@ class NotificationsDatabase {
             if (uid.isNullOrBlank()){
                 //gestione errore
                 return false
+            }else if (uid == p1){
+                //notifica a se stesso
+                return true
             }
 
 
