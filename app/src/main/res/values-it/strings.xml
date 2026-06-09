@@ -96,7 +96,7 @@
     <string name="errComm">Inserire un testo</string>
 
     <!--Saved Posts-->
-    <string name="savedposts">Saved posts</string>
+    <string name="savedposts">Post salvati</string>
     <string name="noposts">Nessun post salvato</string>
 
     <!--Your Posts-->
@@ -120,5 +120,7 @@
     <string name="pref">Personalizzazione</string>
     <string name="newpost">Nuovo Post</string>
     <string name="cp">Posta</string>
+    <string name="save">Salva</string>
+
 
 </resources>

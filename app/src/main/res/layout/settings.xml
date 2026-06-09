@@ -17,8 +17,6 @@
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent">
@@ -44,7 +42,9 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"/>
 
 
 
@@ -89,15 +89,16 @@
                         android:layout_height="30dp"
                         android:src="@drawable/user"
                         app:tint="@color/text"/>
+
                     <TextView
-                        android:id="@+id/picturePw"
-                        android:layout_width="0dp"
+                        android:id="@+id/pictureTV"
+                        android:layout_width="215dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:paddingStart="16dp"
                         android:text="@string/prpic"
-                        android:textSize="20sp"
                         android:textColor="@color/text"
-                        android:paddingStart="16dp"/>
+                        android:textSize="20sp" />
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
@@ -106,7 +107,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:layout_marginRight="10dp"
                         android:src="@drawable/right"
-                        app:tint="@color/white"/>
+                        app:tint="@color/text"/>
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -242,7 +243,9 @@
                             android:src="@drawable/sun"
                             android:scaleType="centerInside"
                             android:padding="6dp"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp"
+                            app:tint="@color/text"
+                            />
 
                         <ImageView
                             android:id="@+id/btnDk"
@@ -255,7 +258,8 @@
                             android:src="@drawable/moon"
                             android:scaleType="centerInside"
                             android:padding="6dp"
-                            android:textSize="16sp"/>
+                            android:textSize="16sp"
+                            app:tint="@color/text"/>
 
                     </LinearLayout>
 

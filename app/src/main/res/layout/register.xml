@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/backbtn"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:src="@drawable/baseline_arrow_back_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -99,7 +99,7 @@
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/text"
+            android:textColor="@color/black"
             android:text="Registrati"
             android:gravity="center"
             />

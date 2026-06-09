@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:textSize="30sp"
             android:textColor="@color/text"
-            android:layout_marginTop="15dp"
             android:text="@string/createAccount"/>
     </LinearLayout>
 
@@ -75,7 +74,8 @@
         android:hint="@string/dob"
         android:background="@color/background"
         android:textColor="@color/text"
-        android:textColorHint="@color/hint"/>
+        android:textColorHint="@color/hint"
+        android:focusable="false"/>
 
     <LinearLayout
         android:id="@+id/cont"
@@ -94,7 +94,7 @@
             android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/text"
+            android:textColor="@color/black"
             android:text="Registrati"
             android:gravity="center"
             />

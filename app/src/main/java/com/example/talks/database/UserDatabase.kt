@@ -1,5 +1,6 @@
 package com.example.talks.database
 
+import android.util.Log
 import com.example.talks.data.UserData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -63,12 +64,13 @@ class UserDatabase {
                 tr.update(profileUser, "followers", FieldValue.increment(1))
             }.addOnSuccessListener {
                 cont.resume(0){}
-            }.addOnFailureListener {
+            }.addOnFailureListener {e->
                 if (ex){
                     //se esiste già
                     cont.resume(1){}
                 }else{
                     //errore
+                    Log.e("AAA", e.toString(), )
                     cont.resume(-1){}
                 }
             }

@@ -119,7 +119,6 @@ class UserPageAdapter(
                             followTxt.text="Following"
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
-                            //aggiungere verifica
                             if(res==0) fw.text = (fw.text.toString().toInt()+1).toString()
                         }else{
                             followTxt.text="Follow"

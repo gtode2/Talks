@@ -11,7 +11,7 @@ class SourceManager {
         //verifica source
 
 
-        fun getFavicon(u:String): String{
+        fun getFavicon(u:String): String?{
             var url = u
 
             if (!u.startsWith("http://") && !u.startsWith("https://")){
@@ -40,12 +40,12 @@ class SourceManager {
                     url ="https://www.google.com/s2/favicons?domain="+dom
                     res = exists(url)
                     if (!res){
-                        return "/0"
+                        return null
                     }
                 }
                 return url
             }catch (e: Exception){
-                return "/1"
+                return null
             }
         }
 
@@ -67,6 +67,7 @@ class SourceManager {
                 return doc.title()
             }catch (e: Exception){
                 //gestione errore
+                Log.e("TAG", "no title ", )
                 return null
             }
 

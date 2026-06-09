@@ -75,6 +75,10 @@ class SettingsFragment:Fragment(R.layout.settings) {
         btnIt = view.findViewById(R.id.btnIt)
         btnEn = view.findViewById(R.id.btnEn)
         val langtv = view.findViewById<TextView>(R.id.languagetv)
+        val themetv = view.findViewById<TextView>(R.id.themetv)
+        val preftv = view.findViewById<TextView>(R.id.preftv)
+        val settv = view.findViewById<TextView>(R.id.title)
+        val pictv = view.findViewById<TextView>(R.id.pictureTV)
 
         btnLt = view.findViewById(R.id.btnLt)
         btnDk = view.findViewById(R.id.btnDk)
@@ -120,10 +124,12 @@ class SettingsFragment:Fragment(R.layout.settings) {
             btnIt.isSelected=true
             btnEn.isSelected=false
             viewLifecycleOwner.lifecycleScope.launch {
-                //if (!isAdded) return@launch
                 settingsManager.setLang("it")
                 langtv.text="Lingua"
-
+                themetv.text="Tema"
+                preftv.text="Personalizzazione"
+                settv.text="Impostazioni"
+                pictv.text="Immagine di profilo"
             }
         }
         btnEn.setOnClickListener {
@@ -131,10 +137,14 @@ class SettingsFragment:Fragment(R.layout.settings) {
             btnIt.isSelected=false
             btnEn.isSelected=true
             viewLifecycleOwner.lifecycleScope.launch {
-                //if (!isAdded) return@launch
                 settingsManager.setLang("en")
-                //modificare stringhe
                 langtv.text="Language"
+                themetv.text="Theme"
+                preftv.text="Preferences"
+                settv.text="Settings"
+                pictv.text="Profile Picture"
+
+
             }
         }
 

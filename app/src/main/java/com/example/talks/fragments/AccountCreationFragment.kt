@@ -89,7 +89,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 usernameET.error=getString(R.string.errMissingUsername)
                 valid=false
             }else{
-                if (username.contains("@") || username.contains(" ")){
+                if (!Regex("^[a-zA-Z0-9_]+\$").matches(username)){
                     usernameET.error=getString(R.string.errInvalidUsername)
                     valid=false
                 }

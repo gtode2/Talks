@@ -127,8 +127,8 @@ open class PostViewHolder(
                 //verifica url
                 val img = withContext(Dispatchers.IO){SourceManager.getFavicon(el.source)}
 
-                if (img.startsWith("/")){
-                    //gestione errore
+                if (img==null){
+                    srcImg.setImageDrawable(null)
                 }else{
                     srcImg.load(img)
                 }

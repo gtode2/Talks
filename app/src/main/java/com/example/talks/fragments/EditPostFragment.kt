@@ -54,12 +54,12 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val imgprev = view.findViewById<ImageView>(R.id.imgprev)
         val backbtn = view.findViewById<ImageView>(R.id.close)
         val contbtn = view.findViewById<LinearLayout>(R.id.postBtn)
+        val buttontxt = view.findViewById<TextView>(R.id.postbtntxt)
         val frame = view.findViewById<FrameLayout>(R.id.frame)
         var imgChanged=false
 
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            //se seleziono immagine -> rendo visible
             uri?.let {
                 imgprev.setImageURI(it)
                 imgblock.visibility= View.VISIBLE
@@ -71,6 +71,8 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
 
         pagetitle.text= getString( R.string.editpost)
+        buttontxt.text=getString(R.string.save)
+
         uid = UserID.getUID()
 
         if (postId.isNullOrBlank()){
@@ -134,67 +136,115 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             //aggiungere verifica tag
 
             val tmp = PostData()
+            var cont=false
 
-            //modifica post
-            if (tmp!= edit){
-                lifecycleScope.launch {
+            lifecycleScope.launch {
+                //modifica post
+                if (tmp!=edit){
+                    //post modificato (ignoro immagine)
                     val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
+                    //verifico esito
                     when(res){
                         0 -> {
                             Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
-                            parentFragmentManager.popBackStack()
+                            //esito positivo -> può continuare
+                            cont=true
                         }
-                        1-> {Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()}
-                        else-> {Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()}
-                    }
-                }
-            }
-
-
-            //gestione immagini
-            if (post!!.image){
-                if (imgChanged){
-                    lifecycleScope.launch {
-                        if (Imguri==null){
-                            //rimossa
-                            val res = withContext(Dispatchers.IO){ImageCache.remove(false, postId!!)}
-                            if (!res){
-                                Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
-                                contbtn.isEnabled=true
-                            }else{
-                                parentFragmentManager.popBackStack()
-                            }
-                        }else{
-                            //modificata
-                            val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
-                            if (!res){
-                                Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
-                                contbtn.isEnabled=true
-                            }else{
-                                parentFragmentManager.popBackStack()
-                            }
+                        1-> {
+                            Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()
+                            //esito errato -> resta
+                        }
+                        else-> {
+                            Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()
+                            //errore -> resta
                         }
                     }
+                }else{
+                    cont = true
+                    //post non modificato -> procedo a verifica immagine
                 }
-            }else if (Imguri!=null){
-                //aggiunta
-                lifecycleScope.launch {
-                    var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
-                    if (!res){
-                        Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
-                        contbtn.isEnabled=true
+
+
+                if (cont){
+                    //posso continuare
+                    Log.e("AAA", "verifico immagine", )
+                    if(post!!.image){
+                        //post ha immagine
+                        Log.e("AAA", "post contiene immagine", )
+                        if(imgChanged) {
+                            //immagine modificata
+                            if (Imguri == null) {
+                                //img uri vuoto -> immagine rimossa
+                                Log.e("AAA", "immagine rimossa",)
+                                val res = withContext(Dispatchers.IO) {
+                                    ImageCache.remove(false,postId!!)
+                                }
+                                if (!res) {
+                                    Log.e("AAA", "errore rimozione", )
+                                    //esito negativo -> immagine non rimossa
+                                    Toast.makeText(requireContext(),getString(R.string.errImgRem),Toast.LENGTH_SHORT).show()
+                                    cont = false
+                                } else {
+                                    Log.e("AAA", "immagine rimossa correttamente ", )
+                                    //immagine rimossa correttamente
+                                    cont = true
+                                }
+                            } else {
+                                //img uri non vuoto -> modificata
+                                Log.e("AAA", "immagine modificata ", )
+                                val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
+                                if(!res){
+                                    //errore in modifica
+                                    Log.e("AAA", "errore in modifica", )
+                                    Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
+                                    cont = false
+                                }else{
+                                    //modificata correttamente
+                                    Log.e("AAA", "immagine modificata correttamente", )
+                                    cont=true
+                                }
+                            }
+                        }
                     }else{
-                        res = withContext(Dispatchers.IO){PostDatabase.editImgPost(postId!!, true)}}
+                        //post non ha immagine
+                        Log.e("AAA", "immagine aggiunta ", )
+                        var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                         if (!res){
-                            //immagine aggiunta a cache ma non a db
-                            //ripulisco cache
-                            withContext(Dispatchers.IO){ImageCache.remove(false, postId!!, true)}
+                            //errore in aggiunta
+                            Log.e("AAA", "errore aggiunta immagine ", )
                             Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
-                            contbtn.isEnabled=true
+                            cont = false
+                        }else{
+                            //aggiunta eseguita correttamente
+                            Log.e("AAA", "immagine aggiunta correttamente", )
+
+                            //aggiungo immagine a db
+                            res = withContext(Dispatchers.IO) { PostDatabase.editImgPost(postId!!, true) }
+                            if (!res){
+                                Log.e("AAA", "errore aggiunta a db", )
+                                //errore aggiunta a db
+                                //rimuovo da cache
+                                withContext(Dispatchers.IO) { ImageCache.remove(false, postId!!, true) }
+                                Log.e("AAA", "immagine rimossa da cache", )
+                                Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                                cont = false
+
+                            }else{
+                                //aggiunta correttamente a db
+                                cont=true
+                            }
                         }
                     }
+
+                }
+                if (cont){
+                    parentFragmentManager.popBackStack()
+                }else{
+                    //abilito bottone in caso di errore
+                    contbtn.isEnabled=true
                 }
             }
+        }
 
 
 
