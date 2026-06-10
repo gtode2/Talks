@@ -29,7 +29,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         val frame = view.findViewById<FrameLayout>(R.id.frame)
         uid = UserID.getUID()
         if (uid.isNullOrBlank()){
-            Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
         val rv = view.findViewById<RecyclerView>(R.id.yourRV)

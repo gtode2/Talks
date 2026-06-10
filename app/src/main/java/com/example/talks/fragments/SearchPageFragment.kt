@@ -2,7 +2,6 @@ package com.example.talks.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
@@ -57,7 +56,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                 val res = withContext(Dispatchers.IO){UserDatabase.searchUser(string)}
                 if (res!=null){
                     if (res.followers!=-1 && res.Uid!=UserID.getUID()){
-                        //se uid = utente loggato -> ignora
                         ud=res
                     }
                 }else{
@@ -139,10 +137,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
         super.onResume()
         var lp = LastPost.getPost()
         if (lp.id!="-1"){
-            //verifica elemento
             if (lp.liked!= LikeRepository.isLiked(lp.id)){
-                //like prec != like attuale
-                //se precedente è liked -> attuale no
                 if (lp.liked){
                     adapter?.decrLike(lp.id)
                 }else{
@@ -151,8 +146,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
             }
 
             if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
-                //save prec != save attuale
-                //se precedente è saved -> attuale no
                 if (lp.saved){
                     adapter?.unsavePost(lp.id)
                 }else{
@@ -161,7 +154,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
             }
 
             if (LastPost.getCC()!=0){
-                //eseguo update
                 adapter?.commCount(lp.id)
             }
         }

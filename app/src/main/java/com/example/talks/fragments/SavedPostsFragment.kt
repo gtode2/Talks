@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
-import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.adapters.SavedPostsAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
@@ -32,7 +31,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
 
         uid = UserID.getUID()
         if (uid.isNullOrBlank()){
-            Toast.makeText(context, "Si è verificato un problema, accedere di nuovo e riprovare", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
         val rv=view.findViewById<RecyclerView>(R.id.savedRV)
@@ -89,10 +88,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
         super.onResume()
         var lp = LastPost.getPost()
         if (lp.id!="-1"){
-            //verifica elemento
             if (lp.liked!= LikeRepository.isLiked(lp.id)){
-                //like prec != like attuale
-                //se precedente è liked -> attuale no
                 if (lp.liked){
                     adapter?.decrLike(lp.id)
                 }else{
@@ -101,8 +97,6 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
             }
 
             if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
-                //save prec != save attuale
-                //se precedente è saved -> attuale no
                 if (lp.saved){
                     adapter?.unsavePost(lp.id)
                 }else{
@@ -111,7 +105,6 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
             }
 
             if (LastPost.getCC()!=0){
-                //eseguo update
                 adapter?.commCount(lp.id)
             }
         }

@@ -67,39 +67,48 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:background="@drawable/srcbg"
                 >
 
                 <ImageView
                     android:id="@+id/sourcePreview"
                     android:layout_width="wrap_content"
-                    android:layout_height="70dp"
-                    android:background="@drawable/prevbg"
-                    android:minWidth="70dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/openlink"
                     android:maxWidth="134dp"
+                    android:minWidth="50dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/sourceURL"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/sourcePreview"
+                    app:layout_constraintEnd_toEndOf="parent"
                     android:layout_marginLeft="15dp"
                     android:layout_marginRight="15dp"
-                    android:singleLine="true"
-                    app:layout_constraintStart_toEndOf="@+id/sourcePreview"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:id="@+id/sourceTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/text"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    app:layout_constraintStart_toEndOf="@+id/sourcePreview"
-                    app:layout_constraintTop_toBottomOf="@id/sourceURL"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/sourceURL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/text"
+                        android:singleLine="true" />
+                    <TextView
+                        android:id="@+id/sourceTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text"
+                        android:singleLine="true" />
+
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--aggiungere link-->

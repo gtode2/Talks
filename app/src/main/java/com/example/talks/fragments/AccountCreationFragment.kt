@@ -104,7 +104,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 val date = formatter.parse(dobET.text.toString())
                 val today = Date()
                 if (date.after(today)){
-                    dobET.error=getString(R.string.errinvalidDate)
+                    Toast.makeText(context, (R.string.errinvalidDate), Toast.LENGTH_SHORT).show()
                     valid=false
                 }
             }

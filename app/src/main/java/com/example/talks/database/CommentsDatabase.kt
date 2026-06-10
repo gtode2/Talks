@@ -1,14 +1,11 @@
 package com.example.talks.database
 
 import com.example.talks.data.CommentData
-import com.example.talks.interfaces.Comment
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.AggregateSource
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.pipeline.AggregateStage
-import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,7 +33,6 @@ class CommentsDatabase {
             val uid = UserID.getUID()
             val comment = hashMapOf(
                 "date" to FieldValue.serverTimestamp(),
-                //"postid" to post, capire se serve
                 "text" to text,
                 "uid" to uid
             )

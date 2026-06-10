@@ -69,7 +69,6 @@ class PostAdapter(
         )
         cm.add(0,newComm)
         LastPost.incrCC()
-        //devo incrementare counter
         notifyItemInserted(1)
         notifyItemChanged(0)
 

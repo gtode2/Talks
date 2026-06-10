@@ -30,7 +30,8 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="15dp"
                 app:shapeAppearanceOverlay="@style/circleImageView"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:background="@drawable/defprofilepic"/>
             <TextView
                 android:id="@+id/commentUserTag"
                 android:layout_width="match_parent"

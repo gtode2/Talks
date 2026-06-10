@@ -121,6 +121,14 @@
     <string name="newpost">Nuovo Post</string>
     <string name="cp">Posta</string>
     <string name="save">Salva</string>
-
+    <string name="errAccount">Si è verificato un errore\nAccedi di nuovo e riprova</string>
+    <string name="errTag">Si è verificato un errore nell\'aggiunta dei tag</string>
+    <string name="cancel">Annulla</string>
+    <string name="delete">Elimina</string>
+    <string name="postDel">Elimina post</string>
+    <string name="postDQ">Sei sicuro di voler eliminare il post?</string>
+    <string name="errPostDel">si è verificato un errore nell\'eliminazione del post</string>
+    <string name="errpostnf">Impossibile trovare il post. potrebbe esser stato eliminato</string>
+    <string name="posteditcomp">Post modificato correttamente</string>
 
 </resources>

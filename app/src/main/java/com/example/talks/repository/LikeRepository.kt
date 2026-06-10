@@ -6,7 +6,6 @@ object LikeRepository {
     private var likedPosts = mutableMapOf<String, Boolean>()
 
     suspend fun loadLikes(uid:String){
-        //chiamata a LikeDatabase e poi memorizza
         val likesMap = LikeDatabase.userInit(uid)
         likedPosts = likesMap
     }

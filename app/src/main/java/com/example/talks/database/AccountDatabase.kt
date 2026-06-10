@@ -1,6 +1,5 @@
 package com.example.talks.database
 
-import com.example.talks.data.UserData
 import com.example.talks.singleton.UserID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException

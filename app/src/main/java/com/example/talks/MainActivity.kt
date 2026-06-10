@@ -3,7 +3,6 @@ package com.example.talks
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -69,7 +68,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("LIFECYCLE", "onCreate MainActivity")
         val settings = SettingsManager(this)
         settings.applyLang()
         settings.applyTheme()
@@ -98,7 +96,6 @@ class MainActivity : AppCompatActivity() {
 
 
         if (savedInstanceState == null){
-            //activity appena creata
             val from = intent.getStringExtra("From")?:0
             when(from){
                 "user"->{
@@ -132,14 +129,11 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-        Log.d("DEBUG", "FRAGMENT IN FRAME = ${supportFragmentManager.findFragmentById(R.id.frame)}")
 
 
         homebtn.setOnClickListener{
-            Log.d("CLICK", "Home clicked")
             if (LastPage.getPage() !="home"){
                 bottombar("home")
-                //homebtn.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("home")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, HomePageFragment())
@@ -149,7 +143,6 @@ class MainActivity : AppCompatActivity() {
         searchbtn.setOnClickListener{
             if (LastPage.getPage() !="search"){
                 bottombar("search")
-                //searchicon.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("search")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, SearchPageFragment())
@@ -168,7 +161,6 @@ class MainActivity : AppCompatActivity() {
         ntfbtn.setOnClickListener{
             if (LastPage.getPage() !="ntf"){
                 bottombar("ntf")
-                //ntficon.imageTintList = ColorStateList.valueOf(col_act!!)
                 LastPage.setPage("ntf")
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame, NotificationPageFragment())
@@ -176,12 +168,9 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //enableEdgeToEdge()
-
     }
     override fun onResume() {
         super.onResume()
-        Log.d("LIFECYCLE", "onResume MainActivity")
     }
 
 

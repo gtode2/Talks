@@ -24,10 +24,9 @@ object FollowRepository {
             return -2
         }
         if (!followedAccounts.contains(userid)) {
-            //aggiungi follow
-
             val res = UserDatabase.follow(UserID.getUID()!!, userid)
             if (res!=-1){
+
                 followedAccounts.put(userid, true)
                 when(res){
                     0-> {
@@ -40,7 +39,6 @@ object FollowRepository {
                 return -1
             }
         }else {
-            //rimuovi follow
 
             val res = UserDatabase.unfollow(UserID.getUID()!!, userid)
             if (res != -1) {
@@ -53,7 +51,7 @@ object FollowRepository {
                 return -1
             }
         }
-        return -1 //irraggiungibile | solo per evitare errore
+        return -1
     }
     fun clear(){
         followedAccounts.clear()

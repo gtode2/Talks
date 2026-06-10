@@ -1,27 +1,21 @@
 package com.example.talks.fragments
 
-import android.content.Intent
 import android.graphics.Typeface
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.talks.EmptyActivity
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
@@ -32,7 +26,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class EditPostFragment:Fragment(R.layout.postcreation) {
-    //con postcreation definitivo decidere se modificare testo aggiunta o se duplicare e creare nuova pagina con label diverse
     var postId:String?=null
     var post:PostData?=null
     var uid:String?=null
@@ -90,7 +83,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             post = p[0]
             title.setText(post!!.title)
             text.setText(post!!.post)
-            remch.setText("${500-post!!.post.length}/500")
+            remch.setText("${post!!.post.length}/500")
             srctext.setText(post!!.source)
 
             val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
@@ -111,10 +104,8 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 val length = text.text.toString().length
                 remch.text= length.toString()+"/500"
                 if (length==500){
-                    //remch.setTextColor(errCol)
                     remch.setTypeface(null, Typeface.BOLD)
                 }else{
-                    //remch.setTextColor(origCol)
                     remch.setTypeface(null, Typeface.NORMAL)
                 }
             }
@@ -133,104 +124,68 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 edit.source=srctext.text.toString()
             }
 
-            //aggiungere verifica tag
 
             val tmp = PostData()
             var cont=false
 
             lifecycleScope.launch {
-                //modifica post
                 if (tmp!=edit){
-                    //post modificato (ignoro immagine)
                     val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
-                    //verifico esito
                     when(res){
                         0 -> {
-                            Toast.makeText(context, "Post modificato correttamente", Toast.LENGTH_SHORT).show()
-                            //esito positivo -> può continuare
+                            Toast.makeText(context, getString(R.string.posteditcomp), Toast.LENGTH_SHORT).show()
                             cont=true
                         }
                         1-> {
-                            Toast.makeText(context, "Impossibile trovare il post. potrebbe esser stato eliminato", Toast.LENGTH_SHORT).show()
-                            //esito errato -> resta
+                            Toast.makeText(context, getString(R.string.errpostnf), Toast.LENGTH_SHORT).show()
                         }
                         else-> {
-                            Toast.makeText(context, "Si è verificato un errore, riprovare", Toast.LENGTH_SHORT).show()
-                            //errore -> resta
+                            Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }else{
                     cont = true
-                    //post non modificato -> procedo a verifica immagine
                 }
 
 
                 if (cont){
-                    //posso continuare
-                    Log.e("AAA", "verifico immagine", )
                     if(post!!.image){
-                        //post ha immagine
-                        Log.e("AAA", "post contiene immagine", )
                         if(imgChanged) {
-                            //immagine modificata
                             if (Imguri == null) {
-                                //img uri vuoto -> immagine rimossa
-                                Log.e("AAA", "immagine rimossa",)
                                 val res = withContext(Dispatchers.IO) {
                                     ImageCache.remove(false,postId!!)
                                 }
                                 if (!res) {
-                                    Log.e("AAA", "errore rimozione", )
-                                    //esito negativo -> immagine non rimossa
                                     Toast.makeText(requireContext(),getString(R.string.errImgRem),Toast.LENGTH_SHORT).show()
                                     cont = false
                                 } else {
-                                    Log.e("AAA", "immagine rimossa correttamente ", )
-                                    //immagine rimossa correttamente
                                     cont = true
                                 }
                             } else {
-                                //img uri non vuoto -> modificata
-                                Log.e("AAA", "immagine modificata ", )
                                 val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                                 if(!res){
-                                    //errore in modifica
-                                    Log.e("AAA", "errore in modifica", )
                                     Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
                                     cont = false
                                 }else{
-                                    //modificata correttamente
-                                    Log.e("AAA", "immagine modificata correttamente", )
                                     cont=true
                                 }
                             }
                         }
                     }else{
-                        //post non ha immagine
-                        Log.e("AAA", "immagine aggiunta ", )
                         var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                         if (!res){
-                            //errore in aggiunta
-                            Log.e("AAA", "errore aggiunta immagine ", )
                             Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                             cont = false
                         }else{
-                            //aggiunta eseguita correttamente
-                            Log.e("AAA", "immagine aggiunta correttamente", )
-
-                            //aggiungo immagine a db
                             res = withContext(Dispatchers.IO) { PostDatabase.editImgPost(postId!!, true) }
                             if (!res){
-                                Log.e("AAA", "errore aggiunta a db", )
                                 //errore aggiunta a db
                                 //rimuovo da cache
                                 withContext(Dispatchers.IO) { ImageCache.remove(false, postId!!, true) }
-                                Log.e("AAA", "immagine rimossa da cache", )
                                 Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
                                 cont = false
 
                             }else{
-                                //aggiunta correttamente a db
                                 cont=true
                             }
                         }
@@ -240,7 +195,6 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 if (cont){
                     parentFragmentManager.popBackStack()
                 }else{
-                    //abilito bottone in caso di errore
                     contbtn.isEnabled=true
                 }
             }

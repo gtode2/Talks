@@ -4,8 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -13,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.MainActivity
 import com.example.talks.R
-import com.example.talks.database.ImageDatabase
-import com.example.talks.managers.ImageManager
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
@@ -44,8 +40,6 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
             Toast.makeText(requireContext(), getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
         }
-        //se parametro -> cambio immagine -> carica da cache
-
 
         lifecycleScope.launch {
             val oldImg = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
@@ -59,8 +53,6 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                 }
             }
         }
-
-
 
 
         continueBtn.setOnClickListener {
@@ -78,7 +70,6 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                 }
             }else{
                 if (!wasEmpty){
-                    //prima immagine c'era, adesso no
                     lifecycleScope.launch {
                         val res = withContext(Dispatchers.IO){ImageCache.remove(true)}
                         if (res){
@@ -92,7 +83,6 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                 }
             }
         }
-
 
         selectImage.setOnClickListener {
             pickImageLauncher.launch("image/*")

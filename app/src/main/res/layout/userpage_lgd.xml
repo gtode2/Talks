@@ -27,7 +27,7 @@
                     android:id="@+id/profPic"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:src="@drawable/circle"
+                    android:background="@drawable/defprofilepic"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

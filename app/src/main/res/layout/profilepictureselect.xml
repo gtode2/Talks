@@ -38,6 +38,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             app:shapeAppearanceOverlay="@style/circleImageView"
+            android:background="@drawable/defprofilepic"
             android:scaleType="centerCrop"/>
     </LinearLayout>
 

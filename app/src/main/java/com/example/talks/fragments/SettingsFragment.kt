@@ -4,20 +4,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.addCallback
-import androidx.core.app.ActivityCompat.recreate
-
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
-import com.example.talks.PostCreationActivity
 import com.example.talks.R
 import com.example.talks.managers.SettingsManager
 import com.example.talks.singleton.UserID
@@ -89,15 +84,12 @@ class SettingsFragment:Fragment(R.layout.settings) {
 
             var lang = settingsManager.getLang()
             if (lang==null) {
-                //settings = null -> prendo default
                 lang = Locale.getDefault().language
             }
             if (lang=="it"){
-                //imposto it
                 btnIt.isSelected=true
                 btnEn.isSelected=false
             }else{
-                //lingua di default = en
                 btnIt.isSelected=false
                 btnEn.isSelected=true
             }
@@ -120,7 +112,6 @@ class SettingsFragment:Fragment(R.layout.settings) {
 
 
         btnIt.setOnClickListener {
-            //set ita
             btnIt.isSelected=true
             btnEn.isSelected=false
             viewLifecycleOwner.lifecycleScope.launch {
@@ -133,7 +124,6 @@ class SettingsFragment:Fragment(R.layout.settings) {
             }
         }
         btnEn.setOnClickListener {
-            //set en
             btnIt.isSelected=false
             btnEn.isSelected=true
             viewLifecycleOwner.lifecycleScope.launch {
@@ -153,7 +143,6 @@ class SettingsFragment:Fragment(R.layout.settings) {
                 settingsManager.setTheme("light")
                 requireActivity().intent.putExtra("From", "sett")
                 requireActivity().recreate()
-                //passo parametro a activity -> from settings
             }
         }
         btnDk.setOnClickListener {

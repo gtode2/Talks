@@ -7,8 +7,6 @@ import com.example.talks.repository.LikeRepository
 object LastPost {
     private var lastPost: String? = null
 
-    //liked & saved - status in adapter
-
     private var liked: Boolean=false
     private var saved: Boolean=false
     private var commentCount:Int=0

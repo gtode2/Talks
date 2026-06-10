@@ -207,9 +207,6 @@ class PostDatabase {
                 cont.resume(id){}
             }
             .addOnFailureListener {
-                //gestione errore
-
-
                 cont.resume("-1"){}
             }
         }
@@ -266,7 +263,6 @@ class PostDatabase {
                 }
 
 
-                //verifico postdata not empty
 
                 if(data.title!=""){
                     tr.update(post,"title", data.title)

@@ -20,12 +20,9 @@ import com.example.talks.EmptyActivity
 import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.adapters.PostAdapter
-import com.example.talks.data.CommentData
 import com.example.talks.data.PostData
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.database.PostDatabase
-import com.example.talks.interfaces.Comment
-import com.example.talks.interfaces.PostCard
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID

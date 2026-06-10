@@ -1,6 +1,5 @@
 package com.example.talks.database
 
-import android.util.Log
 import com.example.talks.data.NotificationData
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldValue
@@ -13,7 +12,6 @@ class NotificationsDatabase {
             //crea map notifica in base al tipo
 
             //type
-            //0 -> tag in post
             //1 -> commento
             //2 -> follow
 
@@ -26,14 +24,11 @@ class NotificationsDatabase {
                 return true
             }
 
-
-            //VERIFICARE COME VIENE PASSATO TAG, SE CON O SENZA @
-
             when(type) {
-                0,1 -> {
+                1 -> {
                     val map = hashMapOf(
                         "type" to type,
-                        "author" to uid, //utente che ha taggato / commentato
+                        "author" to uid, //utente che ha commentato
                         "src" to p2, //id del post
                         "createdAt" to FieldValue.serverTimestamp(),
                     )

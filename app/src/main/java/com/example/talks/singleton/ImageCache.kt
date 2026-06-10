@@ -3,16 +3,11 @@ package com.example.talks.singleton
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import androidx.collection.LruCache
 import com.example.talks.database.ImageDatabase
 import com.example.talks.managers.ImageManager
 import androidx.core.graphics.createBitmap
-import com.example.talks.data.PostData
 import com.example.talks.database.PostDatabase
-import com.google.firebase.firestore.auth.User
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 object ImageCache {
     val mem = (Runtime.getRuntime().maxMemory()/8).toInt()
@@ -22,7 +17,6 @@ object ImageCache {
         }
     }
     suspend fun get(s:String):Bitmap?{
-        // se non esiste -> carica da ImageDatabase
         if (cache[s]!=null){
             if (cache[s]!!.height==1 &&cache[s]!!.width==1){
                 return null
@@ -30,9 +24,8 @@ object ImageCache {
                 return cache[s]
             }
         }else{
-            //cerca da firebase
             var id: String
-            var pr:Boolean = false
+            var pr: Boolean
             if (s.startsWith("profile")){
                 id = s.removePrefix("profile")
                 pr=true
@@ -56,8 +49,6 @@ object ImageCache {
     }
 
     suspend fun add(ctx: Context, id:String, img: Uri, isProfile: Boolean):Boolean{
-        //gestire in dispatchers IO
-
         val imgStr = ImageManager.compressor(ctx, img)
         var res = ImageDatabase.add(imgStr, id, isProfile)
         if (res){
@@ -77,22 +68,17 @@ object ImageCache {
             cache.remove(imgid)
             return true
         }else if (isProfile){
-            //gestione profilo
             if (UserID.getUID()==null){
                 return false
             }else{
                 cache.remove("profile${UserID.getUID()}")
-                //rimuovo da db
                 val res = ImageDatabase.remove(true)
                 return res
             }
         }else{
-            //gestione post
             cache.remove("image$postid")
             val res = ImageDatabase.remove(false, postid)
             if (res){
-                //rimuovo anche da post
-                //edit post -> image = false
                 val res = PostDatabase.editImgPost(postid, false)
                 return res
             }else{

@@ -7,9 +7,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class UserDatabase {
-    //ottenere numero followers
-    //ottenere numero followed
-    //eventualmente altre informazioni
     companion object{
         suspend fun getUser(uid:String):UserData = suspendCancellableCoroutine{cont->
             FirebaseFirestore.getInstance()
@@ -51,7 +48,6 @@ class UserDatabase {
             var ex=false
 
             db.runTransaction { tr->
-                //verifico presenza
                 val prev = tr.get(userdb)
                     .get("followed") as? Map<String, Boolean>?: emptyMap()
                 if (prev.containsKey(user)){
@@ -124,25 +120,5 @@ class UserDatabase {
                 .addOnFailureListener { cont.resume(null){} }
         }
 
-
-        /*
-        *
-        fun searchUser(string:String, onResult:(UserData)->Unit){
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(string)
-                .get()
-                .addOnSuccessListener { res->
-                    if (res.exists()){
-                        val fwd = res.get("followed") as Map<String, Boolean>
-                        val followers = (res.getLong("followers") ?: -1).toInt()
-                        onResult(UserData(string, followers, fwd.size))
-                    }else{
-                        onResult(UserData("", -1, 0))
-                    }
-                }
-                .addOnFailureListener {  }
-        }
-        * */
     }
 }

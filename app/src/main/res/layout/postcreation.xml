@@ -64,7 +64,7 @@
                         android:id="@+id/postbtntxt"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textColor="@color/text"
+                        android:textColor="@color/black"
                         android:text="@string/postText"
                         android:gravity="center"/>
                 </LinearLayout>

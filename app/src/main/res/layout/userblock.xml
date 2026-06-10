@@ -21,9 +21,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-
-            android:src="@drawable/circle"
-            android:background="@drawable/circle"
+            android:background="@drawable/defprofilepic"
             app:shapeAppearanceOverlay="@style/circleImageView"
             android:scaleType="centerCrop"/>
 

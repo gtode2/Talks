@@ -25,10 +25,7 @@ class ImageManager {
                 var c = compress(redbitmap)
                 if (c.size>730_000){
                     if (size<600){
-                        //impossible scalare
                         return ""
-                        //errore->impossibile comprimere
-
                     }else{
                         tl=true
                         size-=100

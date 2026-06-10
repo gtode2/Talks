@@ -25,7 +25,7 @@ class PostCardHandler(
         LastPost.addPost(postId)
         intent.putExtra("id", postId)
         intent.putExtra("screen", "fs")
-        contextProvider().startActivity(intent) //creare implementazione di startActivity in fragment / activity
+        contextProvider().startActivity(intent)
 
     }
 
@@ -37,20 +37,17 @@ class PostCardHandler(
     override fun addLike(postId: String) {
         val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
-            LikeRepository.addLike(UID!!,postId){ res->
+            LikeRepository.addLike(UID,postId){ res->
                 //0 = aggiunta eseguita
                 //1 = già presente - rimosso
                 //-1= errore
 
                 if (res==0){
-                    Toast.makeText(contextProvider(), "like aggiunto", Toast.LENGTH_SHORT).show()
                     adapter?.incrLike(postId)
                 }else if(res==1){
-                    Toast.makeText(contextProvider(), "like rimosso", Toast.LENGTH_SHORT).show()
                     adapter?.decrLike(postId)
                 }else if (res==-1){
-                    //errore
-                    Toast.makeText(contextProvider(), "si è verificato un errore", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(contextProvider(), contextProvider().getString(R.string.error), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -61,13 +58,11 @@ class PostCardHandler(
         if (!UID.isNullOrBlank()){
             BookmarkRepository.savePost(UID, postId){ res->
                 if (res==0){
-                    Toast.makeText(contextProvider(), "Post salvato", Toast.LENGTH_SHORT).show()
                     adapter?.savePost(postId)
                 }else if (res==1){
-                    Toast.makeText(contextProvider(), "Post rimosso", Toast.LENGTH_SHORT).show()
                     adapter?.unsavePost(postId)
                 }else if (res==-1){
-                    Toast.makeText(contextProvider(), "si è verificato un errore", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(contextProvider(), contextProvider().getString(R.string.error), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -81,18 +76,18 @@ class PostCardHandler(
         val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
             AlertDialog.Builder(contextProvider())
-                .setTitle("Elimina post")
-                .setMessage("Sei sicuro di voler eliminare il post?")
-                .setPositiveButton("Elimina"){_,_->
+                .setTitle(contextProvider().getString(R.string.postDel))
+                .setMessage(contextProvider().getString(R.string.postDQ))
+                .setPositiveButton(contextProvider().getString(R.string.delete)){_,_->
                     PostDatabase.deletePost(UID,postId){ res->
                         if (res==0 || res==1){
                             adapter?.deletePost(postId)
                         }else{
-                            Toast.makeText(contextProvider(), "si è verificato un errore nell'eliminazione del post", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(contextProvider(), contextProvider().getString(R.string.errPostDel), Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
-                .setNegativeButton("Annulla", null)
+                .setNegativeButton(contextProvider().getString(R.string.cancel), null)
                 .show()
         }
     }

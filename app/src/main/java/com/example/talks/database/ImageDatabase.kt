@@ -29,7 +29,7 @@ class ImageDatabase {
                 }
         }
         suspend fun get(id:String, profile:Boolean=false):String? = suspendCancellableCoroutine{cont->
-            var coll:String = if(profile) "ProfilePictures" else "Images"
+            val coll:String = if(profile) "ProfilePictures" else "Images"
 
             FirebaseFirestore.getInstance()
                 .collection(coll)

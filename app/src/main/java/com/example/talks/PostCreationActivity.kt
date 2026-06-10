@@ -5,9 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -18,11 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import com.example.talks.database.ImageDatabase
 import com.example.talks.database.PostDatabase
-import com.example.talks.database.TagDatabase
-import com.example.talks.managers.ImageManager
-import com.example.talks.managers.TagManager
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
@@ -47,7 +41,6 @@ class PostCreationActivity: AppCompatActivity() {
         val createPost = findViewById<LinearLayout>(R.id.postBtn)
         var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-            //se seleziono immagine -> rendo visible
             uri?.let {
                 prev.setImageURI(it)
                 imgblock.visibility= View.VISIBLE
@@ -88,19 +81,21 @@ class PostCreationActivity: AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+
         backBtn.setOnClickListener{
             finish()
         }
+
+
         createPost.setOnClickListener{
             createPost.isEnabled=false
             val UID = UserID.getUID()
             if (UID.isNullOrBlank()){
-                //gestione errore
-                createPost.isEnabled=true
-                return@setOnClickListener
+                Toast.makeText(this, getString(R.string.errAccount), Toast.LENGTH_SHORT).show()
+                finish()
             }
 
-            //verifica elementi
             if (title.text.isBlank() || post.text.isBlank()){
                 Toast.makeText(this, R.string.errMissingTitleOrText, Toast.LENGTH_SHORT).show()
                 createPost.isEnabled=true
@@ -108,36 +103,36 @@ class PostCreationActivity: AppCompatActivity() {
             }
 
             lifecycleScope.launch {
-                //verifica immagine
                 val uri = Imguri
-                var img = ""
-                val imgBool = if (uri!=null) true else false
+                val imgBool = if (uri != null) true else false
 
-                val PCres = PostDatabase.createPost(UID, post.text.toString(), source.text.toString(), title.text.toString(), imgBool)
+                val PCres = PostDatabase.createPost(
+                    UID!!,
+                    post.text.toString(),
+                    source.text.toString(),
+                    title.text.toString(),
+                    imgBool
+                )
 
-                if (uri!=null && PCres!="-1"){
+                if (uri != null && PCres != "-1") {
                     val ICres = ImageCache.add(this@PostCreationActivity, PCres, uri, false)
-                    //gestione risposta ICres -> se false -> modifico post -> rimuovo img
+                    if (!ICres) {
+                        Toast.makeText(this@PostCreationActivity,getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                    }
                 }
 
-                //verifica tag
-                val taglist = TagManager().validate(post.text.toString(), this@PostCreationActivity)
 
-
-                //gestione post e errori upload
-                if (PCres!="-1"){
-                    //se creazione post eseguito correttamente -> carico tag
-                    if (taglist.isNotEmpty()){
-                        TagDatabase.addTag(taglist,PCres)
-                    }
+                if (PCres == "-1") {
+                    Toast.makeText(
+                        this@PostCreationActivity,
+                        getString(R.string.error),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    createPost.isEnabled = true
 
                 }else{
-                    Toast.makeText(this@PostCreationActivity, "si è verificato un errore", Toast.LENGTH_SHORT).show()
-                    createPost.isEnabled=true
-                    //gestire errore
+                    finish()
                 }
-
-                finish()
             }
 
 

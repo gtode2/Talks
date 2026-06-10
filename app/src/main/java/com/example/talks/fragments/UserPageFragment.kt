@@ -3,7 +3,6 @@ package com.example.talks.fragments
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,18 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.PostCardHandler
 import com.example.talks.R
-import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.adapters.UserPageAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.database.UserDatabase
-import com.example.talks.managers.SettingsManager
 import com.example.talks.repository.BookmarkRepository
-import com.example.talks.repository.FollowRepository
 import com.example.talks.repository.LikeRepository
-import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.LastPost
-import com.example.talks.singleton.UserID
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -112,10 +105,7 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         super.onResume()
         var lp = LastPost.getPost()
         if (lp.id != "-1") {
-            //verifica elemento
             if (lp.liked != LikeRepository.isLiked(lp.id)) {
-                //like prec != like attuale
-                //se precedente è liked -> attuale no
                 if (lp.liked) {
                     adapter?.decrLike(lp.id)
                 } else {
@@ -124,8 +114,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             }
 
             if (lp.saved != BookmarkRepository.isSaved(lp.id)) {
-                //save prec != save attuale
-                //se precedente è saved -> attuale no
                 if (lp.saved) {
                     adapter?.unsavePost(lp.id)
                 } else {
@@ -134,7 +122,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             }
 
             if (LastPost.getCC() != 0) {
-                //eseguo update
                 adapter?.commCount(lp.id)
             }
         }

@@ -25,7 +25,6 @@ class SourceManager {
                 val doc = Jsoup.connect(url).get()
                 val img = doc.select("meta[property=og:image]")
                     .attr("content")
-                //possibile usare doc anche per title sito / pagina
                 if (img.isNotEmpty()){
                     return img
                 }
@@ -66,8 +65,6 @@ class SourceManager {
                 val doc = Jsoup.connect(u).get()
                 return doc.title()
             }catch (e: Exception){
-                //gestione errore
-                Log.e("TAG", "no title ", )
                 return null
             }
 

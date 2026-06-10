@@ -17,52 +17,7 @@ class YourPostCardAdapter(
     var pc: PostCard?,
     private val context: Context,
 ):RecyclerView.Adapter<PostViewHolder>(), PostHandlerInterface{
-    /*inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
-        val usertag = view.findViewById<TextView>(R.id.userTag)
-        val posttext = view.findViewById<TextView>(R.id.postText)
-        val postImg = view.findViewById<ImageView>(R.id.postImageArea)
-        val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-        val likebtn = view.findViewById<ImageView>(R.id.likebtn)
-        val editbtn = view.findViewById<ImageView>(R.id.editbtn)
-        val delbtn = view.findViewById<ImageView>(R.id.delbtn)
-
-        fun bind(el:PostData){
-
-
-
-
-
-            usertag.text = "@"+el.uid
-            posttext.text = el.post
-            postLikes.text = el.likes.toString()
-
-
-            //verifica immagini
-            if (!el.image){
-                postImg.visibility = View.GONE
-            }
-
-
-            usertag.setOnClickListener{
-                pch!!.openUser(el.uid)
-            }
-            itemView.setOnClickListener{
-                pch!!.openPost(el.id)
-            }
-            editbtn.setOnClickListener{
-                pch!!.editPost(el.id)
-            }
-            delbtn.setOnClickListener{
-                pch!!.deletePost(el.id)
-            }
-
-            //verifica presenza link
-            //verifica tag
-
-            
-        }
-    }*/
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         holder.bind(posts[position], true)
     }
@@ -74,9 +29,6 @@ class YourPostCardAdapter(
         return PostViewHolder(view, context, pc, posts)
     }
 
-    override fun editPost(postId: String) {
-        //
-    }
     override fun deletePost(postId: String) {
         val index = posts.indexOfFirst { it.id==postId }
         posts.removeIf { it.id===postId }

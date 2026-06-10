@@ -126,6 +126,16 @@
     <string name="newpost">New post</string>
     <string name="cp">Post</string>
     <string name="save">Save</string>
+    <string name="errAccount">An error occurred.\nPlease log in again and try again.</string>
+    <string name="errTag">An error occurred while adding tags</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="postDel">Delete post</string>
+    <string name="postDQ">Are you sure you want to delete the post?</string>
+    <string name="errPostDel">Failed to delete the post</string>
+    <string name="errpostnf">Post not found. It may have been deleted.</string>
+    <string name="posteditcomp">Post updated successfully</string>
+
 
 
 </resources>

@@ -128,16 +128,17 @@ open class PostViewHolder(
                 val img = withContext(Dispatchers.IO){SourceManager.getFavicon(el.source)}
 
                 if (img==null){
-                    srcImg.setImageDrawable(null)
+                    srcImg.setImageResource(R.drawable.openlink)
                 }else{
                     srcImg.load(img)
                 }
                 srcUrl.text=el.source
                 val title = withContext(Dispatchers.IO){SourceManager.getTitle(el.source)}
                 if (title!=null){
+                    srcTitle.visibility= View.VISIBLE
                     srcTitle.text=title
                 }else{
-                    srcTitle.text=""
+                    srcTitle.visibility=View.GONE
                 }
             }
 

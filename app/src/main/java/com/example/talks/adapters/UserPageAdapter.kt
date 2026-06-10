@@ -127,7 +127,7 @@ class UserPageAdapter(
                             if(res==3) fw.text = (fw.text.toString().toInt()-1).toString()
                         }
                     }else{
-                        Toast.makeText(itemView.context, "Si è verificato un errore", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(itemView.context, itemView.context.getString(R.string.error), Toast.LENGTH_SHORT).show()
                     }
 
                 }

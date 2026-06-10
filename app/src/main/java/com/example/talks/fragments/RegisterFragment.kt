@@ -1,9 +1,7 @@
 package com.example.talks.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -45,11 +43,11 @@ class RegisterFragment:Fragment(R.layout.register) {
                 valid = false
                 pw.error = getString(R.string.errPWLEN)
             }else if (!pw.text.contains(Regex("[A-Z]"))){
-                valid = false
-                pw.error = getString(R.string.errPWUC)
-            }else if(!pw.text.contains(Regex("[a-z]"))){
-                valid = false
                 pw.error = getString(R.string.errPWLC)
+                valid = false
+            }else if(!pw.text.contains(Regex("[a-z]"))){
+                pw.error = getString(R.string.errPWUC)
+                valid = false
             }else if(!pw.text.contains(Regex("[0-9]"))){
                 valid = false
                 pw.error = getString(R.string.errPWNUM)
