@@ -50,8 +50,6 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.noYourPosts)
             }else{
-
-                Toast.makeText(context, "${postList.size}", Toast.LENGTH_SHORT).show()
                 adapter = YourPostCardAdapter(
                     postList.toMutableList(),
                     null,

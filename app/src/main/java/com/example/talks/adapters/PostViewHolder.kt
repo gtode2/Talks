@@ -2,7 +2,6 @@ package com.example.talks.adapters
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout

@@ -1,6 +1,5 @@
 package com.example.talks.database
 
-import android.util.Log
 import com.example.talks.data.UserData
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -66,7 +65,6 @@ class UserDatabase {
                     cont.resume(1){}
                 }else{
                     //errore
-                    Log.e("AAA", e.toString(), )
                     cont.resume(-1){}
                 }
             }

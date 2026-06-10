@@ -172,21 +172,24 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                             }
                         }
                     }else{
-                        var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
-                        if (!res){
-                            Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
-                            cont = false
-                        }else{
-                            res = withContext(Dispatchers.IO) { PostDatabase.editImgPost(postId!!, true) }
+                        //post non ha immagine
+                        if (Imguri!=null){
+                            var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
                             if (!res){
-                                //errore aggiunta a db
-                                //rimuovo da cache
-                                withContext(Dispatchers.IO) { ImageCache.remove(false, postId!!, true) }
-                                Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                                 cont = false
-
                             }else{
-                                cont=true
+                                res = withContext(Dispatchers.IO) { PostDatabase.editImgPost(postId!!, true) }
+                                if (!res){
+                                    //errore aggiunta a db
+                                    //rimuovo da cache
+                                    withContext(Dispatchers.IO) { ImageCache.remove(false, postId!!, true) }
+                                    Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                                    cont = false
+
+                                }else{
+                                    cont=true
+                                }
                             }
                         }
                     }
