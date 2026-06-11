@@ -4,9 +4,6 @@
     <string name="followed">Followed</string>
     <string name="followers">Followers</string>
     <string name="error">An error occurred. Try again later.</string>
-
-    <!-- Login -->
-
     <string name="wrongcred">Invalid Email or Password</string>
     <string name="missingmail">Please enter your email address</string>
     <string name="missingpassword">Please enter your password</string>
@@ -18,19 +15,12 @@
     <string name="errLogin">Something went wrong. Please check your credentials and try again</string>
     <string name="insmail">Enter your email address</string>
     <string name="inspw">Enter your password</string>
-
-
-    <!-- UserPage  -->
-
     <string name="yourposts">Your Posts</string>
     <string name="saved">Saved</string>
     <string name="logout">Logout</string>
     <string name="settings">Settings</string>
     <string name="errLoading">An error occurred while loading the information</string>
     <string name="errUserNF">Error loading user.\nThis account may no longer be available</string>
-
-    <!-- Register -->
-
     <string name="createAccount">Create account</string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
@@ -61,10 +51,6 @@
     <string name="datesel">Select date</string>
     <string name="errinvalidDate">Selected date is not valid</string>
     <string name="errReg">An error occurred while creating the profile.\nPlease log in and try again</string>
-
-
-    <!-- Post Creation -->
-
     <string name="title">Title</string>
     <string name="postText">Post</string>
     <string name="source">Source (optional)</string>
@@ -74,40 +60,20 @@
     <string name="addImg">Add image</string>
     <string name="changeImg">Change image</string>
     <string name="postNF">Post not found</string>
-
-    <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
-
-    <!-- Comments -->
-
     <string name="addcomment">Add a reply</string>
-
-    <!-- Settings -->
     <string name="language">Language</string>
     <string name="theme">Theme</string>
-
-    <!-- Notifications -->
     <string name="notifications">Notifications</string>
     <string name="nonotif">No notifications</string>
     <string name="notifcomment"><b>%1$s</b>  commented on your post</string>
     <string name="notiffw"><b>%1$s</b>  started following you</string>
     <string name="notiftag"><b>%1$s</b> mentioned you</string>
-
-    <!--PostFS-->
     <string name="sendcommdesc">Button to send a comment</string>
     <string name="errComm">Please enter some text</string>
-
-
-
-
-    <!--Your Posts-->
     <string name="noYourPosts">No posts</string>
-
-
-    <!--Saved Posts-->
     <string name="savedposts">Saved posts</string>
     <string name="noposts">No saved posts</string>
-    <!--Errors-->
     <string name="emptyhomepage">Nothing to see here yet.\nBe the first to post something!</string>
     <string name="emptysearch">No results for this search</string>
     <string name="notifnotlogged">Log in to see your notifications</string>
@@ -135,7 +101,4 @@
     <string name="errPostDel">Failed to delete the post</string>
     <string name="errpostnf">Post not found. It may have been deleted.</string>
     <string name="posteditcomp">Post updated successfully</string>
-
-
-
 </resources>

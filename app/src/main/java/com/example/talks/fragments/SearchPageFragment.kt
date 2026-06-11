@@ -42,6 +42,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
         searchbtn.setOnClickListener {
             searchbtn.isEnabled=false
+            frame.removeAllViews()
 
             val string = searchbar.text.toString().trim()
             if (string==""){
@@ -119,10 +120,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     rv.adapter = adapter
                     searchbtn.isEnabled=true
                 }
-
-
-
-
             }
         }
 

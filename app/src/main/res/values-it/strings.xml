@@ -4,9 +4,6 @@
     <string name="followed">Seguiti</string>
     <string name="followers">Followers</string>
     <string name="error">Si è verificato un errore\nriprovare più tardi</string>
-
-    <!-- Login -->
-
     <string name="wrongcred">Email o Password errata</string>
     <string name="missingmail">Indirizzo email mancante</string>
     <string name="missingpassword">Password mancante</string>
@@ -18,18 +15,12 @@
     <string name="errLogin">Si è verificato un errore\nverifica le credenziali e riprova</string>
     <string name="insmail">Inserisci l\'indizitto email</string>
     <string name="inspw">Inserisci la password</string>
-
-    <!-- UserPage -->
-
     <string name="yourposts">I tuoi Post</string>
     <string name="saved">Salvati</string>
     <string name="logout">Logout</string>
     <string name="settings">Impostazioni</string>
     <string name="errLoading">Si è verificato un errore nel caricamento delle informazioni</string>
     <string name="errUserNF">Si è verificato un errore nel caricamento dell\'utente\nL\'account potrebbe non essere più disponibile</string>
-
-    <!-- Register -->
-
     <string name="createAccount">Crea un account</string>
     <string name="name">Nome</string>
     <string name="surname">Cognome</string>
@@ -60,9 +51,6 @@
     <string name="datesel">Seleziona data</string>
     <string name="errinvalidDate">Data selezionata non valida</string>
     <string name="errReg">Si è verificato un errore nella creazione del profilo\n Accedi e riprova</string>
-
-    <!-- Post Creation -->
-
     <string name="title">Titolo</string>
     <string name="postText">Post</string>
     <string name="source">Fonte (opzionale)</string>
@@ -72,37 +60,20 @@
     <string name="addImg">Inserisci immagine</string>
     <string name="changeImg">Modifica immagine</string>
     <string name="postNF">Impossibile trovare il post</string>
-
-    <!-- Edit Post-->
     <string name="editpost">Edit Post</string>
-
-    <!-- Comments -->
-
     <string name="addcomment">Aggiungi un commento</string>
-
-    <!-- Settings -->
     <string name="language">Lingua</string>
     <string name="theme">Tema</string>
-
-    <!-- Notifications -->
     <string name="notifications">Notifiche</string>
     <string name="nonotif">Nessuna notifica</string>
     <string name="notifcomment"><b>%1$s</b>  ha commentato un tuo post</string>
     <string name="notiffw"><b>%1$s</b>  ti ha iniziato a seguire</string>
     <string name="notiftag"><b>%1$s</b>  ha taggato</string>
-
-    <!--PostFS-->
     <string name="sendcommdesc">Bottone per inviare il commento</string>
     <string name="errComm">Inserire un testo</string>
-
-    <!--Saved Posts-->
     <string name="savedposts">Post salvati</string>
     <string name="noposts">Nessun post salvato</string>
-
-    <!--Your Posts-->
     <string name="noYourPosts">Nessun post</string>
-
-    <!--Errors-->
     <string name="emptyhomepage">Non c\'è ancora nulla qui.\nCrea tu il primo post</string>
     <string name="emptysearch">Nessun risultato trovato</string>
     <string name="notifnotlogged">Accedi per visualizzare le notifiche</string>
@@ -130,5 +101,4 @@
     <string name="errPostDel">si è verificato un errore nell\'eliminazione del post</string>
     <string name="errpostnf">Impossibile trovare il post. potrebbe esser stato eliminato</string>
     <string name="posteditcomp">Post modificato correttamente</string>
-
 </resources>

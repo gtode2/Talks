@@ -73,7 +73,7 @@ class RegisterFragment:Fragment(R.layout.register) {
                         Toast.makeText(requireContext(), getString(R.string.errReg), Toast.LENGTH_SHORT).show()
                         requireActivity().finish()
                     }else if (res==""){
-                        mail.error = getString(R.string.error)
+                        mail.error = getString(R.string.errDBReg)
                         register.isEnabled=true
                     }else{
                         (activity as EmptyActivity).openScreen("acccreation", false, res)
