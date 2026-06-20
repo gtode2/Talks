@@ -8,21 +8,20 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
 import androidx.core.graphics.scale
 import java.io.ByteArrayOutputStream
 
 class ImageManager {
     companion object{
         fun compressor(ctx:Context, uri:Uri):String{
-            var tl = false
+            var tl:Boolean
             var size=800
-            var bitmap: Bitmap = toBitmap(ctx, uri)
-            var b64Str=""
+            val bitmap: Bitmap = toBitmap(ctx, uri)
+            var b64Str: String
             do {
                 tl=false
-                var redbitmap = reduce(bitmap, size)
-                var c = compress(redbitmap)
+                val redbitmap = reduce(bitmap, size)
+                val c = compress(redbitmap)
                 if (c.size>730_000){
                     if (size<600){
                         return ""
@@ -51,15 +50,12 @@ class ImageManager {
             if (ratio>=1f) return bmp
             val width = bmp.width*ratio
             val height = bmp.height*ratio
-            if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.P){
-                return bmp.scale(width.toInt(), height.toInt(), true)
-            }else{
-                return Bitmap.createScaledBitmap(bmp, width.toInt(), height.toInt(), true)
-            }
+            return bmp.scale(width.toInt(), height.toInt(), true)
         }
         private fun compress(bmp:Bitmap):ByteArray{
+            //rivedere riduzione qual
             val stream = ByteArrayOutputStream()
-            val format = if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.JPEG
+            val format = if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP
             var qual = 85
             do {
                 stream.reset()

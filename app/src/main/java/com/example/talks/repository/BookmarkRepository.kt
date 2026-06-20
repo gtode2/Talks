@@ -20,7 +20,7 @@ object BookmarkRepository {
                 if (res==-1){
                     onResult(-1)
                 }else if (res==0 || res==1){
-                    savedPosts.put(postid, true)
+                    savedPosts[postid] = true
                     onResult(0)
                 }
             }

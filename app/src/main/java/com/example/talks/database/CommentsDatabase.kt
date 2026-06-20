@@ -26,7 +26,9 @@ class CommentsDatabase {
                         var comment = document.toObject(CommentData::class.java)
                         comm.add(comment)
                     }
-                    cont.resume(comm){}
+                    cont.resume(comm, {_,_,_->})
+                }.addOnFailureListener {
+                    //gestire oflisnr
                 }
         }
         suspend fun addComment(text:String, post:String, postOwner:String):Int = suspendCancellableCoroutine{cont->
@@ -42,14 +44,15 @@ class CommentsDatabase {
                 .collection("comments")
                 .add(comment)
                 .addOnSuccessListener{
-                    CoroutineScope(Dispatchers.IO).launch{
-                        NotificationsDatabase.create(1, postOwner,post)
+                    CoroutineScope(Dispatchers.Default).launch{
+                        val res = NotificationsDatabase.create(1, postOwner,post)
+                        if (!res){
+                            //errore
+                        }
                     }
-
-
-                    cont.resume(0){}
+                    cont.resume(0, {_,_,_->})
                 }.addOnFailureListener {
-                    cont.resume(-1){}
+                    cont.resume(-1, {_,_,_->})
                 }
         }
         suspend fun count(post:String):Int = suspendCancellableCoroutine { cont->
@@ -60,8 +63,8 @@ class CommentsDatabase {
                 .count()
                 .get(AggregateSource.SERVER)
                 .addOnSuccessListener { res->
-                    cont.resume(res.count.toInt()){}
-                }.addOnFailureListener { cont.resume(0){} }
+                    cont.resume(res.count.toInt(),{_,_,_->})
+                }.addOnFailureListener { cont.resume(0, {_,_,_->})}
         }
     }
 }

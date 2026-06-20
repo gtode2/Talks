@@ -23,7 +23,6 @@ class SettingsManager(private val ctx: Context){
     suspend fun setLang(value: String){
         ctx.dataStore.edit {
             it[KEY_LANG] = value
-            //applyLang()
         }
     }
 

@@ -76,23 +76,26 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
         lifecycleScope.launch{
             val p = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
-            if (p.isEmpty()){
+            if (p==null){
+
+            }else  if (p.isEmpty()){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.notifnotlogged)
-            }
-            post = p[0]
-            title.setText(post!!.title)
-            text.setText(post!!.post)
-            remch.setText("${post!!.post.length}/500")
-            srctext.setText(post!!.source)
-
-            val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
-            if (img==null){
-                imgblock.visibility=View.GONE
             }else{
-                imgprev.setImageBitmap(img)
-                imgblock.visibility= View.VISIBLE
-                imgtxt.text =getString(R.string.changeImg)
+                post = p[0]
+                title.setText(post!!.title)
+                text.setText(post!!.post)
+                remch.setText("${post!!.post.length}/500")
+                srctext.setText(post!!.source)
+
+                val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
+                if (img==null){
+                    imgblock.visibility=View.GONE
+                }else{
+                    imgprev.setImageBitmap(img)
+                    imgblock.visibility= View.VISIBLE
+                    imgtxt.text =getString(R.string.changeImg)
+                }
             }
         }
 
@@ -102,7 +105,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val length = text.text.toString().length
-                remch.text= length.toString()+"/500"
+                remch.text= "$length/500"
                 if (length==500){
                     remch.setTypeface(null, Typeface.BOLD)
                 }else{
@@ -113,7 +116,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         })
 
         contbtn.setOnClickListener{
-            var edit=PostData()
+            val edit=PostData()
             if (title.text.toString()!=post!!.title){
                 edit.title=title.text.toString()
             }

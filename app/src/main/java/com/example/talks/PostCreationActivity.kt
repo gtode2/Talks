@@ -20,6 +20,8 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
 
 
 class PostCreationActivity: AppCompatActivity() {
@@ -106,13 +108,13 @@ class PostCreationActivity: AppCompatActivity() {
                 val uri = Imguri
                 val imgBool = if (uri != null) true else false
 
-                val PCres = PostDatabase.createPost(
+                val PCres = withContext(Dispatchers.IO){PostDatabase.createPost(
                     UID!!,
                     post.text.toString(),
                     source.text.toString(),
                     title.text.toString(),
                     imgBool
-                )
+                )}
 
                 if (uri != null && PCres != "-1") {
                     val ICres = ImageCache.add(this@PostCreationActivity, PCres, uri, false)

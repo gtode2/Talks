@@ -24,6 +24,9 @@ class EmptyActivity:AppCompatActivity() {
             openScreen(screen?: throw java.lang.IllegalArgumentException(), imgchg, id)
         }
     }
+
+    //INSERIRE POSTCREATION
+
     fun openScreen(screen:String, imgchg:Boolean, id:String?=null){
         val map: Map<String, () -> Fragment> = mapOf(
             "fs" to {

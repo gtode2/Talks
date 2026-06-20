@@ -14,7 +14,7 @@ class UserDatabase {
                 .get()
                 .addOnSuccessListener { res ->
                     if (res.exists()) {
-                        //0 = utente trovato
+                        //utente trovato
 
                         val fws:Long = res.get("followers") as Long
                         val fwd = res.get("followed") as Map<String, Boolean>
@@ -25,18 +25,17 @@ class UserDatabase {
                             res.get("name").toString(),
                             res.get("surname").toString()
                         )
-                        cont.resume(user){}
+                        cont.resume(user, {_,_,_->})
                     } else {
-                        //-1 = utente non trovato
-                        val user = UserData(uid, -1, 0)
-                        cont.resume(user){}
+                        //utente non trovato
+                        val user = UserData(uid, err="n")//not found
+                        cont.resume(user, {_,_,_->})
                     }
-
                 }
                 .addOnFailureListener {
-                    //-2 = errore
-                    val user = UserData(uid, -2, 0)
-                    cont.resume(user){}
+                    //errore generico
+                    val user = UserData(uid, err="")
+                    cont.resume(user, {_,_,_->})
                 }
         }
         suspend fun follow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->
@@ -58,19 +57,14 @@ class UserDatabase {
                 //incremento
                 tr.update(profileUser, "followers", FieldValue.increment(1))
             }.addOnSuccessListener {
-                cont.resume(0){}
-            }.addOnFailureListener {e->
+                cont.resume(0, {_,_,_->}) //aggiunto
+            }.addOnFailureListener {
                 if (ex){
-                    //se esiste già
-                    cont.resume(1){}
+                    cont.resume(1){} //già seguito
                 }else{
-                    //errore
-                    cont.resume(-1){}
+                    cont.resume(-1){} //errore generico
                 }
             }
-            //se non seguito -> aggiungi -> return 0
-            //se seguito -> return 1
-            //errore -> return -1
         }
         suspend fun unfollow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->
             val db = FirebaseFirestore.getInstance()
@@ -88,20 +82,16 @@ class UserDatabase {
                 tr.update(userdb, "followed.$user", FieldValue.delete())
                 tr.update(profileUser, "followers", FieldValue.increment(-1))
             }.addOnSuccessListener{
-                cont.resume(0){}
+                cont.resume(0, {_,_,_->}) //follow rimosso
             }.addOnFailureListener {
                 if (!ex){
-                    cont.resume(1){}
+                    cont.resume(1,{_,_,_->}) //non seguito
                 }else{
-                    cont.resume(-1){}
+                    cont.resume(-1,{_,_,_->})//errore generico
                 }
             }
-            //verifica utente seguito
-            //se seguito -> elimina -> return 0
-            //se non seguito -> return 1
-            //errore -> return -1
         }
-        suspend fun searchUser(string:String): UserData? = suspendCancellableCoroutine{cont->
+        suspend fun searchUser(string:String): UserData = suspendCancellableCoroutine{cont->
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(string)
@@ -110,12 +100,12 @@ class UserDatabase {
                     if (res.exists()){
                         val fwd = res.get("followed") as Map<String, Boolean>
                         val followers = (res.getLong("followers") ?: -1).toInt()
-                        cont.resume(UserData(string, followers, fwd.size)){}
+                        cont.resume(UserData(string, followers, fwd.size),{_,_,_->})
                     }else{
-                        cont.resume(UserData("", -1, 0)){}
+                        cont.resume(UserData("", err="n"),{_,_,_->})
                     }
                 }
-                .addOnFailureListener { cont.resume(null){} }
+                .addOnFailureListener { cont.resume(UserData(string, err=""),{_,_,_->})}
         }
 
     }

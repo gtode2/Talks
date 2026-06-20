@@ -17,11 +17,8 @@ object LastPost {
     }
 
     fun getPost(): PrPostData{
-        if (lastPost!=null){
-            return PrPostData(lastPost!!, liked, saved)
-        }else{
-            return PrPostData("-1", false, false)
-        }
+        //gestire usage -> prima =-1, adesso = null
+        return PrPostData(lastPost!!, liked, saved)
     }
 
     fun incrCC(){

@@ -9,8 +9,7 @@ class ImageDatabase {
         suspend fun add(img:String, Id:String, profile:Boolean=false):Boolean = suspendCancellableCoroutine{ cont ->
             val uid = UserID.getUID()
             if (uid.isNullOrBlank()){
-                //gestione errore
-                cont.resume(false){}
+                cont.resume(false, {_,_,_->})
             }
 
             var coll:String = if(profile) "ProfilePictures" else "Images"
@@ -21,11 +20,10 @@ class ImageDatabase {
                 .document(Id)
                 .set(hashMapOf("img" to img))
                 .addOnSuccessListener {
-                    cont.resume(true){}
+                    cont.resume(true, {_,_,_->})
                 }
                 .addOnFailureListener {
-                    //gestire errore
-                    cont.resume(false){}
+                    cont.resume(false, {_,_,_->})
                 }
         }
         suspend fun get(id:String, profile:Boolean=false):String? = suspendCancellableCoroutine{cont->
@@ -37,21 +35,20 @@ class ImageDatabase {
                 .get()
                 .addOnSuccessListener { res ->
                     if (res.get("img")==null){
-                        cont.resume(null){}
+                        cont.resume(null, {_,_,_->})
                     }else{
-                        cont.resume(res.get("img") as String) {}
+                        cont.resume(res.get("img") as String, {_,_,_->})
                     }
                 }
                 .addOnFailureListener {
-                    //gestire errore
-                    cont.resume("") {}
+                    cont.resume("",{_,_,_->})
                 }
             }
         suspend fun remove(profile:Boolean=false, postid:String=""):Boolean = suspendCancellableCoroutine { cont->
             var id = ""
             if (profile){
                 if (UserID.getUID()==null){
-                    //errore
+                    //gestire errore
                 }else{
                     id = UserID.getUID()!!
                 }
@@ -65,10 +62,10 @@ class ImageDatabase {
                 .document(id)
                 .delete()
                 .addOnSuccessListener {
-                    cont.resume(true){}
+                    cont.resume(true, {_,_,_->})
                 }
                 .addOnFailureListener {
-                    cont.resume(false){}
+                    cont.resume(false, {_,_,_->})
                 }
         }
     }

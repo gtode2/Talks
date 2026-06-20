@@ -22,7 +22,9 @@ class LikeDatabase {
                     BookmarkRepository.loadSaved(savedPosts)
                     val followed = res.get("followed") as? Map<String, Boolean>?: emptyMap()
                     FollowRepository.loadFollowed(followed)
-                    cont.resume(likedPosts.toMutableMap()){}
+                    cont.resume(likedPosts.toMutableMap(), {_,_,_->})
+                }.addOnFailureListener {
+                    //gestire oflistnr
                 }
         }
         fun addLike(uid:String, postid:String, onResult: (Int) -> Unit){

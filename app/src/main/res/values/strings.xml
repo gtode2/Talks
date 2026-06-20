@@ -101,4 +101,5 @@
     <string name="errPostDel">Failed to delete the post</string>
     <string name="errpostnf">Post not found. It may have been deleted.</string>
     <string name="posteditcomp">Post updated successfully</string>
+    <string name="saved_sing">Saved</string>
 </resources>

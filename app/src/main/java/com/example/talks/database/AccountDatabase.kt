@@ -29,15 +29,15 @@ class AccountDatabase {
                                 //imposto TempID a id firebase
                                 UserID.setTemp(uid)
                             }
-                            cont.resume(userTag) {}
+                            cont.resume(userTag,{_,_,_->})
                         }
                         .addOnFailureListener {
                             //errpre ottenimento info utente
-                            cont.resume(null){}
+                            cont.resume(null, {_,_,_->})
                         }
                 }
                 .addOnFailureListener {
-                    cont.resume(null){}
+                    cont.resume(null, {_,_,_->})
                 }
         }
 
@@ -45,12 +45,12 @@ class AccountDatabase {
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(m,p)
                 .addOnSuccessListener {
                     val uid = FirebaseAuth.getInstance().currentUser!!.uid
-                    cont.resume(uid){} }
+                    cont.resume(uid, {_,_,_->})}
                 .addOnFailureListener {e->
                     if (e is FirebaseAuthUserCollisionException){
-                        cont.resume(""){}
+                        cont.resume("", {_,_,_->})
                     }else{
-                        cont.resume(null){}
+                        cont.resume(null, {_,_,_->})
                     }
 
 
@@ -71,8 +71,6 @@ class AccountDatabase {
                 "followed" to mutableMapOf<String, Boolean>()
             )
 
-
-
             db.runTransaction { tr->
                 val prevuser = tr.get(db.collection("Users").document(username))
                 if (prevuser.exists()){
@@ -81,15 +79,15 @@ class AccountDatabase {
 
                 }else{
                     tr.set(db.collection("Users").document(username), user)
-                    cont.resume(0){}
+                    cont.resume(0, {_,_,_->})
                 }
             }.addOnSuccessListener {
-
+                //gestire oslisnr
             }.addOnFailureListener {
                 if (ex){
-                    cont.resume(-2){}
+                    cont.resume(-2, {_,_,_->})
                 }else{
-                    cont.resume(-1){}
+                    cont.resume(-1, {_,_,_->})
                 }
             }
         }

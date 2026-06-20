@@ -37,22 +37,19 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         var logout = view.findViewById<ConstraintLayout>(R.id.logoutBtn)
 
 
-        val UID = UserID.getUID()
-        if (UID==null){
+        val uid = UserID.getUID()
+        if (uid==null){
             parentFragmentManager.beginTransaction()
                 .replace(R.id.emptyframe, LoginFragment())
                 .commit()
         }
-        tag.text = "@${UID}"
+        tag.text = "@$uid"
 
         lifecycleScope.launch {
-            val user = withContext(Dispatchers.IO){UserDatabase.getUser(UID!!)}
-            if (user.followers<0){
-                //gestione errore
-                Toast.makeText(requireContext(), getString(R.string.errLoading), Toast.LENGTH_SHORT).show()
-                name.text = ""
-                fw.text = "err"
-                fd.text = "err"
+            val user = withContext(Dispatchers.IO){UserDatabase.getUser(uid!!)}
+            if (user.err!=null){
+                logout()
+                //messaggio errore tramite toast
             }else{
                 name.text = "${user.name} ${user.surname}".trim()
                 fw.text = user.followers.toString()
@@ -72,10 +69,7 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         }
 
         logout.setOnClickListener{
-            FollowRepository.clear()
-            BookmarkRepository.clear()
-            LikeRepository.clear()
-            (requireActivity() as MainActivity).logout()
+            logout()
         }
 
         settings.setOnClickListener{
@@ -94,5 +88,11 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
                 .putExtra("screen","your")
             startActivity(intent)
         }
+    }
+    private fun logout(){
+        FollowRepository.clear()
+        BookmarkRepository.clear()
+        LikeRepository.clear()
+        (requireActivity() as MainActivity).logout()
     }
 }

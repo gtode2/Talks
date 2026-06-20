@@ -14,6 +14,8 @@ object LikeRepository {
         return likedPosts
     }
 
+
+    //rendo suspend?
     fun addLike(uid:String, postid:String, onResult:(Int)->Unit){
         if (!likedPosts.contains(postid)){
             LikeDatabase.addLike(uid, postid){res->

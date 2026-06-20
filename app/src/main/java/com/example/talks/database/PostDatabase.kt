@@ -14,11 +14,9 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class PostDatabase {
     companion object{
-        suspend fun getPosts(type:String="all", search: String="-1"):List<PostData>? = suspendCancellableCoroutine{cont->
+        suspend fun getPosts(type:String="all", search: String?=null):List<PostData>? = suspendCancellableCoroutine{cont->
             val pl = mutableListOf<PostData>()
-            //all
-            //your posts
-            //search
+
             when (type) {
                 "all" -> {
                     FirebaseFirestore.getInstance()
@@ -27,41 +25,43 @@ class PostDatabase {
                         .get()
                         .addOnSuccessListener { res ->
                             for (document in res) {
-                                var post = document.toObject(PostData::class.java)
+                                val post = document.toObject(PostData::class.java)
                                 if (post.uid!=UserID.getUID()){
                                     post.id = document.id
                                     pl.add(post)
                                 }
                             }
-                            cont.resume(pl){}
+                            cont.resume(pl,{_,_,_->})
+                        }.addOnFailureListener {
+                            cont.resume(null, {_,_,_->})
                         }
                 }
                 "user"->{
                     FirebaseFirestore.getInstance()
                         .collection("Posts")
                         //UID lo passo come parametro "search"
-                        .whereEqualTo("uid",search)
+                        .whereEqualTo("uid",search!!)
                         .orderBy("createdAt", Query.Direction.DESCENDING)
                         .get()
                         .addOnSuccessListener { res ->
                             for (document in res) {
-                                var post = document.toObject(PostData::class.java)
+                                val post = document.toObject(PostData::class.java)
                                 post.id = document.id
                                 pl.add(post)
                             }
-                            cont.resume(pl){}
+                            cont.resume(pl, {_,_,_->})
                         }.addOnFailureListener {
-                            cont.resume(null){}
+                            cont.resume(null, {_,_,_->})
                         }
                 }
                 "saved"->{
                     FirebaseFirestore.getInstance()
                         .collection("Users")
-                        .document(search)
+                        .document(search!!)
                         .get()
                         .addOnSuccessListener { res ->
                             val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
-                            var list = savedPosts.keys.toList()
+                            val list = savedPosts.keys.toList()
 
                             if (list.isNotEmpty()){
                                 FirebaseFirestore.getInstance()
@@ -70,18 +70,20 @@ class PostDatabase {
                                     .get()
                                     .addOnSuccessListener { result->
                                         for (document in result){
-                                            var post = document.toObject(PostData::class.java)
+                                            val post = document.toObject(PostData::class.java)
                                             post.id = document.id
                                             pl.add(post)
                                         }
-                                        cont.resume(pl){}
+                                        cont.resume(pl, {_,_,_->})
                                     }.addOnFailureListener {
-                                        cont.resume(null){}
+                                        cont.resume(null, {_,_,_->})
                                     }
                             }else{
                                 val el = emptyList<PostData>()
-                                cont.resume(el){}
+                                cont.resume(el, {_,_,_->})
                             }
+                        }.addOnFailureListener {
+                            cont.resume(null, {_,_,_->})
                         }
                 }
                 "search"->{
@@ -99,39 +101,39 @@ class PostDatabase {
                         .get()
                         .addOnSuccessListener {res->
                             for (document in res){
-                                var post=document.toObject(PostData::class.java)
+                                val post=document.toObject(PostData::class.java)
                                 if (post.uid!=UserID.getUID()){
                                     post.id = document.id
                                     pl.add(post)
                                 }
                             }
-                            cont.resume(pl){}
+                            cont.resume(pl, {_,_,_->})
                         }
                         .addOnFailureListener {
-                            cont.resume(null){}
+                            cont.resume(null, {_,_,_->})
                         }
                 }
             }
         }
-        suspend fun getPost(search: String):List<PostData> = suspendCancellableCoroutine { cont->
+        suspend fun getPost(search: String):List<PostData>? = suspendCancellableCoroutine { cont->
             val pl = mutableListOf<PostData>()
             FirebaseFirestore.getInstance()
                 .collection("Posts")
                 .document(search)
                 .get()
                 .addOnSuccessListener { document ->
-                    var post = document.toObject(PostData::class.java)
+                    val post = document.toObject(PostData::class.java)
                     if (post!=null) {
                         post.id = document.id
                         pl.add(post)
                     }
-                    cont.resume(pl){}
+                    cont.resume(pl, {_,_,_->})
                 }
                 .addOnFailureListener {
-                    //gestire errori
+                    cont.resume(null, {_,_,_->})
                 }
         }
-        private fun getSaved(uid:String, onResult: (List<String>) -> Unit){
+        /*private fun getSaved(uid:String, onResult: (List<String>) -> Unit){
             FirebaseFirestore.getInstance()
                 .collection("Users")
                 .document(uid)
@@ -140,7 +142,7 @@ class PostDatabase {
                     val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
                     onResult(savedPosts.keys.toList())
                 }
-        }
+        }*/
         fun savePost(uid:String, postid:String, onResult: (Int) -> Unit){
             val db = FirebaseFirestore.getInstance()
             val user = db.collection("Users").document(uid)
@@ -204,10 +206,10 @@ class PostDatabase {
             .add(postContent)
             .addOnSuccessListener { ref->
                 val id = ref.id
-                cont.resume(id){}
+                cont.resume(id, {_,_,_->})
             }
             .addOnFailureListener {
-                cont.resume("-1"){}
+                cont.resume("-1",{_,_,_->})
             }
         }
 
@@ -227,8 +229,6 @@ class PostDatabase {
                 if (prev!=uid){
                     throw Exception("Unauthorized")
                 }
-
-                //post esiste ed è dell'utente
                 post.delete()
             }.addOnSuccessListener {
                 onResult(0)
@@ -257,7 +257,7 @@ class PostDatabase {
                     throw Exception("not found")
                 }
 
-                val prev:String?= p.get("uid").toString()
+                val prev: String = p.get("uid").toString()
                 if (prev!=uid){
                     throw Exception("Unauthorized")
                 }
@@ -275,12 +275,12 @@ class PostDatabase {
                 }
 
             }.addOnSuccessListener {
-                cont.resume(0){}
+                cont.resume(0, {_,_,_->})
             }.addOnFailureListener {
                 if (ex){
-                    cont.resume(-1){}
+                    cont.resume(-1, {_,_,_->})
                 }else{
-                    cont.resume(1){}
+                    cont.resume(1, {_,_,_->})
                 }
             }
 
@@ -291,8 +291,8 @@ class PostDatabase {
                 .collection("Posts")
                 .document(id)
                 .update("image", img)
-                .addOnSuccessListener { cont.resume(true){} }
-                .addOnFailureListener { cont.resume(false){} }
+                .addOnSuccessListener { cont.resume(true, {_,_,_->})}
+                .addOnFailureListener { cont.resume(false,{_,_,_->})}
         }
     }
 }

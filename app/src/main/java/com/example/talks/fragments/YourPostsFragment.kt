@@ -56,9 +56,8 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                     requireContext()
                 )
                 val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter,
-                    openEdit = {postId->editPost(postId)}
+                    requireContext(), adapter,
+                    openEdit = {postId->editPost(postId)} //spostare in viewholder? 
                 )
                 adapter!!.pc=handler
                 rv.adapter=adapter

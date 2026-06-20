@@ -17,10 +17,9 @@ class NotificationsDatabase {
 
             val uid = UserID.getUID()
             if (uid.isNullOrBlank()){
-                //gestione errore
                 return false
             }else if (uid == p1){
-                //notifica a se stesso
+                //blocca notifica a se stesso
                 return true
             }
 
@@ -65,7 +64,6 @@ class NotificationsDatabase {
                         cont.resume(true) {}
                     }
                     .addOnFailureListener {
-                        //gestione errore
                         cont.resume(false) {}
                     }
             }
@@ -78,7 +76,7 @@ class NotificationsDatabase {
                 val uid = UserID.getUID()
                 if (uid.isNullOrBlank()){
                     nl.add(NotificationData(true, "nl"))
-                    cont.resume(nl){}
+                    cont.resume(nl, {_,_,_->})
                 }
 
                 //ottieni notifiche
@@ -93,13 +91,11 @@ class NotificationsDatabase {
                             var notif = n.toObject(NotificationData::class.java)
                             nl.add(notif)
                         }
-                        cont.resume(nl){}
-
+                        cont.resume(nl, {_,_,_->})
                     }
                     .addOnFailureListener {
-                        //gestione errore
                         nl.add(NotificationData(true))
-                        cont.resume(nl){}
+                        cont.resume(nl, {_,_,_->})
                     }
 
             }

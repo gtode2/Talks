@@ -11,6 +11,7 @@ import com.example.talks.database.PostDatabase
 
 object ImageCache {
     val mem = (Runtime.getRuntime().maxMemory()/8).toInt()
+    //verificare dimensione
     val cache = object: LruCache<String, Bitmap>(mem){
         override fun sizeOf(key: String, value: Bitmap): Int {
             return value.byteCount
@@ -61,6 +62,8 @@ object ImageCache {
         }
     }
 
+
+    //rimuovere remove da db -> rendo cacheonly e rimuovo tag
     suspend fun remove(isProfile:Boolean, postid:String="", cacheonly:Boolean=false):Boolean{
         if (cacheonly){
             //rimozione senza db->in caso di aggiunta fallita in db

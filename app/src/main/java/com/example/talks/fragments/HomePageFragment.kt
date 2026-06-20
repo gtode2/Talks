@@ -34,10 +34,12 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         lifecycleScope.launch{
-            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts()}
+            var postList = withContext(Dispatchers.IO){PostDatabase.getPosts()}
 
-            //null impossibile per PostDatabase(all)
-            if (postList!!.isNotEmpty()){
+            if (postList==null){
+                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                view.findViewById<TextView>(R.id.text).text = getString(R.string.error)
+            }else if (postList.isNotEmpty()){
                 val ctx = requireContext()
                 var liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
@@ -63,8 +65,8 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                     ctx,
                 )
                 val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter,
+                    requireContext(),
+                    adapter,
                     null,
                     openUser = {userid->openUser(userid)}
                 )
@@ -83,32 +85,32 @@ class HomePageFragment:Fragment(R.layout.homepage) {
     }
     override fun onResume() {
         super.onResume()
-        var lp = LastPost.getPost()
-        if (lp.id!="-1"){
-            //verifica elemento
-            if (lp.liked!= LikeRepository.isLiked(lp.id)){
+        val lp = LastPost.getPost()
+        val id = lp.id //fisso id -> per valore e non per riferimento
+        if (id!=null){
+            if (lp.liked!= LikeRepository.isLiked(id)){
                 //like prec != like attuale
                 //se precedente è liked -> attuale no
                 if (lp.liked){
-                    adapter?.decrLike(lp.id)
+                    adapter?.decrLike(id)
                 }else{
-                    adapter?.incrLike(lp.id)
+                    adapter?.incrLike(id)
                 }
             }
 
-            if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
+            if (lp.saved!= BookmarkRepository.isSaved(id)){
                 //save prec != save attuale
                 //se precedente è saved -> attuale no
                 if (lp.saved){
-                    adapter?.unsavePost(lp.id)
+                    adapter?.unsavePost(id)
                 }else{
-                    adapter?.savePost(lp.id)
+                    adapter?.savePost(id)
                 }
             }
 
             if (LastPost.getCC()!=0){
-                //eseguo update
-                adapter?.commCount(lp.id)
+                //modificare sistema conteggio -> rimuovo lettura -> sostituisco da singleton o repository?
+                adapter?.commCount(id)
             }
         }
     }

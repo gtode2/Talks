@@ -55,12 +55,12 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
             lifecycleScope.launch {
                 val res = withContext(Dispatchers.IO){UserDatabase.searchUser(string)}
-                if (res!=null){
-                    if (res.followers!=-1 && res.Uid!=UserID.getUID()){
-                        ud=res
-                    }
+                if (res.err=="") {
+                    Toast.makeText(requireContext(),getString(R.string.errUserSearch),Toast.LENGTH_SHORT).show()
                 }else{
-                    Toast.makeText(requireContext(), getString(R.string.errUserSearch), Toast.LENGTH_SHORT).show()
+                    if (res.err!="n" && res.Uid!=UserID.getUID()){
+                        ud=res //utente trovato solo se != da utente loggato
+                    }
                 }
 
                 val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("search", string)}
@@ -84,7 +84,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
 
 
                     val ctx = requireContext()
-                    var liked = LikeRepository.getLikes()
+                    val liked = LikeRepository.getLikes()
                     if (!liked.isEmpty()){
                         postList.forEach{ el->
                             if (liked.containsKey(el.id)){
@@ -111,9 +111,8 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                         adapter?.posts =postList.toMutableList()
                     }
                     val handler = PostCardHandler(
-                        contextProvider = {requireContext()},
-                        adapter=adapter,
-                        null,
+                        requireContext(),
+                        adapter,
                         openUser = {userid->openUser(userid)}
                     )
                     adapter!!.pch=handler
@@ -132,26 +131,27 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
     }
     override fun onResume() {
         super.onResume()
-        var lp = LastPost.getPost()
-        if (lp.id!="-1"){
-            if (lp.liked!= LikeRepository.isLiked(lp.id)){
+        val lp = LastPost.getPost()
+        val id = lp.id
+        if (id!=null){
+            if (lp.liked!= LikeRepository.isLiked(id)){
                 if (lp.liked){
-                    adapter?.decrLike(lp.id)
+                    adapter?.decrLike(id)
                 }else{
-                    adapter?.incrLike(lp.id)
+                    adapter?.incrLike(id)
                 }
             }
 
-            if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
+            if (lp.saved!= BookmarkRepository.isSaved(id)){
                 if (lp.saved){
-                    adapter?.unsavePost(lp.id)
+                    adapter?.unsavePost(id)
                 }else{
-                    adapter?.savePost(lp.id)
+                    adapter?.savePost(id)
                 }
             }
 
             if (LastPost.getCC()!=0){
-                adapter?.commCount(lp.id)
+                adapter?.commCount(id)
             }
         }
     }

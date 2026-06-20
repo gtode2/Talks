@@ -74,7 +74,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
         lifecycleScope.launch{
             val postList = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
 
-            if (postList.isEmpty()){
+            if (postList==null || postList.isEmpty()){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.errLoading)
                 val btn = view.findViewById<Button>(R.id.btn)
@@ -109,8 +109,8 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                 )
 
                 val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter,
+                    requireContext(),
+                    adapter,
                     null,
                     openUser = {userid->openUser(userid)}
                 )

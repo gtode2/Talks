@@ -1,5 +1,7 @@
 package com.example.talks.repository
 
+import android.content.Context
+import android.widget.Toast
 import com.example.talks.database.NotificationsDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.singleton.UserID
@@ -14,7 +16,7 @@ object FollowRepository {
     fun isFollowed(id:String): Boolean{
         return followedAccounts.containsKey(id)
     }
-    suspend fun addFollow(userid:String):Int {
+    suspend fun addFollow(userid:String, context: Context):Int {
         //-1 -> errore
         //-2 -> uid non trovato -> manda a homepage
         //0 / 1 -> aggiunto (incrementa / non incrementare)
@@ -27,10 +29,13 @@ object FollowRepository {
             val res = UserDatabase.follow(UserID.getUID()!!, userid)
             if (res!=-1){
 
-                followedAccounts.put(userid, true)
+                followedAccounts[userid] = true
                 when(res){
                     0-> {
-                        NotificationsDatabase.create(2, userid)
+                        val res = NotificationsDatabase.create(2, userid)
+                        if (!res){
+                            Toast.makeText(context, "Errore", Toast.LENGTH_SHORT).show() //modificare messaggio errore -> "errore in aggiunta notifica"
+                        }
                         return 0
                     }
                     1-> return 1

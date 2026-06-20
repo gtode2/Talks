@@ -44,7 +44,7 @@ class UserPageAdapter(
             }
 
             is UserVH->{
-                holder.bind(user)
+                holder.bind(user, context)
             }
         }
     }
@@ -54,7 +54,7 @@ class UserPageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
-            VIEW_TYPE_USER-> UserVH(view.inflate(R.layout.userblock, parent, false), context)
+            VIEW_TYPE_USER-> UserVH(view.inflate(R.layout.userblock, parent, false))
             VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent, false), context, pch, posts)
             else-> throw IllegalArgumentException("tipo non valido")
         }
@@ -69,7 +69,7 @@ class UserPageAdapter(
         }
     }
 
-    class UserVH(view: View, context:Context):RecyclerView.ViewHolder(view){
+    class UserVH(view: View):RecyclerView.ViewHolder(view){
         val userns = view.findViewById<TextView>(R.id.userns)
         val fw = view.findViewById<TextView>(R.id.followers)
         val fwd = view.findViewById<TextView>(R.id.followed)
@@ -82,7 +82,7 @@ class UserPageAdapter(
         val scope = CoroutineScope(Dispatchers.Main.immediate)
         private var job: Job?=null
 
-        fun bind(user:UserData){
+        fun bind(user:UserData, context:Context){
             job?.cancel()
 
             if (UserID.getUID().isNullOrBlank() || UserID.getUID() == user.Uid){
@@ -112,7 +112,7 @@ class UserPageAdapter(
 
             followBtn.setOnClickListener {
                 scope.launch {
-                    val res = withContext(Dispatchers.IO){ FollowRepository.addFollow(user.Uid) }
+                    val res = withContext(Dispatchers.IO){ FollowRepository.addFollow(user.Uid, context) }
                     if (res>=0){
                         //modifico stato
                         if (res<2){

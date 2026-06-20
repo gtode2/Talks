@@ -75,8 +75,8 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                     requireContext()
                 )
                 val handler = PostCardHandler(
-                    contextProvider = {requireContext()},
-                    adapter=adapter
+                    requireContext(),
+                    adapter
                 )
                 adapter!!.pc=handler
                 rv.adapter=adapter
@@ -86,26 +86,27 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
     }
     override fun onResume() {
         super.onResume()
-        var lp = LastPost.getPost()
-        if (lp.id!="-1"){
-            if (lp.liked!= LikeRepository.isLiked(lp.id)){
+        val lp = LastPost.getPost()
+        val id = lp.id
+        if (id!=null){
+            if (lp.liked!= LikeRepository.isLiked(id)){
                 if (lp.liked){
-                    adapter?.decrLike(lp.id)
+                    adapter?.decrLike(id)
                 }else{
-                    adapter?.incrLike(lp.id)
+                    adapter?.incrLike(id)
                 }
             }
 
-            if (lp.saved!= BookmarkRepository.isSaved(lp.id)){
+            if (lp.saved!= BookmarkRepository.isSaved(id)){
                 if (lp.saved){
-                    adapter?.unsavePost(lp.id)
+                    adapter?.unsavePost(id)
                 }else{
-                    adapter?.savePost(lp.id)
+                    adapter?.savePost(id)
                 }
             }
 
             if (LastPost.getCC()!=0){
-                adapter?.commCount(lp.id)
+                adapter?.commCount(id)
             }
         }
     }

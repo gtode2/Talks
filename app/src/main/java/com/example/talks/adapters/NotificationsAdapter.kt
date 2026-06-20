@@ -51,18 +51,13 @@ class NotificationsAdapter(
         fun bind(el:NotificationData){
             job?.cancel()
             when(el.type){
-                0->{
-                    typeImg.setImageResource(R.drawable.tag)
-                    typeImg.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.red))
-                    notiftxt.text=context.getString(R.string.notiftag, el.author)
-                }
                 1->{
                     typeImg.setImageResource(R.drawable.comments)
                     typeImg.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.blue))
                     notiftxt.text=context.getString(R.string.notifcomment, el.author)
                 }
                 2->{
-                    typeImg.setImageResource(R.drawable.person_add)
+                    typeImg.setImageResource(R.drawable.person_add) //person_add sgranato
                     typeImg.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(context, R.color.green))
                     notiftxt.text=context.getString(R.string.notiffw, el.author)
                 }
@@ -83,9 +78,6 @@ class NotificationsAdapter(
 
             notifblock.setOnClickListener {
                 when(el.type){
-                    0->{
-                        fragment.openPost(el.src)
-                    }
                     1->{
                         fragment.openPost(el.src)
                     }

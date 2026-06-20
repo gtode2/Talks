@@ -101,4 +101,5 @@
     <string name="errPostDel">si è verificato un errore nell\'eliminazione del post</string>
     <string name="errpostnf">Impossibile trovare il post. potrebbe esser stato eliminato</string>
     <string name="posteditcomp">Post modificato correttamente</string>
+    <string name="saved_sing">Salvato</string>
 </resources>

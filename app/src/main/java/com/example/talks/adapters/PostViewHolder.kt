@@ -67,9 +67,6 @@ open class PostViewHolder(
 
 
 
-
-
-
         if (!isyour){
             val usertag = view.findViewById<TextView>(R.id.userTag)
             usertag.text = "@${el.uid}"
@@ -171,9 +168,9 @@ open class PostViewHolder(
                     ContextCompat.getColor(context, if (el.isSaved) R.color.lime else R.color.desel)
                 )
                 if (el.isSaved){
-                    saveTxt.text = "Unsave"
+                    saveTxt.text = context.getString(R.string.saved_sing)
                 }else{
-                    saveTxt.text = "Save"
+                    saveTxt.text = context.getString(R.string.save)
                 }
 
                 saveBtn.setOnClickListener { pch?.savePost(el.id) }
