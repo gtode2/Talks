@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.R
 import com.example.talks.data.PostData
@@ -24,14 +25,24 @@ import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.lifecycle.ViewModelProvider
+import com.example.talks.database.ImageDatabase
 
+
+class EPViewModel: ViewModel() {
+    var imguri:Uri? = null
+    var imgChanged:Boolean = false
+}
 class EditPostFragment:Fragment(R.layout.postcreation) {
-    var postId:String?=null
-    var post:PostData?=null
-    var uid:String?=null
+    private var postId:String?=null
+    private var post:PostData?=null
+    private var uid:String?=null
+    private lateinit var viewModel: EPViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         postId = arguments?.getString("id")
+        viewModel = ViewModelProvider(this).get(EPViewModel::class.java)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,16 +60,14 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         val contbtn = view.findViewById<LinearLayout>(R.id.postBtn)
         val buttontxt = view.findViewById<TextView>(R.id.postbtntxt)
         val frame = view.findViewById<FrameLayout>(R.id.frame)
-        var imgChanged=false
 
-        var Imguri:Uri?=null
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 imgprev.setImageURI(it)
                 imgblock.visibility= View.VISIBLE
                 imgtxt.text = getString(R.string.changeImg)
-                imgChanged=true
-                Imguri=it
+                viewModel.imgChanged=true
+                viewModel.imguri=it
             }
         }
 
@@ -68,6 +77,7 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
         uid = UserID.getUID()
 
+        //sposto in oncreate?
         if (postId.isNullOrBlank()){
             Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
@@ -88,13 +98,25 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
                 remch.setText("${post!!.post.length}/500")
                 srctext.setText(post!!.source)
 
-                val img = withContext(Dispatchers.IO){ImageCache.get("image${postId}")}
-                if (img==null){
-                    imgblock.visibility=View.GONE
+                if (viewModel.imgChanged){
+                    if (viewModel.imguri==null){
+                        imgblock.visibility=View.GONE
+                        imgtxt.text=getString(R.string.addImg)
+                    }else{
+                        imgprev.setImageURI(viewModel.imguri)
+                        imgblock.visibility=View.VISIBLE
+                        imgtxt.text=getString(R.string.changeImg)
+                    }
                 }else{
-                    imgprev.setImageBitmap(img)
-                    imgblock.visibility= View.VISIBLE
-                    imgtxt.text =getString(R.string.changeImg)
+                    val img = ImageCache.get("image${postId}")
+                    if (img==null){
+                        imgblock.visibility=View.GONE
+                        imgtxt.text=getString(R.string.addImg)
+                    }else{
+                        imgprev.setImageBitmap(img)
+                        imgblock.visibility=View.VISIBLE
+                        imgtxt.text=getString(R.string.changeImg)
+                    }
                 }
             }
         }
@@ -153,40 +175,52 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
 
                 if (cont){
                     if(post!!.image){
-                        if(imgChanged) {
-                            if (Imguri == null) {
-                                val res = withContext(Dispatchers.IO) {
-                                    ImageCache.remove(false,postId!!)
-                                }
+                        //post contiene immagine
+                        if(viewModel.imgChanged) {
+                            //immagine modificata
+                            if (viewModel.imguri == null) {
+                                //immagine vuota -> rimossa
+                                val res = ImageDatabase.remove(false, postId!!)
                                 if (!res) {
+                                    //errore in rimozione
                                     Toast.makeText(requireContext(),getString(R.string.errImgRem),Toast.LENGTH_SHORT).show()
                                     cont = false
                                 } else {
+                                    //rimossa correttamente -> rimuovo anche da cache
+                                    ImageCache.remove(false,postId!!)
                                     cont = true
                                 }
                             } else {
-                                val res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
+                                //immagine non vuota -> aggiungo
+                                val res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
                                 if(!res){
+                                    //errore in aggiunta
                                     Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
                                     cont = false
                                 }else{
+                                    //aggiunta correttamente
                                     cont=true
                                 }
                             }
                         }
                     }else{
                         //post non ha immagine
-                        if (Imguri!=null){
-                            var res = withContext(Dispatchers.IO){ImageCache.add(requireContext(), postId!!, Imguri!!, false)}
+                        if (viewModel.imguri!=null){
+                            var res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
                             if (!res){
                                 Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                                 cont = false
                             }else{
-                                res = withContext(Dispatchers.IO) { PostDatabase.editImgPost(postId!!, true) }
+                                res = PostDatabase.editImgPost(postId!!, true)
                                 if (!res){
                                     //errore aggiunta a db
                                     //rimuovo da cache
-                                    withContext(Dispatchers.IO) { ImageCache.remove(false, postId!!, true) }
+
+                                    ImageCache.remove(false, postId!!)
+                                    val imgres = ImageDatabase.remove(false, postId!!)
+                                    if (!imgres){
+                                        Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
+                                    }
                                     Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
                                     cont = false
 
@@ -207,7 +241,6 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         }
 
 
-
         backbtn.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
@@ -215,8 +248,8 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
             pickImageLauncher.launch("image/*")
         }
         imgrembtn.setOnClickListener {
-            Imguri=null
-            imgChanged=true
+            viewModel.imguri=null
+            viewModel.imgChanged=true
             imgblock.visibility= View.GONE
             imgtxt.text = getString(R.string.addImg)
         }

@@ -101,11 +101,12 @@ class MainActivity : AppCompatActivity() {
                 "user"->{
                     accountpage()
                 }
+                /*
                 "sett"->{
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
                         .commit()
-                }
+                }*/
                 else->{
                     when(LastPage.getPage()){
                         "home"->supportFragmentManager.beginTransaction()
@@ -151,7 +152,8 @@ class MainActivity : AppCompatActivity() {
         }
         cpstbtn.setOnClickListener{
             if (UserID.getUID()!=null){
-                val intent = Intent(this, PostCreationActivity::class.java)
+                val intent = Intent(this, EmptyActivity::class.java)
+                    .putExtra("screen", "pc")
                 startActivity(intent)
             }
         }

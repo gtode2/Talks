@@ -63,10 +63,9 @@ class LoginFragment: Fragment(R.layout.login) {
             }
         }
         settingsBtn.setOnClickListener{
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.frame, SettingsFragment())
-                .addToBackStack(null)
-                .commit()
+            val intent = Intent(requireContext(), EmptyActivity::class.java)
+                .putExtra("screen", "sett")
+            startActivity(intent)
         }
 
         register.setOnClickListener {

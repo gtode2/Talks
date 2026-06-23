@@ -66,8 +66,6 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
 
     }
 
-
-
     fun editPost(postId:String){
         parentFragmentManager.beginTransaction()
             .replace(R.id.emptyframe, EditPostFragment().apply {
@@ -78,7 +76,4 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
             .addToBackStack(null)
             .commit()
     }
-
-
-
 }

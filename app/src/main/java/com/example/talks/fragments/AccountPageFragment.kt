@@ -73,9 +73,9 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         }
 
         settings.setOnClickListener{
-           val ft = requireActivity().supportFragmentManager.beginTransaction()
-           ft.replace(R.id.frame, SettingsFragment())
-               .commit()
+            val intent = Intent(requireContext(), EmptyActivity::class.java)
+                .putExtra("screen", "sett")
+            startActivity(intent)
         }
 
         saved.setOnClickListener{

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.MainActivity
 import com.example.talks.R
+import com.example.talks.database.ImageDatabase
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
@@ -71,8 +72,9 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
             }else{
                 if (!wasEmpty){
                     lifecycleScope.launch {
-                        val res = withContext(Dispatchers.IO){ImageCache.remove(true)}
+                        val res = ImageDatabase.remove(true)
                         if (res){
+                            ImageCache.remove(true)
                             val intent = Intent(requireContext(), MainActivity::class.java)
                             startActivity(intent)
                             requireActivity().finish()

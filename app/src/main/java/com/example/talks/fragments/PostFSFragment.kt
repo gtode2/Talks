@@ -111,8 +111,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
                 val handler = PostCardHandler(
                     requireContext(),
                     adapter,
-                    null,
-                    openUser = {userid->openUser(userid)}
+                    null
                 )
 
                 adapter!!.pch = handler
@@ -139,12 +138,4 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
         }
 
     }
-
-    fun openUser(uid:String) {
-        val intent = Intent(requireContext(), EmptyActivity::class.java)
-            .putExtra("screen","user")
-            .putExtra("id",uid)
-        startActivity(intent)    }
-
-
 }

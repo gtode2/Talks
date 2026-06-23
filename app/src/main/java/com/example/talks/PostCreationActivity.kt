@@ -90,6 +90,12 @@ class PostCreationActivity: AppCompatActivity() {
         }
 
 
+
+
+
+
+
+
         createPost.setOnClickListener{
             createPost.isEnabled=false
             val UID = UserID.getUID()

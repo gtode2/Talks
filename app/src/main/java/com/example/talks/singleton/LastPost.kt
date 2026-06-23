@@ -16,9 +16,10 @@ object LastPost {
         liked= LikeRepository.isLiked(id)
     }
 
-    fun getPost(): PrPostData{
+    fun getPost(): PrPostData?{
         //gestire usage -> prima =-1, adesso = null
-        return PrPostData(lastPost!!, liked, saved)
+        if (lastPost==null) return null
+        else return PrPostData(lastPost, liked, saved)
     }
 
     fun incrCC(){

@@ -52,7 +52,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.noposts)
             }else{
-                var liked = LikeRepository.getLikes()
+                val liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
                     postList.forEach{ el->
                         if (liked.containsKey(el.id)){
@@ -87,26 +87,28 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
     override fun onResume() {
         super.onResume()
         val lp = LastPost.getPost()
-        val id = lp.id
-        if (id!=null){
-            if (lp.liked!= LikeRepository.isLiked(id)){
-                if (lp.liked){
-                    adapter?.decrLike(id)
-                }else{
-                    adapter?.incrLike(id)
+        if (lp!=null){
+            val id = lp.id
+            if (id!=null){
+                if (lp.liked!= LikeRepository.isLiked(id)){
+                    if (lp.liked){
+                        adapter?.decrLike(id)
+                    }else{
+                        adapter?.incrLike(id)
+                    }
                 }
-            }
 
-            if (lp.saved!= BookmarkRepository.isSaved(id)){
-                if (lp.saved){
-                    adapter?.unsavePost(id)
-                }else{
-                    adapter?.savePost(id)
+                if (lp.saved!= BookmarkRepository.isSaved(id)){
+                    if (lp.saved){
+                        adapter?.unsavePost(id)
+                    }else{
+                        adapter?.savePost(id)
+                    }
                 }
-            }
 
-            if (LastPost.getCC()!=0){
-                adapter?.commCount(id)
+                if (LastPost.getCC()!=0){
+                    adapter?.commCount(id)
+                }
             }
         }
     }

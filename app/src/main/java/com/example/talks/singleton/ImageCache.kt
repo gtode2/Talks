@@ -49,6 +49,8 @@ object ImageCache {
         }
     }
 
+    //verificare stringa passata ad add
+
     suspend fun add(ctx: Context, id:String, img: Uri, isProfile: Boolean):Boolean{
         val imgStr = ImageManager.compressor(ctx, img)
         var res = ImageDatabase.add(imgStr, id, isProfile)
@@ -63,31 +65,8 @@ object ImageCache {
     }
 
 
-    //rimuovere remove da db -> rendo cacheonly e rimuovo tag
-    suspend fun remove(isProfile:Boolean, postid:String="", cacheonly:Boolean=false):Boolean{
-        if (cacheonly){
-            //rimozione senza db->in caso di aggiunta fallita in db
-            val imgid = if (isProfile) "profile$postid" else "image$postid"
-            cache.remove(imgid)
-            return true
-        }else if (isProfile){
-            if (UserID.getUID()==null){
-                return false
-            }else{
-                cache.remove("profile${UserID.getUID()}")
-                val res = ImageDatabase.remove(true)
-                return res
-            }
-        }else{
-            cache.remove("image$postid")
-            val res = ImageDatabase.remove(false, postid)
-            if (res){
-                val res = PostDatabase.editImgPost(postid, false)
-                return res
-            }else{
-                return false
-            }
-        }
-
+    fun remove(isProfile:Boolean, postid:String=""){
+        val imgid = if (isProfile) "profile$postid" else "image$postid"
+        cache.remove(imgid)
     }
 }

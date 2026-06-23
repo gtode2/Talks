@@ -67,8 +67,7 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 val handler = PostCardHandler(
                     requireContext(),
                     adapter,
-                    null,
-                    openUser = {userid->openUser(userid)}
+                    null
                 )
                 adapter!!.pc=handler
 
@@ -86,40 +85,34 @@ class HomePageFragment:Fragment(R.layout.homepage) {
     override fun onResume() {
         super.onResume()
         val lp = LastPost.getPost()
-        val id = lp.id //fisso id -> per valore e non per riferimento
-        if (id!=null){
-            if (lp.liked!= LikeRepository.isLiked(id)){
-                //like prec != like attuale
-                //se precedente è liked -> attuale no
-                if (lp.liked){
-                    adapter?.decrLike(id)
-                }else{
-                    adapter?.incrLike(id)
+        if (lp!=null){
+            val id = lp.id //fisso id -> per valore e non per riferimento
+            if (id!=null){
+                if (lp.liked!= LikeRepository.isLiked(id)){
+                    //like prec != like attuale
+                    //se precedente è liked -> attuale no
+                    if (lp.liked){
+                        adapter?.decrLike(id)
+                    }else{
+                        adapter?.incrLike(id)
+                    }
                 }
-            }
 
-            if (lp.saved!= BookmarkRepository.isSaved(id)){
-                //save prec != save attuale
-                //se precedente è saved -> attuale no
-                if (lp.saved){
-                    adapter?.unsavePost(id)
-                }else{
-                    adapter?.savePost(id)
+                if (lp.saved!= BookmarkRepository.isSaved(id)){
+                    //save prec != save attuale
+                    //se precedente è saved -> attuale no
+                    if (lp.saved){
+                        adapter?.unsavePost(id)
+                    }else{
+                        adapter?.savePost(id)
+                    }
                 }
-            }
 
-            if (LastPost.getCC()!=0){
-                //modificare sistema conteggio -> rimuovo lettura -> sostituisco da singleton o repository?
-                adapter?.commCount(id)
+                if (LastPost.getCC()!=0){
+                    //modificare sistema conteggio -> rimuovo lettura -> sostituisco da singleton o repository?
+                    adapter?.commCount(id)
+                }
             }
         }
-    }
-
-
-    fun openUser(userId:String){
-        val intent = Intent(requireContext(), EmptyActivity::class.java)
-            .putExtra("screen","user")
-            .putExtra("id",userId)
-        startActivity(intent)
     }
 }

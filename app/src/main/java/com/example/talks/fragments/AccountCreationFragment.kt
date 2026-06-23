@@ -56,9 +56,9 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
 
         cont.setOnClickListener {
 
-            val name = nameET.text.toString()
-            val surname = surnameET.text.toString()
-            val username = usernameET.text.toString()
+            val name = nameET.text.toString().trim()
+            val surname = surnameET.text.toString().trim()
+            val username = usernameET.text.toString().trim()
             val dob = dobET.text.toString()
 
             var valid=true
@@ -89,8 +89,8 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 usernameET.error=getString(R.string.errMissingUsername)
                 valid=false
             }else{
-                if (!Regex("^[a-zA-Z0-9_]+\$").matches(username)){
-                    usernameET.error=getString(R.string.errInvalidUsername)
+                if (!Regex("^[a-zA-Z0-9_]+\$").matches(username)){ //permettere . e _
+                    usernameET.error=getString(R.string.errInvalidUsername) //messaggio errore errato -> username blocca anche caratteri speciali
                     valid=false
                 }
             }

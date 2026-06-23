@@ -88,7 +88,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
                 requireContext(),
                 adapter,
                 null,
-                null,
             )
             adapter!!.pch=handler
 
@@ -104,26 +103,28 @@ class UserPageFragment:Fragment(R.layout.userpage) {
     override fun onResume() {
         super.onResume()
         val lp = LastPost.getPost()
-        val id = lp.id
-        if (id != null) {
-            if (lp.liked != LikeRepository.isLiked(id)) {
-                if (lp.liked) {
-                    adapter?.decrLike(id)
-                } else {
-                    adapter?.incrLike(id)
+        if (lp!=null){
+            val id = lp.id
+            if (id!=null){
+                if (lp.liked!= LikeRepository.isLiked(id)){
+                    if (lp.liked){
+                        adapter?.decrLike(id)
+                    }else{
+                        adapter?.incrLike(id)
+                    }
                 }
-            }
 
-            if (lp.saved != BookmarkRepository.isSaved(id)) {
-                if (lp.saved) {
-                    adapter?.unsavePost(id)
-                } else {
-                    adapter?.savePost(id)
+                if (lp.saved!= BookmarkRepository.isSaved(id)){
+                    if (lp.saved){
+                        adapter?.unsavePost(id)
+                    }else{
+                        adapter?.savePost(id)
+                    }
                 }
-            }
 
-            if (LastPost.getCC() != 0) {
-                adapter?.commCount(id)
+                if (LastPost.getCC()!=0){
+                    adapter?.commCount(id)
+                }
             }
         }
     }

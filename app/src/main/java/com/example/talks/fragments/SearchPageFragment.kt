@@ -112,9 +112,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                     }
                     val handler = PostCardHandler(
                         requireContext(),
-                        adapter,
-                        openUser = {userid->openUser(userid)}
-                    )
+                        adapter)
                     adapter!!.pch=handler
                     rv.adapter = adapter
                     searchbtn.isEnabled=true
@@ -123,35 +121,32 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
         }
 
     }
-    fun openUser(userId:String){
-        val intent = Intent(requireContext(), EmptyActivity::class.java)
-            .putExtra("screen","user")
-            .putExtra("id",userId)
-        startActivity(intent)
-    }
+
     override fun onResume() {
         super.onResume()
         val lp = LastPost.getPost()
-        val id = lp.id
-        if (id!=null){
-            if (lp.liked!= LikeRepository.isLiked(id)){
-                if (lp.liked){
-                    adapter?.decrLike(id)
-                }else{
-                    adapter?.incrLike(id)
+        if (lp!=null){
+            val id = lp.id
+            if (id!=null){
+                if (lp.liked!= LikeRepository.isLiked(id)){
+                    if (lp.liked){
+                        adapter?.decrLike(id)
+                    }else{
+                        adapter?.incrLike(id)
+                    }
                 }
-            }
 
-            if (lp.saved!= BookmarkRepository.isSaved(id)){
-                if (lp.saved){
-                    adapter?.unsavePost(id)
-                }else{
-                    adapter?.savePost(id)
+                if (lp.saved!= BookmarkRepository.isSaved(id)){
+                    if (lp.saved){
+                        adapter?.unsavePost(id)
+                    }else{
+                        adapter?.savePost(id)
+                    }
                 }
-            }
 
-            if (LastPost.getCC()!=0){
-                adapter?.commCount(id)
+                if (LastPost.getCC()!=0){
+                    adapter?.commCount(id)
+                }
             }
         }
     }

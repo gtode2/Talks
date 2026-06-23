@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import com.example.talks.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.data.NotificationData
-import com.example.talks.fragments.NotificationPageFragment
 import com.example.talks.singleton.ImageCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +22,8 @@ import kotlinx.coroutines.withContext
 class NotificationsAdapter(
     private val notif: MutableList<NotificationData>,
     private val context: Context,
-    private val fragment: NotificationPageFragment
+    private val openPost:(String)->Unit,
+    private val openUser:(String)->Unit
 ): RecyclerView.Adapter<NotificationsAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view= LayoutInflater.from(parent.context)
@@ -74,15 +74,13 @@ class NotificationsAdapter(
 
             }
 
-
-
             notifblock.setOnClickListener {
                 when(el.type){
                     1->{
-                        fragment.openPost(el.src)
+                        openPost(el.src)
                     }
                     2->{
-                        fragment.openUser(el.src)
+                        openUser(el.src)
                     }
                 }
             }

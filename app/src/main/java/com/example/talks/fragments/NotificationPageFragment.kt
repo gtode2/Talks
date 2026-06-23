@@ -43,7 +43,7 @@ class NotificationPageFragment:Fragment(R.layout.notificationpage) {
                         view.findViewById<TextView>(R.id.text).text=getString(R.string.errLoading)
                     }
                 } else{
-                    adapter=NotificationsAdapter(list.asReversed().toMutableList(), requireContext(), this@NotificationPageFragment)
+                    adapter=NotificationsAdapter(list.asReversed().toMutableList(), requireContext(), ::openPost, ::openUser)
                     rv.adapter=adapter
                 }
             }

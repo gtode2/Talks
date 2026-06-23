@@ -17,20 +17,22 @@ class PostCardHandler(
     private val context:Context,
     private val adapter:PostHandlerInterface?=null,
     private val openEdit:((String)->Unit)?=null,
-    private val openUser:((String)->Unit)?=null
 ):PostCard{
 
     override fun openPost(postId: String) {
         val intent = Intent(context, EmptyActivity::class.java)
         LastPost.addPost(postId)
-        intent.putExtra("id", postId)
-        intent.putExtra("screen", "fs")
+            intent.putExtra("id", postId)
+            intent.putExtra("screen", "fs")
         context.startActivity(intent)
 
     }
-
     override fun openUser(userId: String) {
-        openUser?.invoke(userId)
+        //openUser?.invoke(userId)
+        val intent = Intent(context, EmptyActivity::class.java)
+            .putExtra("screen","user")
+            .putExtra("id",userId)
+        context.startActivity(intent)
     }
 
     override fun addLike(postId: String) {

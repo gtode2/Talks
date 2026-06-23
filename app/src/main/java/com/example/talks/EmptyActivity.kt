@@ -4,11 +4,13 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.talks.fragments.AccountCreationFragment
+import com.example.talks.fragments.PostCreationFragment
 import com.example.talks.fragments.PostFSFragment
 import com.example.talks.fragments.ProfilePictureSelectFragment
 import com.example.talks.fragments.RegisterFragment
 import com.example.talks.fragments.YourPostsFragment
 import com.example.talks.fragments.SavedPostsFragment
+import com.example.talks.fragments.SettingsFragment
 import com.example.talks.fragments.UserPageFragment
 
 class EmptyActivity:AppCompatActivity() {
@@ -58,7 +60,9 @@ class EmptyActivity:AppCompatActivity() {
                 }
             }
 
-            }
+            },
+            "sett" to { SettingsFragment() },
+            "pc" to { PostCreationFragment() }
         )
 
         val fragment = map[screen]?.invoke()?:throw IllegalArgumentException()

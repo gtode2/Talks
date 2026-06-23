@@ -89,17 +89,17 @@ class UserPageAdapter(
                 //rimuovo bottone se sloggato o se stesso
                 followBtn.visibility=View.GONE
             }else if (FollowRepository.isFollowed(user.Uid)){
-                followTxt.text="Following"
+                followTxt.text="Following" //sostituire con string
                 followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
                 followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
             }else{
-                followTxt.text="Follow"
+                followTxt.text="Follow" //sostituire con string
                 followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
                 followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
             }
 
             job = scope.launch {
-                val bmp = withContext(Dispatchers.IO){ ImageCache.get("profile${user.Uid}") }
+                val bmp = ImageCache.get("profile${user.Uid}")
                 if (bmp!=null){
                     userImg.setImageBitmap(bmp)
                 }else{
@@ -112,16 +112,16 @@ class UserPageAdapter(
 
             followBtn.setOnClickListener {
                 scope.launch {
-                    val res = withContext(Dispatchers.IO){ FollowRepository.addFollow(user.Uid, context) }
+                    val res = FollowRepository.addFollow(user.Uid, context)
                     if (res>=0){
                         //modifico stato
                         if (res<2){
-                            followTxt.text="Following"
+                            followTxt.text="Following" //sostituire con string
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbggreen)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_remove))
                             if(res==0) fw.text = (fw.text.toString().toInt()+1).toString()
                         }else{
-                            followTxt.text="Follow"
+                            followTxt.text="Follow" //sostituire con string
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
                             if(res==3) fw.text = (fw.text.toString().toInt()-1).toString()
