@@ -87,7 +87,6 @@ class UserPageFragment:Fragment(R.layout.userpage) {
             val handler = PostCardHandler(
                 requireContext(),
                 adapter,
-                null,
             )
             adapter!!.pch=handler
 

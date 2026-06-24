@@ -41,8 +41,6 @@ class NotificationsAdapter(
         val profileImg = view.findViewById<ImageView>(R.id.profileimg)
         val typeImg = view.findViewById<ImageView>(R.id.typeimg)
         val notifblock = view.findViewById<ConstraintLayout>(R.id.notifblock)
-
-
         val notiftxt = view.findViewById<TextView>(R.id.notiftxt)
 
         private val scope = CoroutineScope(Dispatchers.Main.immediate)
@@ -65,7 +63,7 @@ class NotificationsAdapter(
             }
 
             job = scope.launch {
-                val img = withContext(Dispatchers.IO){ ImageCache.get("profile${el.author}")}
+                val img = ImageCache.get("profile${el.author}")
                 if (img!=null){
                     profileImg.setImageBitmap(img)
                 }else{

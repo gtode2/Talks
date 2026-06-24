@@ -10,10 +10,10 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.data.PostData
 import com.example.talks.data.UserData
-import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.FollowRepository
 import com.example.talks.singleton.ImageCache
@@ -23,11 +23,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class UserPageAdapter(
     private val posts:MutableList<PostData>,
-    var pch: PostCard?,
+    var pch: PostCardHandler?,
     val context: Context,
     private val user: UserData
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import com.example.talks.database.PostDatabase
-import com.example.talks.interfaces.PostCard
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
@@ -17,9 +16,9 @@ class PostCardHandler(
     private val context:Context,
     private val adapter:PostHandlerInterface?=null,
     private val openEdit:((String)->Unit)?=null,
-):PostCard{
+){
 
-    override fun openPost(postId: String) {
+    fun openPost(postId: String) {
         val intent = Intent(context, EmptyActivity::class.java)
         LastPost.addPost(postId)
             intent.putExtra("id", postId)
@@ -27,7 +26,7 @@ class PostCardHandler(
         context.startActivity(intent)
 
     }
-    override fun openUser(userId: String) {
+    fun openUser(userId: String) {
         //openUser?.invoke(userId)
         val intent = Intent(context, EmptyActivity::class.java)
             .putExtra("screen","user")
@@ -35,7 +34,7 @@ class PostCardHandler(
         context.startActivity(intent)
     }
 
-    override fun addLike(postId: String) {
+    fun addLike(postId: String) {
         val uid = UserID.getUID()
         if (!uid.isNullOrBlank()){
             LikeRepository.addLike(uid,postId){ res->
@@ -52,7 +51,7 @@ class PostCardHandler(
         }
     }
 
-    override fun savePost(postId: String) {
+    fun savePost(postId: String) {
         val uid = UserID.getUID()
         if (!uid.isNullOrBlank()){
             BookmarkRepository.savePost(uid, postId){ res->
@@ -65,11 +64,11 @@ class PostCardHandler(
         }
     }
 
-    override fun editPost(postId: String) {
+    fun editPost(postId: String) {
         openEdit?.invoke(postId)
     }
 
-    override fun deletePost(postId: String) {
+    fun deletePost(postId: String) {
         val UID = UserID.getUID()
         if (!UID.isNullOrBlank()){
             AlertDialog.Builder(context)
@@ -89,7 +88,7 @@ class PostCardHandler(
         }
     }
 
-    override fun openSource(link: String) {
+    fun openSource(link: String) {
         val uri = when {
             link.startsWith("http://") || link.startsWith("https://") -> link
             link.contains(".") -> "https://$link"
@@ -98,4 +97,5 @@ class PostCardHandler(
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
         context.startActivity(intent)
     }
+
 }

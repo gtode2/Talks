@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.PostCardHandler
 import com.example.talks.R
 import com.example.talks.data.CommentData
-import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.PostHandlerInterface
 import com.example.talks.singleton.ImageCache
@@ -22,10 +22,10 @@ import kotlinx.coroutines.withContext
 class PostAdapter(
     private val post:PostData,
     private val cm: MutableList<CommentData>,
-    var pch:PostCard?=null,
+    var pch: PostCardHandler?=null,
     private val context: Context,
 
-):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
+    ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     //Post Full Screen
     companion object {
         private const val VIEW_TYPE_POST=0
@@ -36,7 +36,7 @@ class PostAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
-            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch, mutableListOf(post))
+            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch)
             VIEW_TYPE_COMM->CommentVH(view.inflate(R.layout.commentblock, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
         }
@@ -44,7 +44,7 @@ class PostAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when(holder){
             is PostViewHolder ->{
-                holder.bind(post, false, true)
+                holder.bind(post, isFullScreen = true)
             }
 
             is CommentVH->{

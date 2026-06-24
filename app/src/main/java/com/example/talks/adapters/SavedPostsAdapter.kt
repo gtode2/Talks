@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.PostCardHandler
 import com.example.talks.R
-import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
 import com.example.talks.interfaces.PostHandlerInterface
 
 
 class SavedPostsAdapter(
     private val posts:MutableList<PostData>,
-    var pc:PostCard?,
+    var pc: PostCardHandler?,
     private val context: Context,
 ):RecyclerView.Adapter<PostViewHolder>(), PostHandlerInterface{
 

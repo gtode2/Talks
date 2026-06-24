@@ -110,8 +110,7 @@ class PostFSFragment:Fragment(R.layout.postfullscreen) {
 
                 val handler = PostCardHandler(
                     requireContext(),
-                    adapter,
-                    null
+                    adapter
                 )
 
                 adapter!!.pch = handler

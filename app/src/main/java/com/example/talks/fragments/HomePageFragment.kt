@@ -34,7 +34,7 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         lifecycleScope.launch{
-            var postList = withContext(Dispatchers.IO){PostDatabase.getPosts()}
+            var postList = PostDatabase.getPosts()
 
             if (postList==null){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
@@ -66,8 +66,7 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 )
                 val handler = PostCardHandler(
                     requireContext(),
-                    adapter,
-                    null
+                    adapter
                 )
                 adapter!!.pc=handler
 
@@ -115,4 +114,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
             }
         }
     }
+
+
 }

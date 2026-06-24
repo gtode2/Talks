@@ -11,7 +11,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.talks.R
 import com.example.talks.data.PostData
-import com.example.talks.interfaces.PostCard
 import com.example.talks.singleton.ImageCache
 import com.example.talks.managers.SourceManager
 import kotlinx.coroutines.CoroutineScope
@@ -19,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import coil.load
+import com.example.talks.PostCardHandler
 import com.example.talks.database.CommentsDatabase
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.Job
@@ -27,8 +27,7 @@ import kotlinx.coroutines.Job
 open class PostViewHolder(
     private val view: View,
     private val context: Context,
-    private val pch: PostCard?,
-    private val posts: MutableList<PostData>
+    private val pch: PostCardHandler?
 ) : RecyclerView.ViewHolder(view) {
 
 

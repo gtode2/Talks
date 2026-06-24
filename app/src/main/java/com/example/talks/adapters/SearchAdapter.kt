@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.example.talks.PostCardHandler
 import com.example.talks.R
-import com.example.talks.interfaces.PostCard
 import com.example.talks.data.PostData
 import com.example.talks.data.UserData
 import com.example.talks.interfaces.PostHandlerInterface
@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
 
 class SearchAdapter(
     var posts:MutableList<PostData>?=null,
-    var pch:PostCard?,
+    var pch: PostCardHandler?,
     private val context: Context,
     var user: UserData? = null
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
