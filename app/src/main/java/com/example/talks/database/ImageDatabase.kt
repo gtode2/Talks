@@ -1,5 +1,9 @@
 package com.example.talks.database
 
+import android.graphics.Bitmap
+import com.example.talks.data.ImageData
+import com.example.talks.data.ImageDataRes
+import com.example.talks.managers.ImageManager
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -26,22 +30,24 @@ class ImageDatabase {
                     cont.resume(false, {_,_,_->})
                 }
         }
-        suspend fun get(id:String, profile:Boolean=false):String? = suspendCancellableCoroutine{cont->
+        suspend fun get(id:String, profile:Boolean=false): ImageDataRes? = suspendCancellableCoroutine{ cont->
             val coll:String = if(profile) "ProfilePictures" else "Images"
-
             FirebaseFirestore.getInstance()
                 .collection(coll)
                 .document(id)
                 .get()
                 .addOnSuccessListener { res ->
                     if (res.get("img")==null){
-                        cont.resume(null, {_,_,_->})
+                        //non trova immagine
+                        cont.resume(ImageDataRes(null), { _, _, _->})
                     }else{
-                        cont.resume(res.get("img") as String, {_,_,_->})
+                        //trova immagine
+                        val bmp = ImageManager.decode(res.get("img") as String)
+                        cont.resume(ImageDataRes(bmp), {_,_,_->})
                     }
                 }
                 .addOnFailureListener {
-                    cont.resume("",{_,_,_->})
+                    cont.resume(null,{_,_,_->})
                 }
             }
         suspend fun remove(profile:Boolean=false, postid:String=""):Boolean = suspendCancellableCoroutine { cont->

@@ -54,7 +54,7 @@ class UserPageAdapter(
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
             VIEW_TYPE_USER-> UserVH(view.inflate(R.layout.userblock, parent, false))
-            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent, false), context, pch, posts)
+            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent, false), context, pch)
             else-> throw IllegalArgumentException("tipo non valido")
         }
 
@@ -98,7 +98,7 @@ class UserPageAdapter(
             }
 
             job = scope.launch {
-                val bmp = ImageCache.get("profile${user.Uid}")
+                val bmp = ImageCache.get(user.Uid, true)
                 if (bmp!=null){
                     userImg.setImageBitmap(bmp)
                 }else{

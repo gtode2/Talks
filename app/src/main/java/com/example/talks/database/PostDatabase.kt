@@ -1,7 +1,6 @@
 package com.example.talks.database
 
-import android.util.Log
-import android.widget.Toast
+
 import com.example.talks.data.PostData
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldPath
@@ -193,6 +192,7 @@ class PostDatabase {
 
         suspend fun createPost(uid:String, post:String, source: String, title:String, img:Boolean):String = suspendCancellableCoroutine{ cont->
             val db = FirebaseFirestore.getInstance()
+            val ts = if (img) FieldValue.serverTimestamp() else null
             val postContent = hashMapOf(
                 "uid" to uid,
                 "likes" to 0,
@@ -200,7 +200,8 @@ class PostDatabase {
                 "source" to source,
                 "title" to title,
                 "image" to img,
-                "createdAt" to FieldValue.serverTimestamp()
+                "createdAt" to FieldValue.serverTimestamp(),
+                "imgTimestamp" to ts
             )
             db.collection("Posts")
             .add(postContent)
@@ -287,12 +288,12 @@ class PostDatabase {
 
         }
         suspend fun editImgPost(id:String, img: Boolean):Boolean = suspendCancellableCoroutine{cont->
-            FirebaseFirestore.getInstance()
-                .collection("Posts")
-                .document(id)
-                .update("image", img)
-                .addOnSuccessListener { cont.resume(true, {_,_,_->})}
-                .addOnFailureListener { cont.resume(false,{_,_,_->})}
+            val db = FirebaseFirestore.getInstance().collection("Posts").document(id)
+            db.update("image", img)
+                .addOnSuccessListener {
+                    if (img) db.update("imgTimestamp", FieldValue.serverTimestamp())
+                    cont.resume(true, {_,_,_->})
+                }.addOnFailureListener { cont.resume(false,{_,_,_->})}
         }
     }
 }

@@ -46,7 +46,7 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
         tag.text = "@$uid"
 
         lifecycleScope.launch {
-            val user = withContext(Dispatchers.IO){UserDatabase.getUser(uid!!)}
+            val user = UserDatabase.getUser(uid!!)
             if (user.err!=null){
                 logout()
                 //messaggio errore tramite toast
@@ -58,7 +58,7 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
 
 
 
-            val img = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
+            val img = ImageCache.get(UserID.getUID()!!, true)
             if(img!=null){
                 withContext(Dispatchers.Main){
                     profilepicture.setImageBitmap(img)

@@ -84,7 +84,7 @@ open class PostViewHolder(
                 postImg.visibility = View.VISIBLE
 
 
-                val bmp = withContext(Dispatchers.IO){ImageCache.get("image${el.id}")}
+                val bmp = ImageCache.get(el.id, false, el.imgTimestamp)
                 if (el.id==postId){
                     if (bmp!=null){
                         postImg.setImageBitmap(bmp)
@@ -100,7 +100,7 @@ open class PostViewHolder(
 
             if (!isyour){
                 val userImg = view.findViewById<ImageView>(R.id.userImg)
-                val bmp = withContext(Dispatchers.IO){ImageCache.get("profile${el.uid}")}
+                val bmp = withContext(Dispatchers.IO){ImageCache.get(el.uid, true)}
                 if (el.uid==userId){
                     if (bmp!=null){
                         userImg.setImageBitmap(bmp)

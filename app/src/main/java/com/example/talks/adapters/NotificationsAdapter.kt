@@ -63,7 +63,7 @@ class NotificationsAdapter(
             }
 
             job = scope.launch {
-                val img = ImageCache.get("profile${el.author}")
+                val img = ImageCache.get(el.author,true)
                 if (img!=null){
                     profileImg.setImageBitmap(img)
                 }else{

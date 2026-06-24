@@ -40,17 +40,17 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
         if (UserID.getUID()==null){
             Toast.makeText(requireContext(), getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
-        }
+        }else{
+            lifecycleScope.launch {
+                val oldImg = ImageCache.get(UserID.getUID()!!, true)
+                if (oldImg==null){
+                    wasEmpty=true
+                }
 
-        lifecycleScope.launch {
-            val oldImg = withContext(Dispatchers.IO){ImageCache.get("profile${UserID.getUID()}")}
-            if (oldImg==null){
-                wasEmpty=true
-            }
-
-            if (change){
-                lifecycleScope.launch {
-                    image.setImageBitmap(oldImg)
+                if (change){
+                    lifecycleScope.launch {
+                        image.setImageBitmap(oldImg)
+                    }
                 }
             }
         }

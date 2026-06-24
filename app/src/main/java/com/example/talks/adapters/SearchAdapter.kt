@@ -34,7 +34,7 @@ class SearchAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context)
         return when(viewType){
-            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch, posts!!)
+            VIEW_TYPE_POST-> PostViewHolder(view.inflate(R.layout.postcard, parent,false), context, pch)
             VIEW_TYPE_USER->UserVH(view.inflate(R.layout.usercard, parent,false))
             else-> throw IllegalArgumentException("tipo non valido")
         }
@@ -91,7 +91,7 @@ class SearchAdapter(
             usertag.text="@${user!!.Uid}"
             followers.text="${user!!.followers} followers"
             job = scope.launch {
-                val bmp = withContext(Dispatchers.IO){ ImageCache.get("profile${user!!.Uid}")}
+                val bmp = ImageCache.get(user!!.Uid, true)
                 if (bmp!=null){
                     userImg.setImageBitmap(bmp)
                 }else{

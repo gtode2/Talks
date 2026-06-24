@@ -83,7 +83,7 @@ class PostAdapter(
             usertag.text = "@${comment.uid}"
             commenttext.text = comment.text
             CoroutineScope(Dispatchers.IO).launch {
-                val bmp = ImageCache.get("profile${comment.uid}")
+                val bmp = ImageCache.get(comment.uid, true)
                 withContext(Dispatchers.Main){
                     if (bmp!=null){
                         userImg.setImageBitmap(bmp)

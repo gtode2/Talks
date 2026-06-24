@@ -81,178 +81,176 @@ class EditPostFragment:Fragment(R.layout.postcreation) {
         if (postId.isNullOrBlank()){
             Toast.makeText(requireContext(), getString(R.string.error), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
-        }
+        }else{
+            lifecycleScope.launch{
+                val p = PostDatabase.getPost(postId!!)
+                if (p==null){
 
+                }else  if (p.isEmpty()){
+                    val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
+                    view.findViewById<TextView>(R.id.text).text=getString(R.string.notifnotlogged)
+                }else{
+                    post = p[0]
+                    title.setText(post!!.title)
+                    text.setText(post!!.post)
+                    remch.setText("${post!!.post.length}/500")
+                    srctext.setText(post!!.source)
 
-        lifecycleScope.launch{
-            val p = withContext(Dispatchers.IO){ PostDatabase.getPost(postId!!)}
-            if (p==null){
-
-            }else  if (p.isEmpty()){
-                val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
-                view.findViewById<TextView>(R.id.text).text=getString(R.string.notifnotlogged)
-            }else{
-                post = p[0]
-                title.setText(post!!.title)
-                text.setText(post!!.post)
-                remch.setText("${post!!.post.length}/500")
-                srctext.setText(post!!.source)
-
-                if (viewModel.imgChanged){
-                    if (viewModel.imguri==null){
-                        imgblock.visibility=View.GONE
-                        imgtxt.text=getString(R.string.addImg)
+                    if (viewModel.imgChanged){
+                        if (viewModel.imguri==null){
+                            imgblock.visibility=View.GONE
+                            imgtxt.text=getString(R.string.addImg)
+                        }else{
+                            imgprev.setImageURI(viewModel.imguri)
+                            imgblock.visibility=View.VISIBLE
+                            imgtxt.text=getString(R.string.changeImg)
+                        }
                     }else{
-                        imgprev.setImageURI(viewModel.imguri)
-                        imgblock.visibility=View.VISIBLE
-                        imgtxt.text=getString(R.string.changeImg)
+                        val img = ImageCache.get(postId!!, false, post!!.imgTimestamp)
+                        if (img==null){
+                            imgblock.visibility=View.GONE
+                            imgtxt.text=getString(R.string.addImg)
+                        }else{
+                            imgprev.setImageBitmap(img)
+                            imgblock.visibility=View.VISIBLE
+                            imgtxt.text=getString(R.string.changeImg)
+                        }
                     }
-                }else{
-                    val img = ImageCache.get("image${postId}")
-                    if (img==null){
-                        imgblock.visibility=View.GONE
-                        imgtxt.text=getString(R.string.addImg)
+                }
+            }
+
+
+            text.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val length = text.text.toString().length
+                    remch.text= "$length/500"
+                    if (length==500){
+                        remch.setTypeface(null, Typeface.BOLD)
                     }else{
-                        imgprev.setImageBitmap(img)
-                        imgblock.visibility=View.VISIBLE
-                        imgtxt.text=getString(R.string.changeImg)
+                        remch.setTypeface(null, Typeface.NORMAL)
                     }
                 }
-            }
-        }
+                override fun afterTextChanged(s: Editable?) {}
+            })
 
-
-        text.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val length = text.text.toString().length
-                remch.text= "$length/500"
-                if (length==500){
-                    remch.setTypeface(null, Typeface.BOLD)
-                }else{
-                    remch.setTypeface(null, Typeface.NORMAL)
+            contbtn.setOnClickListener{
+                val edit=PostData()
+                if (title.text.toString()!=post!!.title){
+                    edit.title=title.text.toString()
                 }
-            }
-            override fun afterTextChanged(s: Editable?) {}
-        })
-
-        contbtn.setOnClickListener{
-            val edit=PostData()
-            if (title.text.toString()!=post!!.title){
-                edit.title=title.text.toString()
-            }
-            if (text.text.toString()!=post!!.post){
-                edit.post=text.text.toString()
-            }
-            if (srctext.text.toString()!=post!!.source){
-                edit.source=srctext.text.toString()
-            }
-
-
-            val tmp = PostData()
-            var cont=false
-
-            lifecycleScope.launch {
-                if (tmp!=edit){
-                    val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
-                    when(res){
-                        0 -> {
-                            Toast.makeText(context, getString(R.string.posteditcomp), Toast.LENGTH_SHORT).show()
-                            cont=true
-                        }
-                        1-> {
-                            Toast.makeText(context, getString(R.string.errpostnf), Toast.LENGTH_SHORT).show()
-                        }
-                        else-> {
-                            Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                }else{
-                    cont = true
+                if (text.text.toString()!=post!!.post){
+                    edit.post=text.text.toString()
+                }
+                if (srctext.text.toString()!=post!!.source){
+                    edit.source=srctext.text.toString()
                 }
 
 
-                if (cont){
-                    if(post!!.image){
-                        //post contiene immagine
-                        if(viewModel.imgChanged) {
-                            //immagine modificata
-                            if (viewModel.imguri == null) {
-                                //immagine vuota -> rimossa
-                                val res = ImageDatabase.remove(false, postId!!)
-                                if (!res) {
-                                    //errore in rimozione
-                                    Toast.makeText(requireContext(),getString(R.string.errImgRem),Toast.LENGTH_SHORT).show()
-                                    cont = false
-                                } else {
-                                    //rimossa correttamente -> rimuovo anche da cache
-                                    ImageCache.remove(false,postId!!)
-                                    cont = true
-                                }
-                            } else {
-                                //immagine non vuota -> aggiungo
-                                val res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
-                                if(!res){
-                                    //errore in aggiunta
-                                    Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
-                                    cont = false
-                                }else{
-                                    //aggiunta correttamente
-                                    cont=true
-                                }
+                val tmp = PostData()
+                var cont=false
+
+                lifecycleScope.launch {
+                    if (tmp!=edit){
+                        val res = withContext(Dispatchers.IO){PostDatabase.editPost(uid!!, postId!!, edit)}
+                        when(res){
+                            0 -> {
+                                Toast.makeText(context, getString(R.string.posteditcomp), Toast.LENGTH_SHORT).show()
+                                cont=true
+                            }
+                            1-> {
+                                Toast.makeText(context, getString(R.string.errpostnf), Toast.LENGTH_SHORT).show()
+                            }
+                            else-> {
+                                Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
                             }
                         }
                     }else{
-                        //post non ha immagine
-                        if (viewModel.imguri!=null){
-                            var res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
-                            if (!res){
-                                Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
-                                cont = false
-                            }else{
-                                res = PostDatabase.editImgPost(postId!!, true)
-                                if (!res){
-                                    //errore aggiunta a db
-                                    //rimuovo da cache
+                        cont = true
+                    }
 
-                                    ImageCache.remove(false, postId!!)
-                                    val imgres = ImageDatabase.remove(false, postId!!)
-                                    if (!imgres){
-                                        Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
+
+                    if (cont){
+                        if(post!!.image){
+                            //post contiene immagine
+                            if(viewModel.imgChanged) {
+                                //immagine modificata
+                                if (viewModel.imguri == null) {
+                                    //immagine vuota -> rimossa
+                                    val res = ImageDatabase.remove(false, postId!!)
+                                    if (!res) {
+                                        //errore in rimozione
+                                        Toast.makeText(requireContext(),getString(R.string.errImgRem),Toast.LENGTH_SHORT).show()
+                                        cont = false
+                                    } else {
+                                        //rimossa correttamente -> rimuovo anche da cache
+                                        ImageCache.remove(false,postId!!)
+                                        cont = true
                                     }
-                                    Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                                } else {
+                                    //immagine non vuota -> aggiungo
+                                    val res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
+                                    if(!res){
+                                        //errore in aggiunta
+                                        Toast.makeText(requireContext(), getString(R.string.errImgEdit), Toast.LENGTH_SHORT).show()
+                                        cont = false
+                                    }else{
+                                        //aggiunta correttamente
+                                        cont=true
+                                    }
+                                }
+                            }
+                        }else{
+                            //post non ha immagine
+                            if (viewModel.imguri!=null){
+                                var res = ImageCache.add(requireContext(), postId!!, viewModel.imguri!!, false)
+                                if (!res){
+                                    Toast.makeText(requireContext(), getString(R.string.errImgAdd), Toast.LENGTH_SHORT).show()
                                     cont = false
-
                                 }else{
-                                    cont=true
+                                    res = PostDatabase.editImgPost(postId!!, true)
+                                    if (!res){
+                                        //errore aggiunta a db
+                                        //rimuovo da cache
+
+                                        ImageCache.remove(false, postId!!)
+                                        val imgres = ImageDatabase.remove(false, postId!!)
+                                        if (!imgres){
+                                            Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
+                                        }
+                                        Toast.makeText(requireContext(), getString(R.string.errImgAdd),Toast.LENGTH_SHORT).show()
+                                        cont = false
+
+                                    }else{
+                                        cont=true
+                                    }
                                 }
                             }
                         }
-                    }
 
-                }
-                if (cont){
-                    parentFragmentManager.popBackStack()
-                }else{
-                    contbtn.isEnabled=true
+                    }
+                    if (cont){
+                        parentFragmentManager.popBackStack()
+                    }else{
+                        contbtn.isEnabled=true
+                    }
                 }
             }
-        }
 
 
-        backbtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
+            backbtn.setOnClickListener {
+                parentFragmentManager.popBackStack()
+            }
+            imgbtn.setOnClickListener {
+                pickImageLauncher.launch("image/*")
+            }
+            imgrembtn.setOnClickListener {
+                viewModel.imguri=null
+                viewModel.imgChanged=true
+                imgblock.visibility= View.GONE
+                imgtxt.text = getString(R.string.addImg)
+            }
         }
-        imgbtn.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
-        imgrembtn.setOnClickListener {
-            viewModel.imguri=null
-            viewModel.imgChanged=true
-            imgblock.visibility= View.GONE
-            imgtxt.text = getString(R.string.addImg)
-        }
-
     }
 }
