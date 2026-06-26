@@ -53,7 +53,6 @@ class ImageManager {
             return bmp.scale(width.toInt(), height.toInt(), true)
         }
         private fun compress(bmp:Bitmap):ByteArray{
-            //rivedere riduzione qual
             val stream = ByteArrayOutputStream()
             val format = if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.R) Bitmap.CompressFormat.WEBP_LOSSY else Bitmap.CompressFormat.WEBP
             var qual = 85

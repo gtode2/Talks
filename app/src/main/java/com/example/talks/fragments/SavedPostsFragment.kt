@@ -18,9 +18,7 @@ import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SavedPostsFragment:Fragment(R.layout.savedposts) {
     var adapter: SavedPostsAdapter?=null
@@ -43,7 +41,7 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
         }
 
         lifecycleScope.launch{
-            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("saved", uid!!)}
+            val postList = PostDatabase.getPosts("saved", uid!!)
 
             if (postList==null){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
@@ -60,13 +58,9 @@ class SavedPostsFragment:Fragment(R.layout.savedposts) {
                         }
                     }
                 }
-                val saved = BookmarkRepository.getSaved()
-                if (!saved.isEmpty()){
-                    postList.forEach{el->
-                        if (saved.containsKey(el.id)){
-                            el.isSaved=true
-                        }
-                    }
+
+                postList.forEach{el->
+                    el.isSaved=true
                 }
 
                 adapter = SavedPostsAdapter(

@@ -15,7 +15,6 @@ object BookmarkRepository {
 
     fun savePost(uid:String, postid:String, onResult: (Int)->Unit){
         if (!savedPosts.containsKey(postid)){
-            //add
             PostDatabase.savePost(uid, postid){ res->
                 if (res==-1){
                     onResult(-1)
@@ -25,7 +24,6 @@ object BookmarkRepository {
                 }
             }
         }else{
-            //remove
             PostDatabase.unsavePost(uid, postid) { res ->
                 if (res == -1) {
                     onResult(-1)

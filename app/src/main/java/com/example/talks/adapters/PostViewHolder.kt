@@ -30,8 +30,6 @@ open class PostViewHolder(
     private val pch: PostCardHandler?
 ) : RecyclerView.ViewHolder(view) {
 
-
-
     private val posttitle = view.findViewById<TextView>(R.id.postTitle)
     private val posttext = view.findViewById<TextView>(R.id.postText)
     private val postImg = view.findViewById<ImageView>(R.id.postImageArea)
@@ -40,19 +38,13 @@ open class PostViewHolder(
     private val likeIcon = view.findViewById<ImageView>(R.id.likeIcon)
     private val postLikes = view.findViewById<TextView>(R.id.likeCtr)
 
-
-
-
-
     private val src = view.findViewById<ConstraintLayout>(R.id.sourceBlock)
     private val srcImg = view.findViewById<ImageView>(R.id.sourcePreview)
     private val srcUrl = view.findViewById<TextView>(R.id.sourceURL)
     private val srcTitle = view.findViewById<TextView>(R.id.sourceTitle)
 
-
     private val scope = CoroutineScope(Dispatchers.Main.immediate)
     private var job: Job?=null
-
 
     private var postId:String?=null
     private var userId:String?=null
@@ -63,8 +55,6 @@ open class PostViewHolder(
 
         postId=el.id
         userId=el.uid
-
-
 
         if (!isyour){
             val usertag = view.findViewById<TextView>(R.id.userTag)
@@ -97,10 +87,9 @@ open class PostViewHolder(
 
             //profile picture
 
-
             if (!isyour){
                 val userImg = view.findViewById<ImageView>(R.id.userImg)
-                val bmp = withContext(Dispatchers.IO){ImageCache.get(el.uid, true)}
+                val bmp = ImageCache.get(el.uid, true)
                 if (el.uid==userId){
                     if (bmp!=null){
                         userImg.setImageBitmap(bmp)
@@ -111,16 +100,14 @@ open class PostViewHolder(
             }
 
 
-
-
-
             //source
+
             if (el.source==""){
                 src.visibility = View.GONE
             }else{
                 src.visibility = View.VISIBLE
                 //verifica url
-                val img = withContext(Dispatchers.IO){SourceManager.getFavicon(el.source)}
+                val img = SourceManager.getFavicon(el.source)
 
                 if (img==null){
                     srcImg.setImageResource(R.drawable.openlink)
@@ -128,7 +115,7 @@ open class PostViewHolder(
                     srcImg.load(img)
                 }
                 srcUrl.text=el.source
-                val title = withContext(Dispatchers.IO){SourceManager.getTitle(el.source)}
+                val title = SourceManager.getTitle(el.source)
                 if (title!=null){
                     srcTitle.visibility= View.VISIBLE
                     srcTitle.text=title
@@ -137,14 +124,13 @@ open class PostViewHolder(
                 }
             }
 
-
             //comments
+
             if (!isyour){
                 val commentCtr = view.findViewById<TextView>(R.id.commCtr)
-                val cc = with(Dispatchers.IO){ CommentsDatabase.count(el.id)}
+                val cc = CommentsDatabase.count(el.id)
                 commentCtr.text = cc.toString()
             }
-
         }
 
         if (!isyour){
@@ -155,9 +141,6 @@ open class PostViewHolder(
             val commBtn = view.findViewById<LinearLayout>(R.id.commBtn)
 
             val userblock = view.findViewById<LinearLayout>(R.id.userBlock)
-
-
-
 
             if (el.uid!=UserID.getUID()){
                 likeIcon.imageTintList = ColorStateList.valueOf(
@@ -175,7 +158,6 @@ open class PostViewHolder(
                 saveBtn.setOnClickListener { pch?.savePost(el.id) }
                 likeBtn.setOnClickListener { pch?.addLike(el.id) }
 
-                //ottengo count commenti
             }else{
                 likeIcon.imageTintList = ColorStateList.valueOf(
                     ContextCompat.getColor(context, if (el.isLiked) R.color.lime else R.color.btnlocked)
@@ -186,7 +168,7 @@ open class PostViewHolder(
             }
 
             userblock.setOnClickListener { pch?.openUser(el.uid) }
-            commBtn.setOnClickListener {}
+            commBtn.setOnClickListener { pch?.openPost(el.id)}
 
 
         }else{
@@ -196,11 +178,6 @@ open class PostViewHolder(
             editbtn.setOnClickListener { pch?.editPost(el.id) }
             delbtn.setOnClickListener { pch?.deletePost(el.id) }
         }
-
-
-
-
-        // click listener
 
         if (!isFullScreen){
             itemView.setOnClickListener { pch?.openPost(el.id) }

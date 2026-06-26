@@ -27,7 +27,6 @@ class PostCardHandler(
 
     }
     fun openUser(userId: String) {
-        //openUser?.invoke(userId)
         val intent = Intent(context, EmptyActivity::class.java)
             .putExtra("screen","user")
             .putExtra("id",userId)
@@ -69,13 +68,13 @@ class PostCardHandler(
     }
 
     fun deletePost(postId: String) {
-        val UID = UserID.getUID()
-        if (!UID.isNullOrBlank()){
+        val uid = UserID.getUID()
+        if (!uid.isNullOrBlank()){
             AlertDialog.Builder(context)
                 .setTitle(context.getString(R.string.postDel))
                 .setMessage(context.getString(R.string.postDQ))
                 .setPositiveButton(context.getString(R.string.delete)){_,_->
-                    PostDatabase.deletePost(UID,postId){ res->
+                    PostDatabase.deletePost(uid,postId){ res->
                         if (res==0 || res==1){
                             adapter?.deletePost(postId)
                         }else{

@@ -2,6 +2,7 @@ package com.example.talks.repository
 
 import android.content.Context
 import android.widget.Toast
+import com.example.talks.R
 import com.example.talks.database.NotificationsDatabase
 import com.example.talks.database.UserDatabase
 import com.example.talks.singleton.UserID
@@ -34,7 +35,7 @@ object FollowRepository {
                     0-> {
                         val res = NotificationsDatabase.create(2, userid)
                         if (!res){
-                            Toast.makeText(context, "Errore", Toast.LENGTH_SHORT).show() //modificare messaggio errore -> "errore in aggiunta notifica"
+                            Toast.makeText(context, context.getString(R.string.errNotif), Toast.LENGTH_SHORT).show()
                         }
                         return 0
                     }
@@ -61,5 +62,4 @@ object FollowRepository {
     fun clear(){
         followedAccounts.clear()
     }
-
 }

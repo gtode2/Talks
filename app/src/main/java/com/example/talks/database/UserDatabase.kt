@@ -14,8 +14,6 @@ class UserDatabase {
                 .get()
                 .addOnSuccessListener { res ->
                     if (res.exists()) {
-                        //utente trovato
-
                         val fws:Long = res.get("followers") as Long
                         val fwd = res.get("followed") as Map<String, Boolean>
                         val user = UserData(
@@ -27,15 +25,11 @@ class UserDatabase {
                         )
                         cont.resume(user, {_,_,_->})
                     } else {
-                        //utente non trovato
-                        val user = UserData(uid, err="n")//not found
-                        cont.resume(user, {_,_,_->})
+                        cont.resume(UserData(uid, err="n"), {_,_,_->}) //not found
                     }
                 }
                 .addOnFailureListener {
-                    //errore generico
-                    val user = UserData(uid, err="")
-                    cont.resume(user, {_,_,_->})
+                    cont.resume(UserData(uid, err=""), {_,_,_->})
                 }
         }
         suspend fun follow(uid:String, user:String):Int = suspendCancellableCoroutine{cont->
@@ -60,9 +54,9 @@ class UserDatabase {
                 cont.resume(0, {_,_,_->}) //aggiunto
             }.addOnFailureListener {
                 if (ex){
-                    cont.resume(1){} //già seguito
+                    cont.resume(1, {_,_,_->}) //già seguito
                 }else{
-                    cont.resume(-1){} //errore generico
+                    cont.resume(-1, {_,_,_->})//errore generico
                 }
             }
         }

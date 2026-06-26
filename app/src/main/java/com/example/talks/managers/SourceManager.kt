@@ -24,9 +24,7 @@ class SourceManager {
                 if (img.isNotEmpty()){
                     return img
                 }
-            }catch (_: Exception){
-                //serve gestire?
-            }
+            }catch (_: Exception){}
 
             try {
                 //cerco favicon.ico

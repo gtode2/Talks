@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background">
 
+    <!--RENDERE SCROLLABLE-->
 
     <LinearLayout
         android:id="@+id/title"
@@ -85,6 +86,7 @@
             android:layout_height="match_parent"
             android:textColor="@color/black"
             android:text="@string/cont"
+            android:textStyle="bold"
             android:gravity="center"
             android:textSize="20sp"
             />

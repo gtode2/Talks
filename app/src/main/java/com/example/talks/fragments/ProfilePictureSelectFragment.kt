@@ -8,6 +8,8 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.talks.MainActivity
 import com.example.talks.R
@@ -15,23 +17,30 @@ import com.example.talks.database.ImageDatabase
 import com.example.talks.singleton.ImageCache
 import com.example.talks.singleton.UserID
 import com.google.android.material.imageview.ShapeableImageView
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
+//creare viewmodel
+class PSViewModel: ViewModel(){
+    var imgUri:Uri?=null
+    var wasEmpty:Boolean=false
+}
 class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
+    private lateinit var viewModel: PSViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this).get(PSViewModel::class.java)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val change = arguments?.getBoolean("change")?:false
         val selectImage = view.findViewById<LinearLayout>(R.id.select)
         val continueBtn = view.findViewById<LinearLayout>(R.id.contbtn)
         val image = view.findViewById<ShapeableImageView>(R.id.image)
-        var Imguri:Uri?=null
-        var wasEmpty = false
         val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             uri?.let {
                 image.setImageURI(it)
-                Imguri=it
+                viewModel.imgUri=it
             }
         }
 
@@ -44,22 +53,24 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
             lifecycleScope.launch {
                 val oldImg = ImageCache.get(UserID.getUID()!!, true)
                 if (oldImg==null){
-                    wasEmpty=true
+                    viewModel.wasEmpty=true
                 }
 
-                if (change){
-                    lifecycleScope.launch {
+                if (viewModel.imgUri!=null){
+                    image.setImageURI(viewModel.imgUri)
+                }else if (change){
                         image.setImageBitmap(oldImg)
-                    }
                 }
             }
         }
 
 
         continueBtn.setOnClickListener {
-            if (Imguri!=null){
+            continueBtn.isEnabled=false
+            val uri = viewModel.imgUri
+            if (uri!=null){
                 lifecycleScope.launch {
-                    val res = ImageCache.add(requireContext(), UserID.getUID()!!, Imguri, true)
+                    val res = ImageCache.add(requireContext(), UserID.getUID()!!, uri, true)
 
                     if (res){
                         val intent = Intent(requireContext(), MainActivity::class.java)
@@ -67,22 +78,21 @@ class ProfilePictureSelectFragment: Fragment(R.layout.profilepictureselect) {
                         requireActivity().finish()
                     }else{
                         Toast.makeText(requireContext(), getString(R.string.errImg), Toast.LENGTH_SHORT).show()
+                        continueBtn.isEnabled=true
                     }
                 }
             }else{
-                if (!wasEmpty){
-                    lifecycleScope.launch {
-                        val res = ImageDatabase.remove(true)
-                        if (res){
-                            ImageCache.remove(true)
-                            val intent = Intent(requireContext(), MainActivity::class.java)
-                            startActivity(intent)
-                            requireActivity().finish()
-                        }else{
-                            Toast.makeText(requireContext(), getString(R.string.errImgRem), Toast.LENGTH_SHORT).show()
-                        }
-                    }
+                //immagine non selezionata -> blocco e mostro errore
+                if (!viewModel.wasEmpty){
+                    val intent = Intent(requireContext(), MainActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                    return@setOnClickListener
+                }else{
+                    Toast.makeText(requireContext(), getString(R.string.errEmptyPrPic), Toast.LENGTH_SHORT).show()
+                    continueBtn.isEnabled=true
                 }
+
             }
         }
 

@@ -17,7 +17,6 @@ object LastPost {
     }
 
     fun getPost(): PrPostData?{
-        //gestire usage -> prima =-1, adesso = null
         if (lastPost==null) return null
         else return PrPostData(lastPost, liked, saved)
     }

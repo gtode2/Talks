@@ -28,21 +28,21 @@ class MainActivity : AppCompatActivity() {
     lateinit var searchicon: ImageView
     lateinit var accicon: ImageView
     lateinit var ntficon: ImageView
-    var col_act:Int?=null
-    var col_nact:Int?=null
+    var colAct:Int?=null
+    var colNact:Int?=null
 
 
     fun bottombar(p:String){
-        homeicon.imageTintList=ColorStateList.valueOf(col_nact!!)
-        searchicon.imageTintList=ColorStateList.valueOf(col_nact!!)
-        accicon.imageTintList=ColorStateList.valueOf(col_nact!!)
-        ntficon.imageTintList=ColorStateList.valueOf(col_nact!!)
+        homeicon.imageTintList=ColorStateList.valueOf(colNact!!)
+        searchicon.imageTintList=ColorStateList.valueOf(colNact!!)
+        accicon.imageTintList=ColorStateList.valueOf(colNact!!)
+        ntficon.imageTintList=ColorStateList.valueOf(colNact!!)
 
         when(p){
-            "home"->homeicon.imageTintList=ColorStateList.valueOf(col_act!!)
-            "search"->searchicon.imageTintList=ColorStateList.valueOf(col_act!!)
-            "acc"->accicon.imageTintList=ColorStateList.valueOf(col_act!!)
-            "ntf"->ntficon.imageTintList=ColorStateList.valueOf(col_act!!)
+            "home"->homeicon.imageTintList=ColorStateList.valueOf(colAct!!)
+            "search"->searchicon.imageTintList=ColorStateList.valueOf(colAct!!)
+            "acc"->accicon.imageTintList=ColorStateList.valueOf(colAct!!)
+            "ntf"->ntficon.imageTintList=ColorStateList.valueOf(colAct!!)
         }
     }
     fun accountpage(){
@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
         LastPage.setPage("home")
         UserID.setUID(null)
         accountpage()
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,8 +80,8 @@ class MainActivity : AppCompatActivity() {
         cpstbtn = findViewById(R.id.cpstbtn)
         accbtn = findViewById(R.id.accbtn)
         ntfbtn = findViewById(R.id.ntfbtn)
-        col_act = ContextCompat.getColor(this, R.color.lime)
-        col_nact = ContextCompat.getColor(this, R.color.desel)
+        colAct = ContextCompat.getColor(this, R.color.lime)
+        colNact = ContextCompat.getColor(this, R.color.desel)
 
         homeicon = findViewById(R.id.homeicon)
         searchicon = findViewById(R.id.searchicon)
@@ -97,37 +96,27 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null){
             val from = intent.getStringExtra("From")?:0
-            when(from){
-                "user"->{
-                    accountpage()
-                }
-                /*
-                "sett"->{
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.frame, com.example.talks.fragments.SettingsFragment())
-                        .commit()
-                }*/
-                else->{
-                    when(LastPage.getPage()){
-                        "home"->supportFragmentManager.beginTransaction()
-                            .replace(R.id.frame, HomePageFragment())
-                            .commit()
-                        "search"->supportFragmentManager.beginTransaction()
-                            .replace(R.id.frame, SearchPageFragment())
-                            .commit()
-                        "acc" -> {
-                            accountpage()
-                        }
+            if(from=="user") {
 
-                        "ntf" -> {
-                            supportFragmentManager.beginTransaction()
-                                .replace(R.id.frame, NotificationPageFragment())
-                                .commit()
-                        }
+                accountpage()
+            }else{
+                when(LastPage.getPage()){
+                    "home"->supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame, HomePageFragment())
+                        .commit()
+                    "search"->supportFragmentManager.beginTransaction()
+                        .replace(R.id.frame, SearchPageFragment())
+                        .commit()
+                    "acc" -> {
+                        accountpage()
                     }
 
+                    "ntf" -> {
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frame, NotificationPageFragment())
+                            .commit()
+                    }
                 }
-
             }
         }
 
@@ -170,8 +159,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    }
-    override fun onResume() {
-        super.onResume()
     }
 }

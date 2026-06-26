@@ -51,7 +51,7 @@ class RegisterFragment:Fragment(R.layout.register) {
             }else if(!pw.text.contains(Regex("[0-9]"))){
                 valid = false
                 pw.error = getString(R.string.errPWNUM)
-            }else if (!pw.text.contains(Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?]"))){
+            }else if (!pw.text.contains(Regex("[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?]"))){
                 valid = false
                 pw.error = getString(R.string.errPWSYM)
             }
@@ -85,7 +85,6 @@ class RegisterFragment:Fragment(R.layout.register) {
             }
 
         }
-
         back.setOnClickListener {
             requireActivity().finish()
         }

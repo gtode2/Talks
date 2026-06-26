@@ -8,25 +8,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class LikeDatabase {
     companion object{
-        suspend fun userInit(uid:String):MutableMap<String, Boolean> = suspendCancellableCoroutine{ cont->
-            //richiede file likes utente
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener { res ->
-                    val likedPosts = res.get("likes") as? Map<String, Boolean>?: emptyMap()
 
-                    //sfrutto query likes per non dover caricare due volte gli stessi dati
-                    val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
-                    BookmarkRepository.loadSaved(savedPosts)
-                    val followed = res.get("followed") as? Map<String, Boolean>?: emptyMap()
-                    FollowRepository.loadFollowed(followed)
-                    cont.resume(likedPosts.toMutableMap(), {_,_,_->})
-                }.addOnFailureListener {
-                    //gestire oflistnr
-                }
-        }
         fun addLike(uid:String, postid:String, onResult: (Int) -> Unit){
             val db = FirebaseFirestore.getInstance()
             val user = db.collection("Users").document(uid)

@@ -1,6 +1,5 @@
 package com.example.talks.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
@@ -9,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.talks.EmptyActivity
 import com.example.talks.repository.LikeRepository
 import com.example.talks.adapters.PostCardAdapter
 import com.example.talks.PostCardHandler
@@ -18,30 +16,28 @@ import com.example.talks.database.PostDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.singleton.LastPost
 import com.example.talks.singleton.UserID
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomePageFragment:Fragment(R.layout.homepage) {
     var adapter:PostCardAdapter?=null
-    private var UID:String?=null
+    private var uid:String?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val frame = view.findViewById<FrameLayout>(R.id.frame)
-        UID = UserID.getUID()
+        uid = UserID.getUID()
 
 
-        var recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
+        val recyclerViewHomepage = view.findViewById<RecyclerView>(R.id.homepageRV)
         recyclerViewHomepage.layoutManager = LinearLayoutManager(context)
         lifecycleScope.launch{
-            var postList = PostDatabase.getPosts()
+            val postList = PostDatabase.getPosts()
 
             if (postList==null){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text = getString(R.string.error)
             }else if (postList.isNotEmpty()){
                 val ctx = requireContext()
-                var liked = LikeRepository.getLikes()
+                val liked = LikeRepository.getLikes()
                 if (!liked.isEmpty()){
                     postList.forEach{ el->
                         if (liked.containsKey(el.id)){
@@ -57,7 +53,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                         }
                     }
                 }
-
 
                 adapter = PostCardAdapter(
                     postList.toMutableList(),
@@ -85,11 +80,10 @@ class HomePageFragment:Fragment(R.layout.homepage) {
         super.onResume()
         val lp = LastPost.getPost()
         if (lp!=null){
-            val id = lp.id //fisso id -> per valore e non per riferimento
+            val id = lp.id
             if (id!=null){
                 if (lp.liked!= LikeRepository.isLiked(id)){
-                    //like prec != like attuale
-                    //se precedente è liked -> attuale no
+
                     if (lp.liked){
                         adapter?.decrLike(id)
                     }else{
@@ -98,8 +92,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 }
 
                 if (lp.saved!= BookmarkRepository.isSaved(id)){
-                    //save prec != save attuale
-                    //se precedente è saved -> attuale no
                     if (lp.saved){
                         adapter?.unsavePost(id)
                     }else{
@@ -108,7 +100,6 @@ class HomePageFragment:Fragment(R.layout.homepage) {
                 }
 
                 if (LastPost.getCC()!=0){
-                    //modificare sistema conteggio -> rimuovo lettura -> sostituisco da singleton o repository?
                     adapter?.commCount(id)
                 }
             }

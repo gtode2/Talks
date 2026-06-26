@@ -2,6 +2,7 @@ package com.example.talks.database
 
 
 import com.example.talks.data.PostData
+import com.example.talks.repository.BookmarkRepository
 import com.example.talks.singleton.UserID
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FieldValue
@@ -60,6 +61,7 @@ class PostDatabase {
                         .get()
                         .addOnSuccessListener { res ->
                             val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
+                            BookmarkRepository.loadSaved(savedPosts)
                             val list = savedPosts.keys.toList()
 
                             if (list.isNotEmpty()){
@@ -78,8 +80,7 @@ class PostDatabase {
                                         cont.resume(null, {_,_,_->})
                                     }
                             }else{
-                                val el = emptyList<PostData>()
-                                cont.resume(el, {_,_,_->})
+                                cont.resume(emptyList(), { _, _, _->})
                             }
                         }.addOnFailureListener {
                             cont.resume(null, {_,_,_->})
@@ -91,7 +92,6 @@ class PostDatabase {
                         .where(
                             Filter.or(
                                 Filter.equalTo("post", search),
-                                Filter.equalTo("source", search),
                                 Filter.equalTo("title",search),
                                 Filter.equalTo("uid",search)
                             )
@@ -132,16 +132,7 @@ class PostDatabase {
                     cont.resume(null, {_,_,_->})
                 }
         }
-        /*private fun getSaved(uid:String, onResult: (List<String>) -> Unit){
-            FirebaseFirestore.getInstance()
-                .collection("Users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener { res ->
-                    val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
-                    onResult(savedPosts.keys.toList())
-                }
-        }*/
+
         fun savePost(uid:String, postid:String, onResult: (Int) -> Unit){
             val db = FirebaseFirestore.getInstance()
             val user = db.collection("Users").document(uid)
@@ -220,13 +211,13 @@ class PostDatabase {
 
             var ex=true
             db.runTransaction{tr->
-                var p = tr.get(post)
+                val p = tr.get(post)
                 if (!p.exists()){
                     ex=false
                     throw Exception("not found")
                 }
 
-                var prev:String? = p.get("uid").toString()
+                val prev: String = p.get("uid").toString()
                 if (prev!=uid){
                     throw Exception("Unauthorized")
                 }
@@ -240,10 +231,6 @@ class PostDatabase {
                     onResult(-1)
                 }
             }
-            //verifica esistenza post
-            //elimina post
-            //0 -> eseguito correttamente
-            //-1-> errore
         }
         suspend fun editPost(uid:String, postid: String,data:PostData):Int = suspendCancellableCoroutine{cont->
             val db = FirebaseFirestore.getInstance()
@@ -251,7 +238,6 @@ class PostDatabase {
 
             var ex=true
             db.runTransaction { tr->
-                //verifico possesso post
                 var p = tr.get(post)
                 if (!p.exists()){
                     ex=false
@@ -293,7 +279,9 @@ class PostDatabase {
                 .addOnSuccessListener {
                     if (img) db.update("imgTimestamp", FieldValue.serverTimestamp())
                     cont.resume(true, {_,_,_->})
-                }.addOnFailureListener { cont.resume(false,{_,_,_->})}
+                }.addOnFailureListener {
+                    cont.resume(false,{_,_,_->})
+                }
         }
     }
 }

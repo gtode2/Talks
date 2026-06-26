@@ -47,7 +47,7 @@
     <string name="succReg">Registrazione completata</string>
     <string name="errDBReg">Indirizzo Email già in uso</string>
     <string name="errExUsername">Nome utente già in uso</string>
-    <string name="errInvalidUsername">Nome utente non può contenere @ o spazi</string>
+    <string name="errInvalidUsername">Nome utente può contenere solo numeri e lettere</string>
     <string name="datesel">Seleziona data</string>
     <string name="errinvalidDate">Data selezionata non valida</string>
     <string name="errReg">Si è verificato un errore nella creazione del profilo\n Accedi e riprova</string>
@@ -98,8 +98,14 @@
     <string name="delete">Elimina</string>
     <string name="postDel">Elimina post</string>
     <string name="postDQ">Sei sicuro di voler eliminare il post?</string>
-    <string name="errPostDel">si è verificato un errore nell\'eliminazione del post</string>
+    <string name="errPostDel">Si è verificato un errore nell\'eliminazione del post</string>
     <string name="errpostnf">Impossibile trovare il post. potrebbe esser stato eliminato</string>
     <string name="posteditcomp">Post modificato correttamente</string>
     <string name="saved_sing">Salvato</string>
+    <string name="following">Seguito</string>
+    <string name="follow">Segui</string>
+    <string name="errcommloading">Errore nel caricamento dei commenti</string>
+    <string name="errNotif">Impossibile inviare la notifica</string>
+    <string name="errEmptyPrPic">Seleziona un\'immagine di profilo</string>
+
 </resources>

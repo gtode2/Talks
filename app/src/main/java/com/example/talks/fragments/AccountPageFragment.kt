@@ -25,16 +25,16 @@ import kotlinx.coroutines.withContext
 class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var profilepicture = view.findViewById<ImageView>(R.id.profPic)
-        var name = view.findViewById<TextView>(R.id.userNS)
-        var tag = view.findViewById<TextView>(R.id.userTag)
-        var fw = view.findViewById<TextView>(R.id.followers)
-        var fd = view.findViewById<TextView>(R.id.followed)
+        val profilepicture = view.findViewById<ImageView>(R.id.profPic)
+        val name = view.findViewById<TextView>(R.id.userNS)
+        val tag = view.findViewById<TextView>(R.id.userTag)
+        val fw = view.findViewById<TextView>(R.id.followers)
+        val fd = view.findViewById<TextView>(R.id.followed)
 
-        var yourposts = view.findViewById<ConstraintLayout>(R.id.yourPostsBtn)
-        var saved = view.findViewById<ConstraintLayout>(R.id.savedBtn)
-        var settings = view.findViewById<ConstraintLayout>(R.id.settingsBtn)
-        var logout = view.findViewById<ConstraintLayout>(R.id.logoutBtn)
+        val yourposts = view.findViewById<ConstraintLayout>(R.id.yourPostsBtn)
+        val saved = view.findViewById<ConstraintLayout>(R.id.savedBtn)
+        val settings = view.findViewById<ConstraintLayout>(R.id.settingsBtn)
+        val logout = view.findViewById<ConstraintLayout>(R.id.logoutBtn)
 
 
         val uid = UserID.getUID()
@@ -49,7 +49,7 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
             val user = UserDatabase.getUser(uid!!)
             if (user.err!=null){
                 logout()
-                //messaggio errore tramite toast
+                Toast.makeText(requireContext(), getString(R.string.errLoading), Toast.LENGTH_SHORT).show()
             }else{
                 name.text = "${user.name} ${user.surname}".trim()
                 fw.text = user.followers.toString()
@@ -57,12 +57,9 @@ class AccountPageFragment:Fragment(R.layout.userpage_lgd) {
             }
 
 
-
-            val img = ImageCache.get(UserID.getUID()!!, true)
+            val img = ImageCache.get(uid, true)
             if(img!=null){
-                withContext(Dispatchers.Main){
-                    profilepicture.setImageBitmap(img)
-                }
+                profilepicture.setImageBitmap(img)
             }else{
                 profilepicture.setImageDrawable(null)
             }

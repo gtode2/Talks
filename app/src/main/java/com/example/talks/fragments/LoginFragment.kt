@@ -13,7 +13,6 @@ import com.example.talks.EmptyActivity
 import com.example.talks.MainActivity
 import com.example.talks.R
 import com.example.talks.database.AccountDatabase
-import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.LastPage
 import com.example.talks.singleton.UserID
 import kotlinx.coroutines.launch
@@ -21,16 +20,17 @@ import kotlinx.coroutines.launch
 class LoginFragment: Fragment(R.layout.login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var loginBtn = view.findViewById<LinearLayout>(R.id.loginBtn)
-        var mail = view.findViewById<EditText>(R.id.emailET)
-        var password = view.findViewById<EditText>(R.id.pwET)
-        var settingsBtn = view.findViewById<ImageView>(R.id.settingsBtn)
-        var register = view.findViewById<LinearLayout>(R.id.register)
+        val loginBtn = view.findViewById<LinearLayout>(R.id.loginBtn)
+        val mail = view.findViewById<EditText>(R.id.emailET)
+        val password = view.findViewById<EditText>(R.id.pwET)
+        val settingsBtn = view.findViewById<ImageView>(R.id.settingsBtn)
+        val register = view.findViewById<LinearLayout>(R.id.register)
 
 
 
         loginBtn.setOnClickListener {
             loginBtn.isEnabled=false
+
             if (mail.text.isEmpty()){
                 mail.error=getString(R.string.missingmail)
                 loginBtn.isEnabled=true
@@ -47,7 +47,10 @@ class LoginFragment: Fragment(R.layout.login) {
                         loginBtn.isEnabled=true
                     }else if(id!=""){
                         UserID.setUID(id)
-                        LikeRepository.loadLikes(id)
+                        val initres = AccountDatabase.userInit(id)
+                        if (!initres){
+                            Toast.makeText(requireContext(), getString(R.string.errLogin), Toast.LENGTH_SHORT).show()
+                        }
                         LastPage.setPage("home")
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.frame, HomePageFragment())
@@ -67,7 +70,6 @@ class LoginFragment: Fragment(R.layout.login) {
                 .putExtra("screen", "sett")
             startActivity(intent)
         }
-
         register.setOnClickListener {
             val intent = Intent(requireContext(), EmptyActivity::class.java)
                 .putExtra("screen", "register")

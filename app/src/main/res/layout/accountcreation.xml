@@ -85,7 +85,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/dob"
         android:layout_marginTop="30dp"
-        android:textSize="20sp"
         android:hint="@string/register"
         android:gravity="center"
         android:background="@drawable/buttonbgyellow">
@@ -95,6 +94,7 @@
             android:layout_height="match_parent"
             android:textColor="@color/black"
             android:text="@string/register"
+            android:textSize="20sp"
             android:gravity="center"
             android:textStyle="bold"
             />

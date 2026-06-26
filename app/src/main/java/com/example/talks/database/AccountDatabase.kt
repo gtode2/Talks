@@ -1,5 +1,8 @@
 package com.example.talks.database
 
+import com.example.talks.repository.BookmarkRepository
+import com.example.talks.repository.FollowRepository
+import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.UserID
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
@@ -32,7 +35,6 @@ class AccountDatabase {
                             cont.resume(userTag,{_,_,_->})
                         }
                         .addOnFailureListener {
-                            //errpre ottenimento info utente
                             cont.resume(null, {_,_,_->})
                         }
                 }
@@ -52,8 +54,6 @@ class AccountDatabase {
                     }else{
                         cont.resume(null, {_,_,_->})
                     }
-
-
                 }
         }
 
@@ -76,13 +76,11 @@ class AccountDatabase {
                 if (prevuser.exists()){
                     ex=true
                     throw Exception("Duplicated")
-
                 }else{
                     tr.set(db.collection("Users").document(username), user)
-                    cont.resume(0, {_,_,_->})
                 }
             }.addOnSuccessListener {
-                //gestire oslisnr
+                cont.resume(0, {_,_,_->})
             }.addOnFailureListener {
                 if (ex){
                     cont.resume(-2, {_,_,_->})
@@ -90,6 +88,25 @@ class AccountDatabase {
                     cont.resume(-1, {_,_,_->})
                 }
             }
+        }
+
+        suspend fun userInit(uid:String):Boolean = suspendCancellableCoroutine{ cont->
+            FirebaseFirestore.getInstance()
+                .collection("Users")
+                .document(uid)
+                .get()
+                .addOnSuccessListener { res ->
+                    val likedPosts = res.get("likes") as? Map<String, Boolean>?: emptyMap()
+                    LikeRepository.loadLikes(likedPosts)
+                    //sfrutto query likes per non dover caricare due volte gli stessi dati
+                    val savedPosts = res.get("saved") as? Map<String, Boolean>?: emptyMap()
+                    BookmarkRepository.loadSaved(savedPosts)
+                    val followed = res.get("followed") as? Map<String, Boolean>?: emptyMap()
+                    FollowRepository.loadFollowed(followed)
+                    cont.resume(true, {_,_,_->})
+                }.addOnFailureListener {
+                    cont.resume(false, {_,_,_->})
+                }
         }
     }
 }

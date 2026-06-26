@@ -38,11 +38,9 @@ class SettingsFragment:Fragment(R.layout.settings) {
         val profilePicture = view.findViewById<LinearLayout>(R.id.profilePicture)
 
         if (UserID.getUID()==null){
-
             profilePicture.alpha=0.5f
             profilePicture.isEnabled=false
         }
-
 
         profilePicture.setOnClickListener {
             val intent = Intent(requireContext(), EmptyActivity::class.java)
@@ -51,9 +49,7 @@ class SettingsFragment:Fragment(R.layout.settings) {
             startActivity(intent)
         }
 
-
-
-        var back = view.findViewById<ImageView>(R.id.close)
+        val back = view.findViewById<ImageView>(R.id.close)
         back.setOnClickListener{
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
@@ -79,9 +75,7 @@ class SettingsFragment:Fragment(R.layout.settings) {
         btnDk = view.findViewById(R.id.btnDk)
 
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            if (!isAdded) return@launch
-
+        lifecycleScope.launch {
             var lang = settingsManager.getLang()
             if (lang==null) {
                 lang = Locale.getDefault().language

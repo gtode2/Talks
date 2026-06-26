@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-
 class AccountCreationFragment: Fragment(R.layout.accountcreation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,6 +54,7 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
         }
 
         cont.setOnClickListener {
+            cont.isEnabled=false
 
             val name = nameET.text.toString().trim()
             val surname = surnameET.text.toString().trim()
@@ -89,8 +89,8 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 usernameET.error=getString(R.string.errMissingUsername)
                 valid=false
             }else{
-                if (!Regex("^[a-zA-Z0-9_]+\$").matches(username)){ //permettere . e _
-                    usernameET.error=getString(R.string.errInvalidUsername) //messaggio errore errato -> username blocca anche caratteri speciali
+                if (!Regex("^[a-zA-Z0-9_]+\$").matches(username)){
+                    usernameET.error=getString(R.string.errInvalidUsername)
                     valid=false
                 }
             }
@@ -103,28 +103,31 @@ class AccountCreationFragment: Fragment(R.layout.accountcreation) {
                 val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val date = formatter.parse(dobET.text.toString())
                 val today = Date()
-                if (date.after(today)){
-                    Toast.makeText(context, (R.string.errinvalidDate), Toast.LENGTH_SHORT).show()
-                    valid=false
+                if (date != null) {
+                    if (date.after(today)){
+                        Toast.makeText(context, (R.string.errinvalidDate), Toast.LENGTH_SHORT).show()
+                        valid=false
+                    }
+                }else{
+                    valid = false
                 }
             }
 
 
             if (valid){
                 lifecycleScope.launch {
-                    val res = withContext(Dispatchers.IO) {AccountDatabase.createAccount(name, surname, username, dob, uid)}
-                    if (res==0){
-                        UserID.setUID(username)
-                        (activity as EmptyActivity).openScreen("pps", false)
-                    }else{
-                        if (res==-1){
-                            Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
-                        }else if (res==-2){
-                            usernameET.error=getString(R.string.errExUsername)
+                    val res = AccountDatabase.createAccount(name, surname, username, dob, uid)
+                    when(res){
+                        0->{
+                            UserID.setUID(username)
+                            (activity as EmptyActivity).openScreen("pps", false)
                         }
+                        -1-> Toast.makeText(context, getString(R.string.error), Toast.LENGTH_SHORT).show()
+                        -2->  usernameET.error=getString(R.string.errExUsername)
                     }
                 }
-
+            }else{
+                cont.isEnabled=true
             }
         }
 

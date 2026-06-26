@@ -47,7 +47,7 @@
     <string name="succReg">Registration successful</string>
     <string name="errDBReg">Email address already in use</string>
     <string name="errExUsername">Username already taken</string>
-    <string name="errInvalidUsername">Username cannot contain @ or spaces</string>
+    <string name="errInvalidUsername">Username can only contain letters and numbers</string>
     <string name="datesel">Select date</string>
     <string name="errinvalidDate">Selected date is not valid</string>
     <string name="errReg">An error occurred while creating the profile.\nPlease log in and try again</string>
@@ -102,4 +102,9 @@
     <string name="errpostnf">Post not found. It may have been deleted.</string>
     <string name="posteditcomp">Post updated successfully</string>
     <string name="saved_sing">Saved</string>
+    <string name="following">Following</string>
+    <string name="follow">Follow</string>
+    <string name="errcommloading">Error loading comments</string>
+    <string name="errNotif">Unable to send notification</string>
+    <string name="errEmptyPrPic">Select a profile picture</string>
 </resources>

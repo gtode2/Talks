@@ -61,25 +61,24 @@ class NotificationsDatabase {
                     .collection("notifications")
                     .add(map)
                     .addOnSuccessListener {
-                        cont.resume(true) {}
+                        cont.resume(true, {_,_,_->})
                     }
                     .addOnFailureListener {
-                        cont.resume(false) {}
+                        cont.resume(false, {_,_,_->})
                     }
             }
         }
 
         suspend fun get(): List<NotificationData>{
             return suspendCancellableCoroutine { cont ->
-                var nl = mutableListOf<NotificationData>()
+                val nl = mutableListOf<NotificationData>()
 
                 val uid = UserID.getUID()
                 if (uid.isNullOrBlank()){
-                    nl.add(NotificationData(true, "nl"))
+                    nl.add(NotificationData(true, "nl")) //not logged
                     cont.resume(nl, {_,_,_->})
                 }
 
-                //ottieni notifiche
                 FirebaseFirestore.getInstance()
                     .collection("Users")
                     .document(uid!!)
@@ -88,7 +87,7 @@ class NotificationsDatabase {
                     .get()
                     .addOnSuccessListener { res ->
                         for (n in res){
-                            var notif = n.toObject(NotificationData::class.java)
+                            val notif = n.toObject(NotificationData::class.java)
                             nl.add(notif)
                         }
                         cont.resume(nl, {_,_,_->})

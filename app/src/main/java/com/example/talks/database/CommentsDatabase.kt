@@ -13,7 +13,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class CommentsDatabase {
     companion object{
-        suspend fun getComments(post:String):MutableList<CommentData> = suspendCancellableCoroutine{cont->
+        suspend fun getComments(post:String):MutableList<CommentData>? = suspendCancellableCoroutine{cont->
             val comm = mutableListOf<CommentData>()
             FirebaseFirestore.getInstance()
                 .collection("Posts")
@@ -23,16 +23,20 @@ class CommentsDatabase {
                 .get()
                 .addOnSuccessListener { res ->
                     for(document in res){
-                        var comment = document.toObject(CommentData::class.java)
+                        val comment = document.toObject(CommentData::class.java)
                         comm.add(comment)
                     }
                     cont.resume(comm, {_,_,_->})
                 }.addOnFailureListener {
-                    //gestire oflisnr
+                    cont.resume(null, {_,_,_->})
                 }
         }
         suspend fun addComment(text:String, post:String, postOwner:String):Int = suspendCancellableCoroutine{cont->
             val uid = UserID.getUID()
+            if (uid==null){
+                cont.resume(-1, {_,_,_->})
+            }
+
             val comment = hashMapOf(
                 "date" to FieldValue.serverTimestamp(),
                 "text" to text,
@@ -47,7 +51,7 @@ class CommentsDatabase {
                     CoroutineScope(Dispatchers.Default).launch{
                         val res = NotificationsDatabase.create(1, postOwner,post)
                         if (!res){
-                            //errore
+                            cont.resume(-2, {_,_,_->})
                         }
                     }
                     cont.resume(0, {_,_,_->})

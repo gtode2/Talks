@@ -14,3 +14,9 @@ data class PostData(
     var isLiked:Boolean=false,
     var isSaved:Boolean=false
 )
+
+data class PrPostData (
+    var id:String?,
+    var liked:Boolean,
+    var saved:Boolean,
+)

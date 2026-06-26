@@ -48,8 +48,7 @@ class PostAdapter(
             }
 
             is CommentVH->{
-                val comment = cm[position-1]
-                holder.bind(comment)
+                holder.bind(cm[position-1])
             }
         }
     }
@@ -82,12 +81,10 @@ class PostAdapter(
         fun bind(comment:CommentData){
             usertag.text = "@${comment.uid}"
             commenttext.text = comment.text
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 val bmp = ImageCache.get(comment.uid, true)
-                withContext(Dispatchers.Main){
-                    if (bmp!=null){
-                        userImg.setImageBitmap(bmp)
-                    }
+                if (bmp!=null){
+                    userImg.setImageBitmap(bmp)
                 }
             }
         }

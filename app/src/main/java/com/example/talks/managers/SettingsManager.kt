@@ -11,30 +11,30 @@ import kotlinx.coroutines.runBlocking
 val Context.dataStore by preferencesDataStore(name = "settings")
 
 class SettingsManager(private val ctx: Context){
-    private val KEY_THEME = stringPreferencesKey("theme")
-    private val KEY_LANG = stringPreferencesKey("language")
+    private val keyTheme = stringPreferencesKey("theme")
+    private val keyLang = stringPreferencesKey("language")
 
     suspend fun setTheme(value: String){
         ctx.dataStore.edit {
-            it[KEY_THEME] = value
+            it[keyTheme] = value
             applyTheme()
         }
     }
     suspend fun setLang(value: String){
         ctx.dataStore.edit {
-            it[KEY_LANG] = value
+            it[keyLang] = value
         }
     }
 
 
     suspend fun getLang(): String? {
         val preferences = ctx.dataStore.data.first()
-        return preferences[KEY_LANG]
+        return preferences[keyLang]
     }
 
     suspend fun getTheme(): String? {
         val preferences = ctx.dataStore.data.first()
-        return preferences[KEY_THEME]
+        return preferences[keyTheme]
     }
 
     fun applyTheme()= runBlocking {

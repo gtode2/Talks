@@ -18,12 +18,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SearchAdapter(
     var posts:MutableList<PostData>?=null,
     var pch: PostCardHandler?,
-    private val context: Context,
+    val context: Context,
     var user: UserData? = null
 ):RecyclerView.Adapter<RecyclerView.ViewHolder>(), PostHandlerInterface{
     companion object{
@@ -45,7 +44,7 @@ class SearchAdapter(
                 holder.bind()
             }
             is PostViewHolder ->{
-                var index = if (user!=null) position-1 else position
+                val index = if (user!=null) position-1 else position
                 holder.bind(posts!![index])
             }
         }
@@ -110,8 +109,6 @@ class SearchAdapter(
         val adapterIndex = if (user != null) postIndex + 1 else postIndex
         notifyItemChanged(adapterIndex)
     }
-
-    ///////////////////////
 
 
     override fun incrLike(postId:String){

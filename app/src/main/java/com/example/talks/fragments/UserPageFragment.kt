@@ -18,9 +18,7 @@ import com.example.talks.database.UserDatabase
 import com.example.talks.repository.BookmarkRepository
 import com.example.talks.repository.LikeRepository
 import com.example.talks.singleton.LastPost
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 class UserPageFragment:Fragment(R.layout.userpage) {
@@ -35,26 +33,27 @@ class UserPageFragment:Fragment(R.layout.userpage) {
         super.onViewCreated(view, savedInstanceState)
         val frame = view.findViewById<FrameLayout>(R.id.frame)
 
-
         val usertag = view.findViewById<TextView>(R.id.userTag)
-        usertag.text = userid
+        usertag.text = "@$userid"
 
         val backbtn = view.findViewById<ImageView>(R.id.back)
 
 
-        var rv = view.findViewById<RecyclerView>(R.id.uprv)
+        val rv = view.findViewById<RecyclerView>(R.id.uprv)
         rv.layoutManager=LinearLayoutManager(context)
 
 
         lifecycleScope.launch {
-            val user = withContext(Dispatchers.IO){UserDatabase.getUser(userid!!)}
+            val user = UserDatabase.getUser(userid!!)
 
-            if (user.followers<0) {
+
+            if (user.err!=null) {
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.errUserNF)
+                return@launch
             }
 
-            var postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", userid!!)}
+            var postList = PostDatabase.getPosts("user", userid!!)
 
             val liked = LikeRepository.getLikes()
 

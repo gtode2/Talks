@@ -15,9 +15,7 @@ import com.example.talks.R
 import com.example.talks.adapters.YourPostCardAdapter
 import com.example.talks.database.PostDatabase
 import com.example.talks.singleton.UserID
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class YourPostsFragment:Fragment(R.layout.yourposts) {
     var adapter: YourPostCardAdapter?=null
@@ -31,7 +29,9 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         if (uid.isNullOrBlank()){
             Toast.makeText(context, getString(R.string.errReLog), Toast.LENGTH_SHORT).show()
             requireActivity().finish()
+            return
         }
+
         val rv = view.findViewById<RecyclerView>(R.id.yourRV)
         rv.layoutManager = LinearLayoutManager(context)
 
@@ -41,7 +41,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
         }
 
         lifecycleScope.launch{
-            val postList = withContext(Dispatchers.IO){PostDatabase.getPosts("user", uid!!)}
+            val postList = PostDatabase.getPosts("user", uid!!)
             if (postList==null){
                 val view = layoutInflater.inflate(R.layout.errorpage, frame, true)
                 view.findViewById<TextView>(R.id.text).text=getString(R.string.error)
@@ -57,7 +57,7 @@ class YourPostsFragment:Fragment(R.layout.yourposts) {
                 )
                 val handler = PostCardHandler(
                     requireContext(), adapter,
-                    openEdit = {postId->editPost(postId)} //spostare in viewholder? 
+                    openEdit = {postId->editPost(postId)}
                 )
                 adapter!!.pc=handler
                 rv.adapter=adapter

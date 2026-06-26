@@ -13,7 +13,6 @@ import com.google.firebase.Timestamp
 
 object ImageCache {
     val mem = (Runtime.getRuntime().maxMemory()/8).toInt()
-    //verificare dimensione
     val cache = object: LruCache<String, ImageData>(mem){
         override fun sizeOf(key: String, value: ImageData): Int {
             return value.img.byteCount
@@ -43,7 +42,6 @@ object ImageCache {
     }
 
     suspend fun update(s:String, isProfile:Boolean=false, ts: Timestamp):Bitmap?{
-
         val res = ImageDatabase.get(s, isProfile)
         val pre = if (isProfile) "profile" else "image"
         val key = "$pre$s" //concatena prefix e id
@@ -65,7 +63,7 @@ object ImageCache {
 
     suspend fun add(ctx: Context, id:String, img: Uri, isProfile: Boolean):Boolean{
         val imgStr = ImageManager.compressor(ctx, img)
-        var res = ImageDatabase.add(imgStr, id, isProfile)
+        val res = ImageDatabase.add(imgStr, id, isProfile)
         if (res){
             val bmp = ImageManager.decode(imgStr)
             val imgid = if (isProfile) "profile$id" else "image$id"
