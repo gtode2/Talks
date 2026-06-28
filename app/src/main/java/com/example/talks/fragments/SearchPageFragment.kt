@@ -50,6 +50,7 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
         val frame = view.findViewById<FrameLayout>(R.id.frame)
 
         val rv = view.findViewById<RecyclerView>(R.id.searchrv)
+        rv.layoutManager= LinearLayoutManager(context)
 
         if (viewModel.isLoaded){
             loadContent(viewModel.ud, viewModel.posts, rv, frame)
@@ -65,7 +66,6 @@ class SearchPageFragment:Fragment(R.layout.searchpage) {
                 searchbtn.isEnabled=true
                 return@setOnClickListener
             }
-            rv.layoutManager= LinearLayoutManager(context)
 
             lifecycleScope.launch {
                 val res = UserDatabase.searchUser(string)

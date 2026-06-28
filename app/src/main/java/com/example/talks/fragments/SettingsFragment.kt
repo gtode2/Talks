@@ -53,14 +53,20 @@ class SettingsFragment:Fragment(R.layout.settings) {
         back.setOnClickListener{
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                )
             startActivity(intent)
-            requireActivity().finish()
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             val intent = Intent(requireContext(), MainActivity::class.java)
                 .putExtra("From", "user")
+                .addFlags(
+                    Intent.FLAG_ACTIVITY_NEW_TASK or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                )
             startActivity(intent)
-            requireActivity().finish()
         }
 
         btnIt = view.findViewById(R.id.btnIt)
