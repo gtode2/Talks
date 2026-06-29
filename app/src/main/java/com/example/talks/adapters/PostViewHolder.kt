@@ -16,7 +16,6 @@ import com.example.talks.managers.SourceManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import coil.load
 import com.example.talks.PostCardHandler
 import com.example.talks.database.CommentsDatabase

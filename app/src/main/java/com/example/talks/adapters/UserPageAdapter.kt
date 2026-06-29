@@ -122,7 +122,7 @@ class UserPageAdapter(
                             followTxt.text=context.getString(R.string.follow)
                             followBtn.background= ContextCompat.getDrawable(itemView.context, R.drawable.switchbg)
                             followImg.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.person_add))
-                            if(res==3) fw.text = (fw.text.toString().toInt()-1).toString()
+                            if(res==2) fw.text = (fw.text.toString().toInt()-1).toString()
                         }
                     }else{
                         Toast.makeText(itemView.context, itemView.context.getString(R.string.error), Toast.LENGTH_SHORT).show()

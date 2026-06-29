@@ -50,8 +50,8 @@ object FollowRepository {
             if (res != -1) {
                 followedAccounts.remove(userid)
                 when (res) {
-                    0 -> return 3
-                    1 -> return 4
+                    0 -> return 2
+                    1 -> return 3
                 }
             } else {
                 return -1
